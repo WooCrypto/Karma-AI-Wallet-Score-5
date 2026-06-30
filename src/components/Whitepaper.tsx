@@ -62,7 +62,7 @@ Stay active. Earn rewards. Grow with KARMA. One community. Endless opportunities
 - Phase 2: SWARM — NFT Launch: SWARM PFP collection mint. PFP frame builder goes live on karmascore.xyz. Community members upload and deploy their customized frames across the ecosystem. First artist-illustrated PFP evolution wave delivered to holders.
 - Phase 3: Score — Reputation Engine: Karma Score dashboard launches. On-chain indexer activates across connected wallets. Score card sharing and leaderboard registry go live. Multiplier passes enabled for KARMA holders through conviction streak tracking.
 - Phase 4: Credit — DeFi Integration: Reputation-backed liquidity vaults open. Zero-knowledge DeFi credit audits deploy. KAST card integration unlocks real-world spending as a score boost. Rate tiers activated based on Karma Score thresholds.
-- Phase 5: Equilibrium — Full Ecosystem: Cross-chain validator incentives. DAO-staked reputation grants. Institutional underwriter vault integrations. KARMA becomes the standard reputation primitive across partner protocols in the Solana DeFi landscape.
+- Phase 5: Equilibrium — Full Ecosystem: Cross-chain validator incentives. DAO-staked reputation grants. Institutional underwriter vault integrations. KARMA becomes the standard reputation primitive across partner protocols in the Solana DeFi landscape. Karma Score is a product proudly incubated and built by ViloraLabs.xyz, a member holder of the Ugly Duck Society (uglyducksociety.tech) and public member at the Foster community.
 
 ## § 06 — Tokenomics
 ### THE $KARMA TOKEN
@@ -1006,6 +1006,15 @@ $KARMA is the utility backbone of the entire reputation ecosystem. Holding KARMA
             <div className="wp-rphase-body">
               <div className="wp-rphase-title"><span className="wp-accent">Equilibrium</span> — Full Ecosystem</div>
               <p>Cross-chain validator incentives. DAO-staked reputation grants. Institutional underwriter vault integrations. KARMA becomes the standard reputation primitive across partner protocols in the Solana DeFi landscape.</p>
+              
+              <div style={{ marginTop: '16px', padding: '14px', borderRadius: '8px', background: 'rgba(212, 160, 23, 0.04)', border: '1px dashed rgba(212, 160, 23, 0.25)' }}>
+                <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '10px', color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', marginBottom: '6px' }}>
+                  ⚡ Incubation & Team Affiliation
+                </span>
+                <p style={{ fontSize: '12px', color: 'var(--chrome)', lineHeight: '1.6', margin: 0 }}>
+                  Karma Score is a product from <a href="https://ViloraLabs.xyz" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'underline', fontWeight: 'bold' }}>ViloraLabs.xyz</a>. We are proud member holders of the <a href="https://uglyducksociety.tech" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'underline', fontWeight: 'bold' }}>Ugly Duck Society</a> and public members at the Foster community. Check out our builds to see how we are shaping decentralized reputation.
+                </p>
+              </div>
             </div>
           </div>
         </div>

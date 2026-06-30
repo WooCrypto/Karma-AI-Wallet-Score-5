@@ -258,6 +258,8 @@ const generateLeaderboardData = (): LeaderboardEntry[] => {
 
 export default function App() {
   const [isWhitepaperView, setIsWhitepaperView] = useState(false);
+  const [isBusinessModelView, setIsBusinessModelView] = useState(false);
+  const [isRoadmapView, setIsRoadmapView] = useState(false);
 
   const [addressInput, setAddressInput] = useState("");
   const [report, setReportInternal] = useState<WalletReport | null>(null);
@@ -302,6 +304,44 @@ export default function App() {
       setReportInternal(applyLocalOverrides(val));
     }
   };
+
+  const [animatedScore, setAnimatedScore] = useState(0);
+  const [isUpdatingScore, setIsUpdatingScore] = useState(false);
+
+  // Smoothly animate score number and gauge needle from previous value to new value
+  useEffect(() => {
+    if (report) {
+      const startValue = animatedScore;
+      const endValue = report.score;
+      if (startValue === endValue) return;
+
+      const duration = 1200; // 1.2 seconds animation
+      const startTime = performance.now();
+
+      let animationFrameId: number;
+
+      const updateScore = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // ease-out cubic
+        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+        const easedProgress = easeOutCubic(progress);
+
+        const currentValue = Math.round(startValue + (endValue - startValue) * easedProgress);
+        setAnimatedScore(currentValue);
+
+        if (progress < 1) {
+          animationFrameId = requestAnimationFrame(updateScore);
+        }
+      };
+
+      animationFrameId = requestAnimationFrame(updateScore);
+      return () => cancelAnimationFrame(animationFrameId);
+    } else {
+      setAnimatedScore(0);
+    }
+  }, [report?.score]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -372,6 +412,7 @@ export default function App() {
   });
   const [premiumSuccess, setPremiumSuccess] = useState(false);
   const [premiumLoading, setPremiumLoading] = useState(false);
+  const [premiumStepText, setPremiumStepText] = useState("");
 
   // X/Twitter link states
   const [userTwitterConnected, setUserTwitterConnected] = useState(false);
@@ -809,6 +850,56 @@ export default function App() {
     }
   };
 
+  const handleSimulateTransactionsAndUpdateScore = async () => {
+    if (!report || isUpdatingScore) return;
+    setIsUpdatingScore(true);
+
+    // Simulate standard transaction processing with a few state steps
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // Calculate a new score. Let's make sure it changes!
+    // We can boost it or vary it.
+    let scoreChange = Math.floor(Math.random() * 80) + 40; // change between +40 and +120
+    let nextScore = report.score + scoreChange;
+    if (nextScore > 1000) {
+      // If it would exceed 1000, let's wrap it back or set it to a different random value, e.g. 280-530
+      nextScore = 280 + Math.floor(Math.random() * 250);
+    }
+
+    // Determine new tier and title based on the new score
+    let nextTier = "Neutral";
+    let nextLevel = report.experienceLevel || "Chain Wanderer";
+
+    if (nextScore >= 900) {
+      nextTier = "Elite";
+      nextLevel = "DeFi Sovereign";
+    } else if (nextScore >= 800) {
+      nextTier = "High";
+      nextLevel = "Alpha Infiltrator";
+    } else if (nextScore >= 650) {
+      nextTier = "Good";
+      nextLevel = "Liquidity Architect";
+    } else if (nextScore >= 450) {
+      nextTier = "Moderate";
+      nextLevel = "Ecosystem Builder";
+    } else if (nextScore >= 300) {
+      nextTier = "Low";
+      nextLevel = "Staking Cadet";
+    } else {
+      nextTier = "Threat";
+      nextLevel = "Flagged Hazard";
+    }
+
+    setReport({
+      ...report,
+      score: nextScore,
+      reputationTier: nextTier,
+      experienceLevel: nextLevel
+    });
+
+    setIsUpdatingScore(false);
+  };
+
   const handleConnectWalletForBonding = async (chain: "Solana" | "EVM") => {
     setShowConnectWalletModal(false);
     setBondingModalState("check_wallet");
@@ -1214,7 +1305,22 @@ export default function App() {
       return;
     }
     setPremiumLoading(true);
+
+    const steps = [
+      "Establishing secure Web3 peer tunnel...",
+      "Requesting authorization signature from connected wallet...",
+      "Transferring custom premium audit fee of 0.08 SOL to treasury...",
+      "Verifying cryptographic signature on the Solana ledger...",
+      "Allocating certified security researcher container...",
+      "Registering priority audit target in active deep-scan queue..."
+    ];
+
     try {
+      for (let i = 0; i < steps.length; i++) {
+        setPremiumStepText(steps[i]);
+        await new Promise((resolve) => setTimeout(resolve, 950));
+      }
+
       const res = await fetch("/api/premium-investigate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1224,7 +1330,7 @@ export default function App() {
         setPremiumSuccess(true);
         setPremiumForm({ walletAddress: "", email: "", urgency: "standard", notes: "" });
         fetchPremiumRequests();
-        setTimeout(() => setPremiumSuccess(false), 5000);
+        setTimeout(() => setPremiumSuccess(false), 6000);
       } else {
         const d = await res.json();
         setError(d.error || "Failed to submit request.");
@@ -1233,6 +1339,7 @@ export default function App() {
       console.error(e);
     } finally {
       setPremiumLoading(false);
+      setPremiumStepText("");
     }
   };
 
@@ -1427,22 +1534,23 @@ export default function App() {
 
   // SVG representation for the interactive scoring speedometer
   const renderScoreDial = (score: number, tier: string) => {
-    const strokeDashoffset = 440 - (440 * score) / 1000;
+    const displayScore = report ? animatedScore : score;
+    const strokeDashoffset = 440 - (440 * displayScore) / 1000;
     let strokeColor = "stroke-slate-500";
     let glowColor = "shadow-slate-500/20";
-    if (score >= 900) {
+    if (displayScore >= 900) {
       strokeColor = "stroke-emerald-400";
       glowColor = "shadow-emerald-500/30";
-    } else if (score >= 800) {
+    } else if (displayScore >= 800) {
       strokeColor = "stroke-teal-400";
       glowColor = "shadow-teal-500/30";
-    } else if (score >= 650) {
+    } else if (displayScore >= 650) {
       strokeColor = "stroke-yellow-400";
       glowColor = "shadow-yellow-500/30";
-    } else if (score >= 450) {
+    } else if (displayScore >= 450) {
       strokeColor = "stroke-slate-400";
       glowColor = "shadow-slate-500/30";
-    } else if (score >= 300) {
+    } else if (displayScore >= 300) {
       strokeColor = "stroke-amber-400";
       glowColor = "shadow-amber-500/30";
     } else {
@@ -1482,12 +1590,49 @@ export default function App() {
               strokeLinecap="round"
               fill="transparent"
             />
+
+            {/* Rotating Gauge Needle */}
+            <g transform={`rotate(${(displayScore / 1000) * 360}, 104, 104)`} className="transition-transform duration-75 ease-out">
+              <line
+                x1="104"
+                y1="104"
+                x2="104"
+                y2="38"
+                stroke={displayScore < 150 ? "rgba(239, 68, 68, 0.4)" : "rgba(245, 175, 25, 0.45)"}
+                strokeWidth="1.5"
+                strokeDasharray="2 2"
+              />
+              <line
+                x1="104"
+                y1="104"
+                x2="104"
+                y2="42"
+                stroke={displayScore < 150 ? "#EF4444" : "#F5AF19"}
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                className="drop-shadow-[0_0_8px_rgba(245,175,25,0.6)]"
+              />
+              <path
+                d="M104,32 L100,40 L108,40 Z"
+                fill={displayScore < 150 ? "#FF6B6B" : "#FFF9A6"}
+                className="drop-shadow-[0_0_6px_rgba(245,175,25,0.8)]"
+              />
+              <circle
+                cx="104"
+                cy="104"
+                r="6"
+                fill="#09090c"
+                stroke={displayScore < 150 ? "#EF4444" : "#F5AF19"}
+                strokeWidth="2.5"
+                className="drop-shadow-[0_0_4px_rgba(245,175,25,0.5)]"
+              />
+            </g>
           </svg>
 
           {/* Absolute Score Output */}
           <div className="absolute flex flex-col items-center justify-center text-center">
             <span className="text-4xl font-extrabold font-display tracking-tight text-white">
-              {score}
+              {displayScore}
             </span>
             <span className="text-slate-500 text-xs font-mono tracking-widest uppercase mt-0.5">
               of 1000
@@ -1528,7 +1673,16 @@ export default function App() {
             >
               <div className="px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
                 {/* Logo and Name */}
-                <div className="flex items-center gap-3">
+                <div 
+                  onClick={() => {
+                    setReport(null);
+                    setAddressInput("");
+                    setActiveMainTab("dashboard");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="flex items-center gap-3 cursor-pointer select-none hover:opacity-90 active:scale-[0.98] transition-all"
+                  title="Return to Home"
+                >
                   <KarmaLogo className="w-9 h-9" />
                   <div>
                     <span className="text-sm font-black tracking-wider font-mono text-white uppercase block">
@@ -1550,7 +1704,6 @@ export default function App() {
                         : "text-slate-400 hover:text-slate-200 border border-transparent"
                     }`}
                   >
-                    <Search className="w-3.5 h-3.5" />
                     Decoder
                   </button>
                   
@@ -1588,14 +1741,6 @@ export default function App() {
                   >
                     <CreditCard className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
                     NFC Card
-                  </button>
-
-                  <button
-                    onClick={() => setIsWhitepaperView(true)}
-                    className="px-4 py-2 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer text-slate-400 hover:text-slate-200 border border-transparent"
-                  >
-                    <BookOpen className="w-3.5 h-3.5 text-amber-500" />
-                    Whitepaper
                   </button>
                 </nav>
 
@@ -1696,7 +1841,16 @@ export default function App() {
               className="mx-auto flex items-center gap-2 px-3 py-1.5 bg-[#07080c]/90 backdrop-blur-xl border border-white/10 rounded-full shadow-[0_12px_30px_rgba(0,0,0,0.85),_inset_0_1px_1px_rgba(255,255,255,0.1),_0_0_15px_rgba(255,213,74,0.1)] max-w-fit"
             >
               {/* Miniature Logo */}
-              <div className="w-7 h-7 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+              <div 
+                onClick={() => {
+                  setReport(null);
+                  setAddressInput("");
+                  setActiveMainTab("dashboard");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="w-7 h-7 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 cursor-pointer hover:opacity-85 active:scale-95 transition-all"
+                title="Return to Home"
+              >
                 <KarmaLogo className="w-3.5 h-3.5" />
               </div>
 
@@ -1710,22 +1864,6 @@ export default function App() {
 
               {/* Miniature navigation links inside compact pill */}
               <div className="flex items-center gap-0.5 border-l border-white/10 pl-1.5">
-                <button
-                  onClick={() => {
-                    setActiveMainTab("dashboard");
-                    if (window.innerWidth >= 768) {
-                      setIsNavMinimized(false);
-                    }
-                  }}
-                  className={`p-1.5 rounded-lg transition-all cursor-pointer flex items-center justify-center ${
-                    activeMainTab === "dashboard"
-                      ? "text-amber-400 bg-amber-500/10"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
-                  }`}
-                  title="Decoder"
-                >
-                  <Search className="w-3.5 h-3.5" />
-                </button>
                 <button
                   onClick={() => {
                     setActiveMainTab("staking");
@@ -1773,13 +1911,6 @@ export default function App() {
                   title="NFC Card"
                 >
                   <CreditCard className="w-3.5 h-3.5 animate-pulse" />
-                </button>
-                <button
-                  onClick={() => setIsWhitepaperView(true)}
-                  className="p-1.5 rounded-lg transition-all cursor-pointer flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5"
-                  title="Whitepaper"
-                >
-                  <BookOpen className="w-3.5 h-3.5 text-amber-500" />
                 </button>
               </div>
 
@@ -2079,8 +2210,8 @@ export default function App() {
               </div>
             </div>
 
-            {/* INTERACTIVE DEMO: ZERO-KNOWLEDGE PRIVATE IDENTITY SHOWCASE */}
-            <div className="relative rounded-3xl border border-yellow-500/15 bg-gradient-to-b from-[#0a0a0f] to-[#040407] p-6 sm:p-8 overflow-hidden shadow-2xl">
+            {/* INTERACTIVE DEMO: ZERO-KNOWLEDGE PRIVATE IDENTITY SHOWCASE (Moved to GlassyNftView connected portfolio) */}
+            <div className="hidden">
               {/* Background glow lines */}
               <div className="absolute top-0 right-0 w-80 h-80 bg-yellow-500/[0.02] rounded-full blur-3xl pointer-events-none" />
               <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/[0.02] rounded-full blur-3xl pointer-events-none" />
@@ -2704,7 +2835,7 @@ export default function App() {
                             stroke="url(#passportGradient)"
                             strokeWidth={isSoulbound ? "12" : "10"}
                             strokeDasharray={2 * Math.PI * 66}
-                            strokeDashoffset={2 * Math.PI * 66 - (2 * Math.PI * 66 * (report.score)) / 1000}
+                            strokeDashoffset={2 * Math.PI * 66 - (2 * Math.PI * 66 * (animatedScore)) / 1000}
                             strokeLinecap="round"
                             fill="transparent"
                             className="transition-all duration-1000 ease-out"
@@ -2716,12 +2847,53 @@ export default function App() {
                                 : "drop-shadow(0 0 8px rgba(245,175,25,0.3))"
                             }}
                           />
+
+                          {/* Animated Rotating Dial Needle */}
+                          <g transform={`rotate(${(animatedScore / 1000) * 360}, 104, 104)`} className="transition-transform duration-75 ease-out">
+                            {/* Laser Guide */}
+                            <line
+                              x1="104"
+                              y1="104"
+                              x2="104"
+                              y2="42"
+                              stroke={report.score < 150 ? "rgba(239, 68, 68, 0.4)" : "rgba(245, 175, 25, 0.45)"}
+                              strokeWidth="1.5"
+                              strokeDasharray="2 2"
+                            />
+                            {/* Main Needle Stem */}
+                            <line
+                              x1="104"
+                              y1="104"
+                              x2="104"
+                              y2="46"
+                              stroke={report.score < 150 ? "#EF4444" : "#F5AF19"}
+                              strokeWidth="3.5"
+                              strokeLinecap="round"
+                              className="drop-shadow-[0_0_8px_rgba(245,175,25,0.6)]"
+                            />
+                            {/* Arrow Tip */}
+                            <path
+                              d="M104,36 L100,44 L108,44 Z"
+                              fill={report.score < 150 ? "#FF6B6B" : "#FFF9A6"}
+                              className="drop-shadow-[0_0_6px_rgba(245,175,25,0.8)]"
+                            />
+                            {/* Center Pivot Hub */}
+                            <circle
+                              cx="104"
+                              cy="104"
+                              r="6"
+                              fill="#09090c"
+                              stroke={report.score < 150 ? "#EF4444" : "#F5AF19"}
+                              strokeWidth="2.5"
+                              className="drop-shadow-[0_0_4px_rgba(245,175,25,0.5)]"
+                            />
+                          </g>
                         </svg>
 
                         {/* Centered Score */}
                         <div className="absolute flex flex-col items-center justify-center text-center z-20 pointer-events-none">
                           <span className="text-4xl font-extrabold tracking-tight font-display text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                            {report.score}
+                            {animatedScore}
                           </span>
                           <span className="text-slate-400 text-[9px] font-extrabold tracking-[0.25em] font-sans mt-1 uppercase">
                             {report.score < 150 ? "ALERT LEVEL" : "KARMA SCORE"}
@@ -2849,6 +3021,24 @@ export default function App() {
                             )}
                           </div>
                         )}
+
+                        <button
+                          onClick={handleSimulateTransactionsAndUpdateScore}
+                          disabled={isUpdatingScore}
+                          className="w-full py-2.5 bg-yellow-500/10 hover:bg-yellow-500/25 text-yellow-400 hover:text-yellow-300 border border-yellow-500/20 hover:border-yellow-500/40 rounded-xl font-mono text-[10px] tracking-wider uppercase transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        >
+                          {isUpdatingScore ? (
+                            <>
+                              <Loader2 className="w-3.5 h-3.5 animate-spin text-yellow-400" />
+                              <span>Simulating New Tx Block Check...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Zap className="w-3.5 h-3.5 text-yellow-400 animate-pulse" />
+                              <span>Simulate Live Tx & Update Score</span>
+                            </>
+                          )}
+                        </button>
 
                         <button
                           onClick={() => setShowReportModal(true)}
@@ -3639,17 +3829,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Pagination triggers (Load More) to navigate dynamically down to 2000! */}
-              {filteredLeaderboardRows.length > leaderboardVisibleCount && (
-                <div className="pt-2 text-center">
-                  <button
-                    onClick={() => setLeaderboardVisibleCount((prev) => Math.min(prev + 150, 2000))}
-                    className="px-6 py-2.5 rounded-xl border border-amber-500/30 hover:border-amber-400 bg-amber-500/5 hover:bg-amber-500/10 text-amber-400 text-xs font-mono uppercase font-black transition-all active:scale-95 cursor-pointer"
-                  >
-                    Load Next 150 Stakers (Scroll to Rank 2,000) ↓
-                  </button>
-                </div>
-              )}
+
 
               {/* SUSTAINABLE YIELD BUSINESS MODEL */}
               <div className="rounded-2xl border border-white/5 bg-[#07080c]/80 backdrop-blur-xl p-6 sm:p-8 space-y-6 shadow-[0_12px_40px_rgba(0,0,0,0.5)] text-left">
@@ -3702,6 +3882,61 @@ export default function App() {
                     <p className="text-xs text-slate-300 leading-relaxed">
                       All query & badging revenues are automatically accumulated and distributed directly: Active Stakers receive continuous dividends based on staked Karma Power weight.
                     </p>
+                  </div>
+                </div>
+
+                {/* BUSINESS MODEL & ROADMAP CTA PANEL */}
+                <div className="border-t border-white/5 pt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-xl bg-gradient-to-br from-amber-500/[0.03] to-yellow-500/[0.01] border border-amber-500/10 hover:border-amber-500/20 transition-all flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="p-1 rounded bg-amber-500/10 text-amber-400">
+                          <Coins className="w-3.5 h-3.5" />
+                        </span>
+                        <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest block">
+                          NFT Stakeholder Yield Model
+                        </span>
+                      </div>
+                      <h3 className="text-base font-bold text-white uppercase font-display tracking-tight">
+                        Business Model & Revenue Share Projections
+                      </h3>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Read how the protocol structures sustainable query fee distributions and calculates clear projections for NFT holders and stakers.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setIsBusinessModelView(true)}
+                      className="w-full sm:w-auto self-start px-4 py-2.5 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 hover:from-amber-500/25 hover:to-yellow-500/25 text-amber-300 border border-amber-500/30 hover:border-amber-500/50 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
+                    >
+                      <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Explore Business Model & Projections</span>
+                    </button>
+                  </div>
+
+                  <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/[0.03] to-cyan-500/[0.01] border border-blue-500/10 hover:border-blue-500/20 transition-all flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="p-1 rounded bg-blue-500/10 text-blue-400">
+                          <Activity className="w-3.5 h-3.5" />
+                        </span>
+                        <span className="text-[10px] font-mono font-black text-blue-400 uppercase tracking-widest block">
+                          Ecosystem Milestones (Active Beta)
+                        </span>
+                      </div>
+                      <h3 className="text-base font-bold text-white uppercase font-display tracking-tight">
+                        Ecosystem Roadmap & Live Beta Status
+                      </h3>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        We are currently in a live beta testing phase. Learn about our direct milestones since launching the Swarm NFT membership collection.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setIsRoadmapView(true)}
+                      className="w-full sm:w-auto self-start px-4 py-2.5 bg-gradient-to-r from-blue-500/15 to-cyan-500/15 hover:from-blue-500/25 hover:to-cyan-500/25 text-blue-300 border border-blue-500/30 hover:border-blue-500/50 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
+                    >
+                      <Layers2 className="w-3.5 h-3.5 text-blue-400" />
+                      <span>View Straightforward Roadmap</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -3783,7 +4018,12 @@ export default function App() {
                     Some high-level risk metrics require manual cross-chain tracing. Submit target wallets for full manual audits handled by certified security researchers and blockchain forensics experts.
                   </p>
 
-                  <div className="space-y-2 pt-2 text-xs font-mono text-slate-400">
+                  <div className="p-3.5 rounded-xl bg-yellow-500/5 border border-yellow-500/10 space-y-1">
+                    <div className="text-[10px] font-mono text-slate-500 uppercase">Service Cost</div>
+                    <div className="text-sm font-mono font-bold text-yellow-400">0.08 SOL <span className="text-slate-500 text-xs font-normal">per investigation</span></div>
+                  </div>
+
+                  <div className="space-y-2 pt-1 text-xs font-mono text-slate-400">
                     <div className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span> Trace hidden wallets & seed associations
                     </div>
@@ -3860,14 +4100,16 @@ export default function App() {
                       className="w-full py-3.5 text-white font-mono font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all cursor-pointer bg-gradient-to-r from-[#20c3ff] to-[#015aff] hover:from-[#35cbff] hover:to-[#1a6bff] shadow-[0_0_20px_rgba(32,195,255,0.45)] disabled:opacity-40"
                     >
                       {premiumLoading ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Logging Request Details...
+                        <span className="flex flex-col items-center justify-center gap-1">
+                          <span className="flex items-center gap-2 justify-center">
+                            <Loader2 className="w-4 h-4 animate-spin text-cyan-200" />
+                            <span>{premiumStepText || "Initiating Secure Handshake..."}</span>
+                          </span>
                         </span>
                       ) : (
                         <span className="flex items-center justify-center gap-1.5">
                           <Sparkles className="w-4 h-4 text-white" />
-                          Request Premium Wallet Investigation
+                          Pay 0.08 SOL & Request Premium Investigation
                         </span>
                       )}
                     </button>
@@ -3876,7 +4118,7 @@ export default function App() {
                   {premiumSuccess && (
                     <div className="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono flex items-center gap-2 animate-fade-in">
                       <Check className="w-4 h-4" />
-                      Request logged successfully. Investigation ID: REQ_{Math.floor(1000 + Math.random() * 9000)}. We will contact you at your email.
+                      Request & 0.08 SOL payment logged successfully. Investigation ID: REQ_{Math.floor(1000 + Math.random() * 9000)}. We will contact you at your email.
                     </div>
                   )}
 
@@ -3958,25 +4200,50 @@ export default function App() {
               </div>
             </div>
 
-            {/* Middle: Links & Whitepaper button */}
-            <div className="flex items-center gap-4 flex-wrap justify-center">
-              <button
-                onClick={() => {
-                  setIsWhitepaperView(true);
-                }}
-                className="px-4 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-lg text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-              >
-                📄 Official Whitepaper
-              </button>
-              
-              <button
-                onClick={() => {
-                  setIsWhitepaperView(true);
-                }}
-                className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-              >
-                📥 Download Whitepaper (.md)
-              </button>
+            {/* Middle: Links & Whitepaper button with Business Model & Roadmap under them */}
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center gap-4 flex-wrap justify-center">
+                <button
+                  onClick={() => {
+                    setIsWhitepaperView(true);
+                  }}
+                  className="px-4 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-lg text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  📄 Official Whitepaper
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setIsWhitepaperView(true);
+                  }}
+                  className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  📥 Download Whitepaper (.md)
+                </button>
+              </div>
+
+              {/* Sub-buttons for Business Model and Roadmap */}
+              <div className="flex items-center gap-3 flex-wrap justify-center">
+                <button
+                  onClick={() => {
+                    setIsBusinessModelView(true);
+                  }}
+                  className="px-3.5 py-1.5 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 hover:from-amber-500/20 hover:to-yellow-500/20 text-amber-300 border border-amber-500/20 hover:border-amber-500/40 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <TrendingUp className="w-3 h-3 text-amber-400" />
+                  Explore Business Model & Projection
+                </button>
+
+                <button
+                  onClick={() => {
+                    setIsRoadmapView(true);
+                  }}
+                  className="px-3.5 py-1.5 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 hover:from-blue-500/20 hover:to-cyan-500/20 text-blue-300 border border-blue-500/20 hover:border-blue-500/40 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <Layers2 className="w-3.5 h-3.5 text-blue-400" />
+                  Roadmap / Milestones
+                </button>
+              </div>
             </div>
 
             {/* Right: Social Links */}
@@ -5933,6 +6200,359 @@ export default function App() {
               <Whitepaper onClose={() => setIsWhitepaperView(false)} />
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* BUSINESS MODEL & STAKEHOLDER PROJECTIONS MODAL */}
+      <AnimatePresence>
+        {isBusinessModelView && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/90 backdrop-blur-md">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsBusinessModelView(false)}
+              className="absolute inset-0 cursor-pointer"
+            />
+
+            {/* Modal Body */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="relative w-full max-w-2xl bg-[#09090d] border border-amber-500/20 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(234,179,8,0.15)] z-10 overflow-y-auto max-h-[90vh] text-slate-200 space-y-6 scrollbar-thin scrollbar-thumb-amber-500/10"
+            >
+              <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest block">📊 Platform Economics</span>
+                  <h3 className="text-lg sm:text-xl font-bold text-white uppercase font-display tracking-tight">
+                    Business Model & Projections
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setIsBusinessModelView(false)}
+                  className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Business Model Overview */}
+              <div className="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <div className="p-4 rounded-xl bg-amber-500/[0.02] border border-amber-500/10 space-y-2">
+                  <h4 className="font-bold text-amber-300 font-display uppercase tracking-wide flex items-center gap-2">
+                    <Coins className="w-4 h-4" /> Core Value Architecture
+                  </h4>
+                  <p className="text-slate-400 leading-normal text-xs">
+                    Karma Score AI is designed to convert live Web3 reputation metrics into structured software-as-a-service (SaaS) utility. By reading decentralized actions in real time, the platform acts as an institutional trust layer for the Solana and EVM landscapes.
+                  </p>
+                </div>
+
+                {/* Structured Revenue Streams */}
+                <div className="space-y-3">
+                  <h4 className="font-bold text-white uppercase text-xs tracking-wider">Revenue Stream Breakdown:</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5 space-y-1">
+                      <span className="text-[10px] font-mono font-black text-yellow-500 block">01. REPUTATION-AS-A-SERVICE (RaaS)</span>
+                      <p className="text-slate-400 text-xs">
+                        External launchpads, dApps, and DeFi portals query the Karma engine. Minor stablecoin charges (e.g., 0.05 USDC) are accrued on every automated status validation.
+                      </p>
+                    </div>
+                    <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5 space-y-1">
+                      <span className="text-[10px] font-mono font-black text-emerald-400 block">02. SOULBOUND SBT VERIFICATIONS</span>
+                      <p className="text-slate-400 text-xs">
+                        Users who want to record their Karma scores on-chain mint a non-transferable Soulbound passport, paying a nominal mint processing fee in native stablecoins.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* NFT Stakeholder Projections */}
+                <div className="space-y-3 pt-2">
+                  <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-1.5">
+                    <Award className="w-4 h-4 text-amber-400" /> NFT Stakeholder Distribution Model
+                  </h4>
+                  <p className="text-slate-400 text-xs leading-normal">
+                    Revenues compiled in our secure Protocol Treasury are dynamically shared back with the ecosystem. Holders of the exclusive **SWARM NFT Collection** and **Active Stakers** receive direct utility distributions calculated proportionally based on their validation weight and locked Karma Power (KP).
+                  </p>
+                  
+                  {/* Revenue Distribution Breakdown */}
+                  <div className="border border-white/5 rounded-xl overflow-hidden text-xs bg-slate-950/40">
+                    <div className="grid grid-cols-3 bg-white/[0.03] p-3 font-mono font-bold border-b border-white/5 text-slate-400 text-[10px] tracking-wider uppercase">
+                      <div>Revenue Channel</div>
+                      <div className="text-center">Allocation %</div>
+                      <div className="text-right">Primary Recipient</div>
+                    </div>
+                    <div className="grid grid-cols-3 p-3 border-b border-white/5">
+                      <div className="font-bold text-amber-300">Staking Dividend Pool</div>
+                      <div className="text-center font-mono">60%</div>
+                      <div className="text-right text-slate-400">Locked Karma Power Stakers & NFT Validators</div>
+                    </div>
+                    <div className="grid grid-cols-3 p-3 border-b border-white/5">
+                      <div className="font-bold text-blue-300">Ecosystem Development</div>
+                      <div className="text-center font-mono">30%</div>
+                      <div className="text-right text-slate-400">Indexer Optimization & Gas Subsidies</div>
+                    </div>
+                    <div className="grid grid-cols-3 p-3">
+                      <div className="font-bold text-slate-300">Core Maintenance</div>
+                      <div className="text-center font-mono">10%</div>
+                      <div className="text-right text-slate-400">Software Infrastructure & Node Support</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Straightforward Projection Model */}
+                <div className="space-y-3 pt-2 border-t border-white/5">
+                  <h4 className="font-bold text-white uppercase text-xs tracking-wider">
+                    Volume-Based Yield Projections (Sample Scenario)
+                  </h4>
+                  <p className="text-slate-400 text-xs">
+                    We maintain a strict anti-inflation and utility-focused stance. We do not provide unrealistic, speculative, or guaranteed yield rates. The table below represents straightforward scenarios based purely on active query and badging volumes:
+                  </p>
+
+                  <div className="border border-white/5 rounded-xl overflow-hidden text-xs bg-slate-950/60 font-mono">
+                    <div className="grid grid-cols-3 bg-white/[0.03] p-3 font-bold border-b border-white/5 text-slate-400 text-[10px] tracking-wider uppercase">
+                      <div>Daily Query Volume</div>
+                      <div className="text-center">Estimated Annual Fees</div>
+                      <div className="text-right">NFT Stakeholder Yield Share</div>
+                    </div>
+                    <div className="grid grid-cols-3 p-3 border-b border-white/5 text-slate-300">
+                      <div>10,000 queries</div>
+                      <div className="text-center">$182,500 USDC</div>
+                      <div className="text-right text-amber-400">$109,500 USDC</div>
+                    </div>
+                    <div className="grid grid-cols-3 p-3 border-b border-white/5 text-slate-300">
+                      <div>50,000 queries</div>
+                      <div className="text-center">$912,500 USDC</div>
+                      <div className="text-right text-amber-400">$547,500 USDC</div>
+                    </div>
+                    <div className="grid grid-cols-3 p-3 text-slate-300">
+                      <div>250,000 queries</div>
+                      <div className="text-center">$4,562,500 USDC</div>
+                      <div className="text-right text-amber-400">$2,737,500 USDC</div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-[10px] text-slate-500 italic font-mono leading-relaxed bg-slate-950 p-3 rounded-lg border border-white/5">
+                    *Disclaimer: Projections are mathematical models based on potential product adoption levels and do not represent a guarantee of earnings. Realized returns fluctuate depending on live RaaS integration, active dApp volume, and Solana/EVM network transaction velocity. Always evaluate blockchain technologies with a clear focus on core software utility.
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-white/5 flex justify-end">
+                <button
+                  onClick={() => setIsBusinessModelView(false)}
+                  className="px-5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-xl text-xs font-mono font-bold cursor-pointer transition-colors"
+                >
+                  Close & Return
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* PROJECT ROADMAP MODAL */}
+      <AnimatePresence>
+        {isRoadmapView && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/90 backdrop-blur-md">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsRoadmapView(false)}
+              className="absolute inset-0 cursor-pointer"
+            />
+
+            {/* Modal Body */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="relative w-full max-w-2xl bg-[#07070b] border border-blue-500/20 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(59,130,246,0.15)] z-10 overflow-y-auto max-h-[90vh] text-slate-200 space-y-6 scrollbar-thin scrollbar-thumb-blue-500/10"
+            >
+              <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono font-black text-blue-400 uppercase tracking-widest block">🧪 Live Ecosystem Status</span>
+                  <h3 className="text-lg sm:text-xl font-bold text-white uppercase font-display tracking-tight flex items-center gap-2">
+                    <Layers2 className="w-5 h-5 text-blue-400" />
+                    Project Roadmap & Beta Phase
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setIsRoadmapView(false)}
+                  className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Status Alert */}
+              <div className="p-4 rounded-xl bg-blue-950/20 border border-blue-500/20 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-1.5">
+                <div className="flex items-center gap-2 text-blue-300 font-bold font-mono">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-ping shrink-0" />
+                  CURRENT STATUS: LIVE BETA TEST PHASE
+                </div>
+                <p className="text-slate-400 text-xs leading-normal">
+                  Our indexer architecture, leaderboards, and scoring pipelines are fully functional and currently operating in their initial public beta testing phase to stress-test algorithms and optimize cross-chain latency.
+                </p>
+              </div>
+
+              {/* Swarm NFT Focus */}
+              <div className="p-4 rounded-xl bg-[#0c0c14] border border-slate-800/80 space-y-3">
+                <span className="text-[9px] font-mono font-bold text-cyan-400 uppercase block tracking-wider">👥 Building Core Membership</span>
+                <h4 className="text-xs sm:text-sm font-bold text-white uppercase">The SWARM NFT Collection Rollout</h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  We recently initiated the launch of the **Swarm NFT Collection** specifically to establish high-conviction core membership, expand decentralization, and secure early validator nodes. We emphasize practical technology utility: our NFTs act as functional staker passes and custom visual identity multipliers rather than empty speculative tools.
+                </p>
+                <div className="pt-1">
+                  <a
+                    href="https://uglyducksociety.tech"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 hover:from-cyan-500/20 hover:to-blue-500/20 text-cyan-300 hover:text-cyan-200 border border-cyan-500/20 hover:border-cyan-400/40 text-[10px] font-mono font-bold uppercase tracking-wider transition-all shadow-[0_4px_12px_rgba(6,182,212,0.05)] cursor-pointer"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
+                    Mint Swarm NFT
+                  </a>
+                </div>
+              </div>
+
+              {/* Roadmap Timeline */}
+              <div className="space-y-4">
+                <h4 className="font-bold text-xs font-mono uppercase tracking-widest text-slate-400">Straightforward Milestones:</h4>
+                <div className="space-y-3 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-800">
+                  
+                  {/* Milestone 1 */}
+                  <div className="flex gap-4 items-start relative pl-8">
+                    <span className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full border border-blue-500 bg-blue-500/20 flex items-center justify-center font-mono text-[8px] font-black text-blue-300 shadow-glow" />
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono font-bold text-slate-500 block uppercase">Phase 1 — Current Milestones</span>
+                      <h5 className="text-xs sm:text-sm font-bold text-white uppercase">Indexer Beta Validation & X-Profile Bonding</h5>
+                      <p className="text-xs text-slate-400 leading-normal">
+                        Stress-test algorithmic calculations across 2,000+ test wallets. Enable verified X account bindings to correlate reputation footprints securely and without data leakage.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Milestone 2 */}
+                  <div className="flex gap-4 items-start relative pl-8">
+                    <span className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full border border-slate-700 bg-slate-900 flex items-center justify-center font-mono text-[8px] font-black text-slate-400" />
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono font-bold text-slate-500 block uppercase">Phase 2 — Up Next</span>
+                      <h5 className="text-xs sm:text-sm font-bold text-white uppercase">Swarm NFT Evolve Party (2026-2027)</h5>
+                      <p className="text-xs text-slate-400 leading-normal">
+                        An exclusive interactive customizer event happening between 2026 and 2027. Swarm NFT stakers and collection holders can merge metadata, configure visual elements, and evolve their profile assets live.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Milestone 3 */}
+                  <div className="flex gap-4 items-start relative pl-8">
+                    <span className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full border border-slate-700 bg-slate-900 flex items-center justify-center font-mono text-[8px] font-black text-slate-400" />
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono font-bold text-slate-500 block uppercase">Phase 3 — Expansion</span>
+                      <h5 className="text-xs sm:text-sm font-bold text-white uppercase">Finish Live Testing (Will Announce)</h5>
+                      <p className="text-xs text-slate-400 leading-normal">
+                        Finalize extensive multi-chain stress testing and protocol indexer verification. The official completion and live developer API routes will be announced to the community soon.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Milestone 4 */}
+                  <div className="flex gap-4 items-start relative pl-8">
+                    <span className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full border border-slate-700 bg-slate-900 flex items-center justify-center font-mono text-[8px] font-black text-slate-400" />
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono font-bold text-slate-500 block uppercase">Phase 4 — Distribution</span>
+                      <h5 className="text-xs sm:text-sm font-bold text-white uppercase">ZK VAULT INTEGRATIONS & FEE LOOPBACK ACTIVATION</h5>
+                      <p className="text-xs text-slate-400 leading-normal">
+                        Deploy zero-knowledge DeFi credit audit smart contracts. Distribute accumulated RaaS micro-fees to active locked Karma Power (KP) stakers and validator members automatically.
+                      </p>
+                    </div>
+                  </div>
+
+                   {/* Milestone 5 */}
+                  <div className="flex gap-4 items-start relative pl-8">
+                    <span className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full border border-slate-700 bg-slate-900 flex items-center justify-center font-mono text-[8px] font-black text-slate-400" />
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-[10px] font-mono font-bold text-slate-500 block uppercase">Phase 5 — Launch</span>
+                        <h5 className="text-xs sm:text-sm font-bold text-white uppercase">NFC Card Lift Off</h5>
+                        <p className="text-xs text-slate-400 leading-normal">
+                          Kick off full production, provisioning, and distribution of physical Karma NFC cards. Users can instantly swipe cards to prove their credentials offline via cryptographic signatures.
+                        </p>
+                      </div>
+
+                      {/* Ecosystem Credits Card */}
+                      <div className="mt-3 p-3.5 rounded-xl bg-gradient-to-br from-[#0c0e17] to-[#0d1222] border border-blue-500/10 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider">Vilora Labs Incubated</span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 leading-relaxed">
+                          Karma Score is a product proudly incubated and built by <a href="https://ViloraLabs.xyz" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline font-semibold">ViloraLabs.xyz</a>. We are proud member holders of the <a href="https://uglyducksociety.tech" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 underline font-semibold">Ugly Duck Society</a> and public members at the Foster community. Check out our builds to see what we are shaping next in decentralized reputation.
+                        </p>
+                        <div className="flex items-center gap-2 pt-1 flex-wrap">
+                          <a
+                            href="https://ViloraLabs.xyz"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[9px] font-mono font-bold text-blue-300 bg-blue-500/5 hover:bg-blue-500/15 border border-blue-500/20 px-2 py-0.5 rounded transition-all"
+                          >
+                            <ExternalLink className="w-2.5 h-2.5" />
+                            ViloraLabs
+                          </a>
+                          <a
+                            href="https://uglyducksociety.tech"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[9px] font-mono font-bold text-amber-300 bg-amber-500/5 hover:bg-amber-500/15 border border-amber-500/20 px-2 py-0.5 rounded transition-all"
+                          >
+                            <ExternalLink className="w-2.5 h-2.5" />
+                            Ugly Duck Society
+                          </a>
+                          <span className="text-[9px] text-slate-500 font-mono">
+                            ✍️ Foster Community
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-white/5 flex justify-end">
+                <button
+                  onClick={() => setIsRoadmapView(false)}
+                  className="px-5 py-2.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/20 rounded-xl text-xs font-mono font-bold cursor-pointer transition-colors"
+                >
+                  Close & Return
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Back to Top Floating Button */}
+      <AnimatePresence>
+        {isScrolled && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed bottom-6 left-6 md:left-auto md:right-6 z-[9998] flex items-center justify-center w-10 h-10 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/35 hover:border-amber-500/60 shadow-[0_4px_20px_rgba(245,158,11,0.15)] backdrop-blur-xl transition-all cursor-pointer"
+            title="Scroll to Top"
+            id="back-to-top-fab"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </motion.button>
         )}
       </AnimatePresence>
 

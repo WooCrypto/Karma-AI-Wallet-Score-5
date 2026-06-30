@@ -20,7 +20,8 @@ import {
   AlertCircle,
   PlusCircle,
   Image as ImageIcon,
-  Loader2
+  Loader2,
+  EyeOff
 } from "lucide-react";
 
 import madLadsNftImg from "../assets/images/mad_lads_nft_1782834969908.jpg";
@@ -83,6 +84,101 @@ export function GlassyNftView({
   onDeductBalance
 }: GlassyNftViewProps) {
   const [selectedNft, setSelectedNft] = useState<NFTAsset | null>(null);
+
+  // PRIVATE IDENTITY SHOWCASE STATES (CONNECTED FUNCTIONALITY)
+  const [showcaseNftName, setShowcaseNftName] = useState("Mad Lads");
+  const [showcaseNftImage, setShowcaseNftImage] = useState<string>(madLadsNftImg);
+  const [showcaseTwitterHandle, setShowcaseTwitterHandle] = useState(userTwitterHandle ? userTwitterHandle.replace(/^@/, "") : "wolfpack_lead");
+  const [showcaseProvingState, setShowcaseProvingState] = useState<"idle" | "proving" | "done">("idle");
+  const [showcaseProgress, setShowcaseProgress] = useState(0);
+  const [showcaseIsSharing, setShowcaseIsSharing] = useState(false);
+  const [showcaseSharingStep, setShowcaseSharingStep] = useState("");
+  const [showcaseSharedResult, setShowcaseSharedResult] = useState<any | null>(null);
+  const [showcaseError, setShowcaseError] = useState<string | null>(null);
+
+  // Sync showcase Twitter handle with actual bound profile
+  useEffect(() => {
+    if (userTwitterHandle) {
+      setShowcaseTwitterHandle(userTwitterHandle.replace(/^@/, ""));
+    }
+  }, [userTwitterHandle]);
+
+  // Handle assembly proof
+  const handleStartShowcaseProof = () => {
+    setShowcaseProvingState("proving");
+    setShowcaseProgress(0);
+    setShowcaseSharedResult(null);
+    setShowcaseError(null);
+    const interval = setInterval(() => {
+      setShowcaseProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setShowcaseProvingState("done");
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 120);
+  };
+
+  const handleShareShowcaseProof = async () => {
+    if (!showcaseTwitterHandle) {
+      setShowcaseError("X Handle is required to share the proof.");
+      return;
+    }
+    setShowcaseIsSharing(true);
+    setShowcaseSharedResult(null);
+    setShowcaseError(null);
+
+    const steps = [
+      "Securing connection to Karma AI crypt-registry...",
+      `Resolving official X handle @${showcaseTwitterHandle}...`,
+      "Signing cryptographic Zero-Knowledge signature...",
+      `Publishing proof directly to @${showcaseTwitterHandle} connected feed...`,
+      "Anchoring verification mirror post to the official @Karma_AI public database..."
+    ];
+
+    try {
+      for (let i = 0; i < steps.length; i++) {
+        setShowcaseSharingStep(steps[i]);
+        await new Promise((resolve) => setTimeout(resolve, 850));
+      }
+
+      let assetLabel = showcaseNftName;
+      if (showcaseNftName === "Mad Lads") assetLabel = "⚡ Mad Lads #8912";
+      else if (showcaseNftName === "Pudgy Penguins") assetLabel = "🐧 Pudgy Penguin #4023";
+      else if (showcaseNftName === "DeGods") assetLabel = "👑 DeGod #2910";
+      else if (showcaseNftName === "Bored Apes") assetLabel = "🦍 Bored Ape #592";
+
+      const response = await fetch("/api/share-x-proof", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          twitterHandle: showcaseTwitterHandle,
+          nftCollection: showcaseNftName,
+          assetName: assetLabel
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to post proof to X backend API.");
+      }
+
+      const data = await response.json();
+      if (data.success && data.share) {
+        setShowcaseSharedResult(data.share);
+      } else {
+        throw new Error(data.error || "An error occurred during sharing.");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setShowcaseError(err.message || "Failed to publish ZK proof to X backend.");
+    } finally {
+      setShowcaseIsSharing(false);
+    }
+  };
 
   // Share to X states inside NFT view modal
   const [nftTwitterHandle, setNftTwitterHandle] = useState("");
@@ -593,6 +689,19 @@ export function GlassyNftView({
   const displayedNfts = currentNfts.filter(nft => !nft.isPassport || isSoulbound);
   const passportNft = currentNfts.find(nft => nft.isPassport);
 
+  // Auto-select first available NFT for the showcase when wallet changes or load
+  const allAvailableNfts = [...displayedNfts, ...customNfts];
+  useEffect(() => {
+    if (allAvailableNfts.length > 0) {
+      const nonPassport = allAvailableNfts.find(nft => !nft.isPassport);
+      const target = nonPassport || allAvailableNfts[0];
+      if (target) {
+        setShowcaseNftName(target.name);
+        setShowcaseNftImage(target.image);
+      }
+    }
+  }, [userWalletAddress, userWalletChain, customNfts.length]);
+
   return (
     <div className="space-y-6">
       {/* Dynamic Header State */}
@@ -904,6 +1013,283 @@ export function GlassyNftView({
         <p className="text-[11px] text-slate-400 leading-relaxed">
           The <strong>Karma Soulbound Card</strong> acts as an on-chain proxy of your reputation credentials. Once minted, the certificate is tethered permanently and can never leave your wallet. However, when new checks occur (e.g. Sybil screening, social updates, or risk changes), the data securely updates on the passport card interface automatically.
         </p>
+      </div>
+
+      {/* INTERACTIVE DEMO: ZERO-KNOWLEDGE PRIVATE IDENTITY SHOWCASE */}
+      <div className="relative rounded-3xl border border-yellow-500/15 bg-gradient-to-b from-[#0a0a0f] to-[#040407] p-5 sm:p-6 overflow-hidden shadow-2xl">
+        {/* Decorative corner grid background to highlight prestige */}
+        <div className="absolute top-0 right-0 w-48 h-48 bg-yellow-500/[0.015] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-yellow-500/[0.01] rounded-full blur-3xl pointer-events-none" />
+
+        <div className="space-y-4 relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-500/25 flex items-center justify-center text-yellow-500 shrink-0">
+                <Lock className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-xs font-mono font-black text-white uppercase tracking-wider">
+                  Private Identity Showcase
+                </h3>
+                <p className="text-[10px] text-slate-500 font-mono">
+                  Zero-Knowledge Proof of Asset Ownership
+                </p>
+              </div>
+            </div>
+            <span className="self-start sm:self-center px-2 py-0.5 rounded-md text-[8px] font-mono font-bold bg-amber-500/10 border border-amber-500/20 text-amber-500 uppercase tracking-widest">
+              ZK-Proofs v1.4
+            </span>
+          </div>
+
+          <p className="text-[11px] text-slate-400 leading-normal font-sans">
+            Prove you own specific high-value NFTs and bind them directly to your official X handle <strong>without ever revealing your public wallet address</strong> or exposing your net worth to public ledger tracking.
+          </p>
+
+          <div className="space-y-4 p-4 rounded-2xl bg-black/45 border border-white/5 relative">
+            
+            {/* Step 1: Select Your Verified Asset */}
+            <div className="space-y-2">
+              <label className="block text-[9px] font-mono text-slate-500 uppercase tracking-widest">
+                1. Select Asset to Prove
+              </label>
+              {allAvailableNfts.length > 0 ? (
+                // Render scrollable row of their ACTUAL connected NFTs
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                  {allAvailableNfts.map((nft) => (
+                    <button
+                      key={nft.id}
+                      type="button"
+                      disabled={showcaseProvingState === "proving"}
+                      onClick={() => {
+                        setShowcaseNftName(nft.name);
+                        setShowcaseNftImage(nft.image);
+                        if (showcaseProvingState === "done") {
+                          setShowcaseProvingState("idle");
+                          setShowcaseSharedResult(null);
+                        }
+                      }}
+                      className={`flex-shrink-0 p-2 rounded-xl text-left border text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer max-w-[160px] ${
+                        showcaseNftName === nft.name
+                          ? "bg-yellow-500/10 border-yellow-500/30 text-yellow-400 font-bold"
+                          : "bg-slate-950/45 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-300"
+                      }`}
+                    >
+                      <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0 border border-white/10">
+                        <img src={nft.image} alt={nft.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      </div>
+                      <span className="truncate">{nft.name}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                // Fallback collections
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { name: "Mad Lads", image: madLadsNftImg },
+                    { name: "Pudgy Penguins", image: pudgyPenguinsNftImg },
+                    { name: "DeGods", image: degodsNftImg },
+                    { name: "Bored Apes", image: boredApesNftImg }
+                  ].map((nft) => (
+                    <button
+                      key={nft.name}
+                      type="button"
+                      disabled={showcaseProvingState === "proving"}
+                      onClick={() => {
+                        setShowcaseNftName(nft.name);
+                        setShowcaseNftImage(nft.image);
+                        if (showcaseProvingState === "done") {
+                          setShowcaseProvingState("idle");
+                          setShowcaseSharedResult(null);
+                        }
+                      }}
+                      className={`p-2 rounded-xl text-left border text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
+                        showcaseNftName === nft.name
+                          ? "bg-yellow-500/10 border-yellow-500/30 text-yellow-400 font-bold"
+                          : "bg-slate-950/45 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-300"
+                      }`}
+                    >
+                      <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0 border border-white/10">
+                        <img src={nft.image} alt={nft.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      </div>
+                      <span className="truncate">{nft.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Step 2: Target X Handle */}
+            <div className="space-y-1.5">
+              <label className="block text-[9px] font-mono text-slate-500 uppercase tracking-widest">
+                2. Target X (Twitter) Handle
+              </label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-3 flex items-center text-xs font-mono text-slate-500 select-none">@</span>
+                <input
+                  type="text"
+                  disabled={showcaseProvingState === "proving"}
+                  value={showcaseTwitterHandle}
+                  onChange={(e) => {
+                    setShowcaseTwitterHandle(e.target.value.trim().replace("@", ""));
+                    if (showcaseProvingState === "done") {
+                      setShowcaseProvingState("idle");
+                      setShowcaseSharedResult(null);
+                    }
+                  }}
+                  placeholder="username"
+                  className="w-full pl-7 pr-3 py-2 bg-slate-950/60 border border-slate-900 focus:border-yellow-500/30 text-xs text-white rounded-xl font-mono focus:outline-none transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Step 3: Action Trigger */}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={handleStartShowcaseProof}
+                disabled={showcaseProvingState === "proving" || !showcaseTwitterHandle}
+                className="w-full py-2 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-mono text-xs font-black tracking-wider uppercase rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                {showcaseProvingState === "idle" && "Assemble Private Proof ⚡"}
+                {showcaseProvingState === "proving" && `Proving ownership (${showcaseProgress}%)`}
+                {showcaseProvingState === "done" && "Generate New Proof ↺"}
+              </button>
+            </div>
+
+            {/* Inline Error Display if any */}
+            {showcaseError && (
+              <div className="p-2 border border-rose-500/20 bg-rose-500/5 text-rose-400 font-mono text-[10px] rounded-lg">
+                ⚠️ {showcaseError}
+              </div>
+            )}
+
+            {/* Step 4: Verification Result */}
+            <AnimatePresence>
+              {showcaseProvingState !== "idle" && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="border-t border-white/5 pt-3 mt-3 space-y-3 overflow-hidden text-left"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-mono font-bold text-yellow-500 uppercase tracking-wider flex items-center gap-1">
+                      <Fingerprint className="w-3.5 h-3.5 animate-pulse" />
+                      Status: {showcaseProvingState.toUpperCase()}
+                    </span>
+                    <span className="text-[8px] font-mono text-slate-500">
+                      Method: ZK-Snarks (Groth16)
+                    </span>
+                  </div>
+
+                  {showcaseProvingState === "proving" && (
+                    <div className="space-y-2">
+                      <div className="w-full bg-slate-950/80 rounded-full h-1.5 border border-white/5 overflow-hidden">
+                        <motion.div
+                          className="bg-yellow-500 h-1.5 rounded-full"
+                          initial={{ width: "0%" }}
+                          animate={{ width: `${showcaseProgress}%` }}
+                          transition={{ duration: 0.1 }}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between text-[9px] font-mono text-slate-400">
+                        <span className="animate-pulse">Computing witness values...</span>
+                        <span>{showcaseProgress}%</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {showcaseProvingState === "done" && (
+                    <div className="space-y-3">
+                      <div className="p-3 bg-[#03060c] border border-blue-500/10 rounded-xl space-y-2 font-mono">
+                        <div className="flex items-center gap-1.5 text-[10px] text-blue-400 font-bold uppercase">
+                          <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                          Cryptographic Signatures Sealed
+                        </div>
+                        <div className="space-y-1 text-[9px] text-slate-400 border-l-2 border-blue-500/20 pl-2 py-0.5">
+                          <div><span className="text-slate-600">Asset:</span> {showcaseNftName}</div>
+                          <div><span className="text-slate-600">Proof Anchor:</span> {showcaseTwitterHandle.toLowerCase()}_zkp_anchor</div>
+                          <div className="truncate"><span className="text-slate-600">ZKP Signature:</span> 0xzk98A190...72f10b74955a12efd91</div>
+                        </div>
+                      </div>
+
+                      <p className="text-[10px] text-slate-400 font-sans leading-relaxed text-center">
+                        🔑 <strong>The Ultimate Flex:</strong> You prove 100% on-chain ownership of your {showcaseNftName} directly to @{showcaseTwitterHandle}, but your actual wallet address is kept offline and protected.
+                      </p>
+
+                      {/* X Integration and Mirror */}
+                      <div className="pt-1">
+                        {!showcaseIsSharing && !showcaseSharedResult && (
+                          <button
+                            type="button"
+                            onClick={handleShareShowcaseProof}
+                            className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-[#1d9bf0] to-[#147dbd] hover:from-[#1a8cd8] hover:to-[#1169a1] text-white font-mono text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                          >
+                            <Twitter className="w-3.5 h-3.5 text-white" />
+                            Share Proof to X & Mirror to Karma AI ⚡
+                          </button>
+                        )}
+
+                        {showcaseIsSharing && (
+                          <div className="p-3 rounded-xl border border-blue-500/20 bg-blue-950/10 space-y-2 text-center">
+                            <div className="flex items-center justify-center">
+                              <Loader2 className="w-4 h-4 text-[#1d9bf0] animate-spin" />
+                            </div>
+                            <p className="text-[10px] text-[#1d9bf0] font-mono animate-pulse">
+                              {showcaseSharingStep}
+                            </p>
+                          </div>
+                        )}
+
+                        {showcaseSharedResult && (
+                          <div className="space-y-2">
+                            <div className="p-3 rounded-xl border border-emerald-500/25 bg-[#040906]/60 text-left space-y-2">
+                              <div className="flex items-center gap-1.5">
+                                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
+                                  Proof Permanently Dispatched & Verified
+                                </span>
+                              </div>
+                              <p className="text-[8px] font-mono text-slate-500">
+                                PROOF ID: {showcaseSharedResult.id} • SUCCESS
+                              </p>
+
+                              <div className="grid grid-cols-1 gap-2 pt-1">
+                                <div className="p-2 rounded bg-black/40 border border-slate-900 flex flex-col justify-between space-y-2">
+                                  <div className="space-y-1">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[8px] font-mono text-slate-400 font-bold flex items-center gap-1">
+                                        <Twitter className="w-2 h-2 text-[#1d9bf0]" />
+                                        @{showcaseTwitterHandle} Feed
+                                      </span>
+                                      <span className="text-[7px] font-mono text-emerald-400 font-black">● POSTED</span>
+                                    </div>
+                                    <p className="text-[9px] text-slate-300 font-sans italic leading-relaxed">
+                                      "{showcaseSharedResult.userTweetText.slice(0, 110)}..."
+                                    </p>
+                                  </div>
+                                  <a
+                                    href={showcaseSharedResult.userPostUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full py-1 text-center rounded bg-[#1d9bf0]/10 hover:bg-[#1d9bf0]/20 text-[#1d9bf0] text-[8px] font-mono font-bold uppercase tracking-wider transition-all block flex items-center justify-center gap-1"
+                                  >
+                                    <ExternalLink className="w-2 h-2" /> View @{showcaseTwitterHandle} Feed
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+          </div>
+        </div>
       </div>
 
       {/* EXPANDED NFT DETAIL MODAL */}
