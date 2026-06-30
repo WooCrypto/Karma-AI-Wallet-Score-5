@@ -1513,7 +1513,7 @@ export default function App() {
   const shouldCollapse = isNavMinimized || (autoMinimizeOnScroll && isScrolled && scrollDirection === "down");
 
   return (
-    <div className="min-h-screen bg-[#040508] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black">
+    <div className="min-h-screen bg-[#040508] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full max-w-full relative">
       {/* Floating Modern Header / Navigation Bar */}
       <div className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <AnimatePresence mode="wait">

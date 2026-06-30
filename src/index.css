@@ -53,3 +53,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(234, 179, 8, 0.6);
 }
+
+/* Enforce strict horizontal limits to prevent viewport swerving or sliding on swipe */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
