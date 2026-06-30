@@ -2,43 +2,95 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Star, UserPlus, X, Check, Users, Search, Info } from "lucide-react";
 
+// Import premium verified NFT images
+import madLadsNftImg from "../assets/images/mad_lads_nft_1782834969908.jpg";
+import degodsNftImg from "../assets/images/degods_nft_1782834978756.jpg";
+import boredApesNftImg from "../assets/images/bored_apes_nft_1782834993522.jpg";
+import pudgyPenguinsNftImg from "../assets/images/pudgy_penguins_nft_1782835008251.jpg";
+
+interface OwnedNft {
+  collection: string;
+  image: string;
+  floor: string;
+  tokenId: string;
+}
+
 interface XFavoriteUser {
   id: string;
   name: string;
   handle: string;
   avatarGradient: string;
   mutual: boolean;
+  ownedNfts: OwnedNft[];
 }
 
-// Initial placeholder mock favorites that represent mutual follow relationships
+// Global pool of verified NFT collections for random assignment or defaults
+const NFT_POOL = [
+  { name: "Mad Lads", image: madLadsNftImg, floor: "68.5 SOL", prefix: "#" },
+  { name: "DeGods", image: degodsNftImg, floor: "24.2 SOL", prefix: "#" },
+  { name: "Bored Ape YC", image: boredApesNftImg, floor: "12.8 ETH", prefix: "#" },
+  { name: "Pudgy Penguins", image: pudgyPenguinsNftImg, floor: "9.4 ETH", prefix: "#" }
+];
+
+// Helper to get 2-4 random unique collections for custom added users
+const getRandomNfts = (): OwnedNft[] => {
+  const shuffled = [...NFT_POOL].sort(() => 0.5 - Math.random());
+  const count = Math.floor(Math.random() * 3) + 2; // 2, 3 or 4
+  return shuffled.slice(0, count).map(col => ({
+    collection: col.name,
+    image: col.image,
+    floor: col.floor,
+    tokenId: `${col.prefix}${Math.floor(1000 + Math.random() * 8999)}`
+  }));
+};
+
+// Initial placeholder mock favorites with pre-assigned premium portfolio assets
 const DEFAULT_FAVORITES: XFavoriteUser[] = [
   {
     id: "fav-1",
     name: "Karma Architect",
     handle: "karma_builder",
     avatarGradient: "from-purple-500 to-indigo-600",
-    mutual: true
+    mutual: true,
+    ownedNfts: [
+      { collection: "Mad Lads", image: madLadsNftImg, floor: "68.5 SOL", tokenId: "#4209" },
+      { collection: "Pudgy Penguins", image: pudgyPenguinsNftImg, floor: "9.4 ETH", tokenId: "#2912" },
+      { collection: "Bored Ape YC", image: boredApesNftImg, floor: "12.8 ETH", tokenId: "#1084" }
+    ]
   },
   {
     id: "fav-2",
     name: "Wolfpack Lead",
     handle: "wolfpack_lead",
     avatarGradient: "from-amber-500 to-rose-600",
-    mutual: true
+    mutual: true,
+    ownedNfts: [
+      { collection: "DeGods", image: degodsNftImg, floor: "24.2 SOL", tokenId: "#8819" },
+      { collection: "Mad Lads", image: madLadsNftImg, floor: "68.5 SOL", tokenId: "#1920" }
+    ]
   },
   {
     id: "fav-3",
     name: "Solana Sensei",
     handle: "sol_sensei",
     avatarGradient: "from-teal-400 to-emerald-600",
-    mutual: true
+    mutual: true,
+    ownedNfts: [
+      { collection: "Mad Lads", image: madLadsNftImg, floor: "68.5 SOL", tokenId: "#7712" },
+      { collection: "DeGods", image: degodsNftImg, floor: "24.2 SOL", tokenId: "#2293" },
+      { collection: "Pudgy Penguins", image: pudgyPenguinsNftImg, floor: "9.4 ETH", tokenId: "#8810" }
+    ]
   },
   {
     id: "fav-4",
     name: "EVM Sentinel",
     handle: "evm_sentinel",
     avatarGradient: "from-sky-500 to-blue-700",
-    mutual: true
+    mutual: true,
+    ownedNfts: [
+      { collection: "Bored Ape YC", image: boredApesNftImg, floor: "12.8 ETH", tokenId: "#8822" },
+      { collection: "Pudgy Penguins", image: pudgyPenguinsNftImg, floor: "9.4 ETH", tokenId: "#7119" }
+    ]
   }
 ];
 
@@ -54,7 +106,15 @@ export function XFavoritesCard() {
     const stored = localStorage.getItem("karma_x_favorites_list");
     if (stored) {
       try {
-        setFavorites(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        // Robust hydration: ensure every user has ownedNfts loaded gracefully
+        const hydrated = parsed.map((u: any) => {
+          if (!u.ownedNfts || u.ownedNfts.length === 0) {
+            u.ownedNfts = getRandomNfts();
+          }
+          return u;
+        });
+        setFavorites(hydrated);
       } catch (e) {
         setFavorites(DEFAULT_FAVORITES);
       }
@@ -113,7 +173,8 @@ export function XFavoritesCard() {
       name: formattedName,
       handle: formattedHandle,
       avatarGradient: randomGradient,
-      mutual: true // Strictly mutual (following and follows back)
+      mutual: true, // Strictly mutual (following and follows back)
+      ownedNfts: getRandomNfts() // Automatically generate 2-4 premium verified assets!
     };
 
     const updated = [...favorites, newFav];
@@ -150,7 +211,7 @@ export function XFavoritesCard() {
             </h4>
           </div>
           <p className="text-[11px] text-slate-400 font-sans">
-            Curate and spotlight up to 10 verified reciprocal connections (mutual follow only)
+            Curate and spotlight verified reciprocal connections and see their premium on-chain NFT assets.
           </p>
         </div>
         <div className="bg-slate-950/80 px-2.5 py-1 rounded-full border border-slate-900 flex items-center gap-1.5 self-start sm:self-center">
@@ -222,8 +283,8 @@ export function XFavoritesCard() {
         )}
       </form>
 
-      {/* List layout mimicking premium X user list */}
-      <div className="space-y-2 max-h-[340px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-900 scrollbar-track-transparent">
+      {/* List layout mimicking premium X user list with verified portfolio NFTs */}
+      <div className="space-y-3.5 max-h-[440px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-900 scrollbar-track-transparent">
         <AnimatePresence initial={false}>
           {favorites.length === 0 ? (
             <div className="text-center py-6 text-slate-600 text-xs font-mono">
@@ -237,43 +298,84 @@ export function XFavoritesCard() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
-                className="group flex items-center justify-between p-2.5 rounded-xl border border-slate-900 bg-slate-950/30 hover:bg-slate-950/70 hover:border-slate-800/80 transition-all"
+                className="group flex flex-col gap-3 p-3.5 rounded-xl border border-slate-900 bg-slate-950/25 hover:bg-slate-950/60 hover:border-slate-800/60 transition-all"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  {/* Avatar with beautiful gradients */}
-                  <div className={`w-9 h-9 rounded-full bg-gradient-to-tr ${user.avatarGradient} flex items-center justify-center font-display font-black text-xs text-white shadow-inner shrink-0`}>
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
+                {/* Top Row: User metadata, mutual badge, and delete button */}
+                <div className="flex items-center justify-between gap-3 w-full">
+                  <div className="flex items-center gap-3 min-w-0">
+                    {/* Avatar with beautiful gradients */}
+                    <div className={`w-9 h-9 rounded-full bg-gradient-to-tr ${user.avatarGradient} flex items-center justify-center font-display font-black text-xs text-white shadow-inner shrink-0`}>
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
 
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-black text-slate-200 truncate hover:underline cursor-pointer">
-                        {user.name}
-                      </span>
-                      {/* Mutual handshake badge */}
-                      <span className="bg-[#1d9bf0]/10 border border-[#1d9bf0]/20 text-[#1d9bf0] text-[8px] font-mono px-1 rounded flex items-center gap-0.5 font-bold shrink-0">
-                        🤝 Mutual
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-black text-slate-200 truncate hover:underline cursor-pointer">
+                          {user.name}
+                        </span>
+                        {/* Mutual handshake badge */}
+                        <span className="bg-[#1d9bf0]/10 border border-[#1d9bf0]/20 text-[#1d9bf0] text-[8px] font-mono px-1 rounded flex items-center gap-0.5 font-bold shrink-0">
+                          🤝 Mutual
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono text-slate-500 block truncate">
+                        @{user.handle}
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-slate-500 block truncate">
-                      @{user.handle}
-                    </span>
+                  </div>
+
+                  {/* Star icon action to remove / toggle */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => handleRemoveFavorite(user.id, user.handle)}
+                      className="p-1.5 hover:bg-slate-900 rounded-lg text-amber-400 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer group/btn"
+                      title="Remove from star list"
+                    >
+                      <Star className="w-4 h-4 fill-amber-400 text-amber-400 group-hover/btn:fill-transparent group-hover/btn:text-red-400 transition-colors" />
+                    </button>
                   </div>
                 </div>
 
-                {/* Star icon action to remove / toggle */}
-                <div className="flex items-center gap-2">
-                  <span className="text-[8px] font-mono text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                    Unstar to remove
-                  </span>
-                  <button
-                    onClick={() => handleRemoveFavorite(user.id, user.handle)}
-                    className="p-1.5 hover:bg-slate-900 rounded-lg text-amber-400 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer group/btn"
-                    title="Remove from star list"
-                  >
-                    <Star className="w-4 h-4 fill-amber-400 text-amber-400 group-hover/btn:fill-transparent group-hover/btn:text-red-400 transition-colors" />
-                  </button>
-                </div>
+                {/* Bottom Row: Verified NFT list that scrolls horizontally */}
+                {user.ownedNfts && user.ownedNfts.length > 0 && (
+                  <div className="space-y-2 pt-2 border-t border-slate-900/75 w-full">
+                    <div className="flex items-center justify-between text-[9px] font-mono text-slate-500">
+                      <div className="uppercase tracking-wider flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span>
+                        Verified Collections ({user.ownedNfts.length})
+                      </div>
+                      <span className="text-[8px] opacity-60">Scroll for more →</span>
+                    </div>
+
+                    {/* Horizontal scrollable carousel */}
+                    <div className="flex gap-2.5 overflow-x-auto pb-1.5 pt-0.5 scrollbar-thin scrollbar-thumb-slate-900 scrollbar-track-transparent select-none">
+                      {user.ownedNfts.map((nft, idx) => (
+                        <div 
+                          key={idx} 
+                          className="flex items-center gap-2 px-2.5 py-1.5 bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-white/10 rounded-xl min-w-[145px] max-w-[170px] shrink-0 transition-all group/nft"
+                        >
+                          <img 
+                            src={nft.image} 
+                            alt={nft.collection} 
+                            className="w-8 h-8 rounded-lg object-cover border border-white/10 shrink-0 group-hover/nft:scale-105 transition-transform"
+                            referrerPolicy="no-referrer"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[10px] font-bold text-slate-200 truncate leading-tight">
+                              {nft.collection}
+                            </div>
+                            <div className="text-[8px] font-mono text-slate-500 truncate mt-0.5">
+                              {nft.tokenId}
+                            </div>
+                            <div className="text-[8px] font-mono text-yellow-500/90 font-bold leading-none mt-1">
+                              {nft.floor}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </motion.div>
             ))
           )}

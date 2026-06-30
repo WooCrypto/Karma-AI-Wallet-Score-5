@@ -307,41 +307,25 @@ export default function App() {
 
   const [animatedScore, setAnimatedScore] = useState(0);
   const [isUpdatingScore, setIsUpdatingScore] = useState(false);
+  const [glassWaveTrigger, setGlassWaveTrigger] = useState(0);
 
-  // Smoothly animate score number and gauge needle from previous value to new value
+  // Set the score instantly to disable counting animation as requested
   useEffect(() => {
     if (report) {
-      const startValue = animatedScore;
-      const endValue = report.score;
-      if (startValue === endValue) return;
-
-      const duration = 1200; // 1.2 seconds animation
-      const startTime = performance.now();
-
-      let animationFrameId: number;
-
-      const updateScore = (now: number) => {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // ease-out cubic
-        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-        const easedProgress = easeOutCubic(progress);
-
-        const currentValue = Math.round(startValue + (endValue - startValue) * easedProgress);
-        setAnimatedScore(currentValue);
-
-        if (progress < 1) {
-          animationFrameId = requestAnimationFrame(updateScore);
-        }
-      };
-
-      animationFrameId = requestAnimationFrame(updateScore);
-      return () => cancelAnimationFrame(animationFrameId);
+      setAnimatedScore(report.score);
     } else {
       setAnimatedScore(0);
     }
   }, [report?.score]);
+
+  // Trigger the modern glassy ripple animation whenever a wallet is connected or changed
+  useEffect(() => {
+    if (report?.address) {
+      setGlassWaveTrigger(prev => prev + 1);
+    } else {
+      setGlassWaveTrigger(0);
+    }
+  }, [report?.address]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -1591,42 +1575,7 @@ export default function App() {
               fill="transparent"
             />
 
-            {/* Rotating Gauge Needle */}
-            <g transform={`rotate(${(displayScore / 1000) * 360}, 104, 104)`} className="transition-transform duration-75 ease-out">
-              <line
-                x1="104"
-                y1="104"
-                x2="104"
-                y2="38"
-                stroke={displayScore < 150 ? "rgba(239, 68, 68, 0.4)" : "rgba(245, 175, 25, 0.45)"}
-                strokeWidth="1.5"
-                strokeDasharray="2 2"
-              />
-              <line
-                x1="104"
-                y1="104"
-                x2="104"
-                y2="42"
-                stroke={displayScore < 150 ? "#EF4444" : "#F5AF19"}
-                strokeWidth="3.5"
-                strokeLinecap="round"
-                className="drop-shadow-[0_0_8px_rgba(245,175,25,0.6)]"
-              />
-              <path
-                d="M104,32 L100,40 L108,40 Z"
-                fill={displayScore < 150 ? "#FF6B6B" : "#FFF9A6"}
-                className="drop-shadow-[0_0_6px_rgba(245,175,25,0.8)]"
-              />
-              <circle
-                cx="104"
-                cy="104"
-                r="6"
-                fill="#09090c"
-                stroke={displayScore < 150 ? "#EF4444" : "#F5AF19"}
-                strokeWidth="2.5"
-                className="drop-shadow-[0_0_4px_rgba(245,175,25,0.5)]"
-              />
-            </g>
+            {/* No needle as requested */}
           </svg>
 
           {/* Absolute Score Output */}
@@ -2772,6 +2721,31 @@ export default function App() {
                         <div className="absolute inset-0 bg-radial from-yellow-500/5 to-transparent animate-pulse pointer-events-none" />
                       )}
 
+                      {/* MODERN GLASSY RIPPLE ANIMATION WHEN WALLET CONNECTS */}
+                      <AnimatePresence>
+                        {glassWaveTrigger > 0 && (
+                          <>
+                            {/* Glass shockwave expanding outward */}
+                            <motion.div
+                              key={`ripple-${glassWaveTrigger}`}
+                              initial={{ scale: 0.96, opacity: 0 }}
+                              animate={{ scale: [1, 1.05, 1.12], opacity: [0, 0.7, 0] }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 1.2, ease: "easeOut" }}
+                              className="absolute inset-0 rounded-3xl border-4 border-yellow-400/35 pointer-events-none z-30 backdrop-blur-[1px]"
+                            />
+                            {/* Fast specular glassy sweep sheen across the card face */}
+                            <motion.div
+                              key={`sheen-${glassWaveTrigger}`}
+                              initial={{ left: "-150%" }}
+                              animate={{ left: "150%" }}
+                              transition={{ duration: 1.5, ease: "easeInOut" }}
+                              className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/[0.15] to-transparent -skew-x-12 pointer-events-none z-30"
+                            />
+                          </>
+                        )}
+                      </AnimatePresence>
+
                       {/* Top Reflection Lighting & Metallic Finish Sheen */}
                       <div className="absolute top-0 left-0 right-0 h-[40%] bg-gradient-to-b from-white/5 to-transparent blur-md pointer-events-none" />
                       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent rotate-12 -translate-y-12 pointer-events-none" />
@@ -2848,46 +2822,7 @@ export default function App() {
                             }}
                           />
 
-                          {/* Animated Rotating Dial Needle */}
-                          <g transform={`rotate(${(animatedScore / 1000) * 360}, 104, 104)`} className="transition-transform duration-75 ease-out">
-                            {/* Laser Guide */}
-                            <line
-                              x1="104"
-                              y1="104"
-                              x2="104"
-                              y2="42"
-                              stroke={report.score < 150 ? "rgba(239, 68, 68, 0.4)" : "rgba(245, 175, 25, 0.45)"}
-                              strokeWidth="1.5"
-                              strokeDasharray="2 2"
-                            />
-                            {/* Main Needle Stem */}
-                            <line
-                              x1="104"
-                              y1="104"
-                              x2="104"
-                              y2="46"
-                              stroke={report.score < 150 ? "#EF4444" : "#F5AF19"}
-                              strokeWidth="3.5"
-                              strokeLinecap="round"
-                              className="drop-shadow-[0_0_8px_rgba(245,175,25,0.6)]"
-                            />
-                            {/* Arrow Tip */}
-                            <path
-                              d="M104,36 L100,44 L108,44 Z"
-                              fill={report.score < 150 ? "#FF6B6B" : "#FFF9A6"}
-                              className="drop-shadow-[0_0_6px_rgba(245,175,25,0.8)]"
-                            />
-                            {/* Center Pivot Hub */}
-                            <circle
-                              cx="104"
-                              cy="104"
-                              r="6"
-                              fill="#09090c"
-                              stroke={report.score < 150 ? "#EF4444" : "#F5AF19"}
-                              strokeWidth="2.5"
-                              className="drop-shadow-[0_0_4px_rgba(245,175,25,0.5)]"
-                            />
-                          </g>
+                          {/* No needle as requested */}
                         </svg>
 
                         {/* Centered Score */}
