@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Remix: Karma Score Decoder 5",
+  "description": "Instantly analyze Solana and EVM wallet reputation using AI-powered blockchain intelligence to decode trust, behavior, and risk profiles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
