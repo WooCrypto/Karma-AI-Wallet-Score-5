@@ -1647,7 +1647,7 @@ export default function App() {
                 >
                   <KarmaLogo className="w-9 h-9" />
                   <div>
-                    <span className="text-sm font-black tracking-wider font-mono text-white uppercase block">
+                    <span className="text-xs sm:text-sm font-bold tracking-[0.22em] font-gothic text-white uppercase block">
                       Karma Score AI
                     </span>
                     <span className="text-[8px] font-mono tracking-widest text-amber-500 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded uppercase block">
@@ -1956,28 +1956,46 @@ export default function App() {
               </a>
             </div>
 
+            {/* CELESTIAL BACKGROUND ACCENTS (SHADOW & LIGHT) */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[450px] pointer-events-none z-0">
+              {/* Subtle gothic cross-light beam */}
+              <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[1px] h-[350px] bg-gradient-to-b from-transparent via-blue-500/10 to-transparent" />
+              <div className="absolute top-44 left-1/2 -translate-x-1/2 w-[350px] h-[1px] bg-gradient-to-r from-transparent via-blue-500/5 to-transparent" />
+              {/* Deep atmospheric outer halo aura */}
+              <div className="absolute top-12 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-blue-900/[0.08] blur-[80px]" />
+              <div className="absolute top-24 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-amber-500/[0.03] blur-[60px]" />
+            </div>
+
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-yellow-500/15 bg-yellow-950/15 text-yellow-400 text-[10px] font-mono uppercase tracking-widest font-black"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-zinc-800 bg-[#06060a] text-amber-400 text-[11px] font-mono uppercase tracking-[0.2em] font-bold shadow-[0_0_20px_rgba(0,0,0,0.8),_0_0_10px_rgba(245,158,11,0.05)]"
             >
-              <Cpu className="w-3.5 h-3.5 text-yellow-400 animate-pulse" />
+              <span className="flex h-1.5 w-1.5 relative shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
+              </span>
               SOLANA & EVM IDENTITY DECODER
             </motion.div>
-            <h1 className="text-4xl sm:text-6xl font-black font-display tracking-tight text-white leading-none">
-              Karma Score AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500">your wallets</span>
+            
+            <h1 className="text-5xl sm:text-7xl font-semibold font-gothic tracking-[0.2em] text-white drop-shadow-[0_4px_24px_rgba(255,255,255,0.05)] leading-none uppercase mt-6 mb-4">
+              KARMA SCORE AI
             </h1>
-            <div className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-2xl mx-auto space-y-2">
-              <p className="font-semibold text-white text-base sm:text-lg tracking-tight">
+            <div className="text-base sm:text-xl text-slate-200 font-normal leading-relaxed max-w-2xl mx-auto space-y-4">
+              <p className="font-extrabold text-white text-xl sm:text-3xl tracking-tight uppercase bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
                 Know every wallet before every interaction.
               </p>
-              <p className="text-slate-300 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+              <p className="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
                 Paste any Solana or EVM wallet to instantly reveal a living trust profile powered by onchain activity, reputation signals, and community intelligence.
               </p>
-              <p className="text-amber-400/90 font-mono text-[10px] tracking-widest uppercase pt-2">
-                Trade smarter. Build safer. Trust with confidence.
-              </p>
+              <div className="flex items-center justify-center gap-4 py-2">
+                <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-amber-500/20" />
+                <p className="text-amber-400 font-mono text-xs sm:text-sm tracking-[0.25em] font-black uppercase">
+                  Trade smarter. Build safer. Trust with confidence.
+                </p>
+                <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-amber-500/20" />
+              </div>
             </div>
           </div>
 
@@ -3706,9 +3724,7 @@ export default function App() {
                   </p>
                 </div>
 
-                <div className="text-xs sm:text-sm text-slate-300 font-mono">
-                  Your Active Principal Staked: <span className="text-amber-400 font-bold">{stakedBalance.toLocaleString()} KP</span>
-                </div>
+
               </div>
             </div>
 
@@ -3984,7 +4000,7 @@ export default function App() {
                       className="w-full sm:w-auto self-start px-4 py-2.5 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 hover:from-amber-500/25 hover:to-yellow-500/25 text-amber-300 border border-amber-500/30 hover:border-amber-500/50 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
                     >
                       <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-                      <span>Explore Business Model & Projections</span>
+                      <span>Explore Business Model & Revenue Share (Rev Share)</span>
                     </button>
                   </div>
 
@@ -4270,7 +4286,7 @@ export default function App() {
             <div className="flex items-center gap-3">
               <KarmaLogo className="w-6 h-6 text-slate-400" />
               <div className="text-left">
-                <span className="text-xs font-black font-mono text-white block uppercase tracking-wider">Karma Score AI</span>
+                <span className="text-xs font-bold font-gothic text-white block uppercase tracking-[0.2em]">Karma Score AI</span>
                 <span className="text-[9px] font-mono text-slate-500 block">Sovereign On-Chain AI Reputation Pipeline</span>
               </div>
             </div>
@@ -4305,8 +4321,8 @@ export default function App() {
                   }}
                   className="px-3.5 py-1.5 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 hover:from-amber-500/20 hover:to-yellow-500/20 text-amber-300 border border-amber-500/20 hover:border-amber-500/40 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
                 >
-                  <TrendingUp className="w-3 h-3 text-amber-400" />
-                  Explore Business Model & Projection
+                  <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+                  Explore Business Model & Revenue Share (Rev Share)
                 </button>
 
                 <button
@@ -4343,10 +4359,21 @@ export default function App() {
                   <path d="M12 .587c-6.29 0-11.387 5.097-11.387 11.387s5.097 11.387 11.387 11.387 11.387-5.097 11.387-11.387-5.097-11.387-11.387-11.387zm5.244 8.47l-1.854 8.736c-.139.613-.502.763-1.016.475l-2.825-2.083-1.362 1.31c-.15.15-.276.276-.566.276l.202-2.871 5.223-4.717c.227-.202-.05-.314-.353-.111l-6.455 4.062-2.782-.87c-.604-.189-.617-.604.126-.895l10.865-4.187c.503-.189.943.111.796.895z" />
                 </svg>
               </a>
+              <a
+                href="https://discord.gg/BjZTJw6kTb"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-xl bg-white/5 text-slate-400 hover:text-[#5865F2] hover:bg-[#5865F2]/10 transition-all cursor-pointer"
+                title="Discord Community (Public Portal)"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" />
+                </svg>
+              </a>
               <button
                 onClick={() => showToast("Token Gated: You must hold a SWARM NFT to enter the private alpha lounge.", "error")}
-                className="p-2 rounded-xl bg-white/5 text-slate-400 hover:text-yellow-400 hover:bg-yellow-400/10 transition-all cursor-pointer flex items-center justify-center relative group"
-                title="Locked Premium Discord Lounge"
+                className="p-2 rounded-xl bg-white/5 text-slate-450 hover:text-yellow-400 hover:bg-yellow-400/10 transition-all cursor-pointer flex items-center justify-center relative group"
+                title="Locked Premium Discord Lounge (Token Gated)"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" />
@@ -6315,7 +6342,7 @@ export default function App() {
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest block">📊 Platform Economics</span>
                   <h3 className="text-lg sm:text-xl font-bold text-white uppercase font-display tracking-tight">
-                    Business Model & Projections
+                    Business Model & Revenue Share (Rev Share)
                   </h3>
                 </div>
                 <button

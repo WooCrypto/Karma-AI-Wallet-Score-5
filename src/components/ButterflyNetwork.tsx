@@ -48,6 +48,7 @@ export function ButterflyNetwork({
   const [mintedNftId, setMintedNftId] = useState<string | null>(null);
   const [isUpgradeExpanded, setIsUpgradeExpanded] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [isPillarsExpanded, setIsPillarsExpanded] = useState(false);
 
   useEffect(() => {
     if (hasSwarmNft) {
@@ -364,46 +365,75 @@ export function ButterflyNetwork({
       </section>
 
       {/* PILLARS OF REPUTATION ASSESSMENT (Functional, based on score) */}
-      <section className="space-y-6">
-        <div className="space-y-1.5">
-          <h3 className="text-sm font-mono font-bold text-amber-400 uppercase tracking-wider">
-            ⚡ Decentralized Validation Pillars
-          </h3>
-          <p className="text-xs text-slate-400 leading-normal max-w-2xl">
-            The mathematical engine behind your real-time reputation score. Elevate your status across these vectors to unlock premium multi-chain rewards.
-          </p>
-        </div>
+      <section className="rounded-2xl border border-white/5 bg-[#07080c]/40 backdrop-blur-md p-6 transition-all">
+        <button
+          onClick={() => setIsPillarsExpanded(!isPillarsExpanded)}
+          className="w-full flex items-center justify-between text-left focus:outline-none group cursor-pointer"
+        >
+          <div className="space-y-1.5 pr-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                ⚡ Decentralized Validation Pillars
+              </span>
+              <span className="text-[9px] font-mono font-bold text-slate-500 bg-white/5 border border-white/5 px-2 py-0.5 rounded uppercase">
+                {PILLARS.length} Vectors
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 leading-normal max-w-2xl group-hover:text-slate-300 transition-colors">
+              The mathematical engine behind your real-time reputation score. Click to expand or collapse.
+            </p>
+          </div>
+          <div className="p-2 rounded-xl bg-white/5 text-slate-400 group-hover:text-amber-400 group-hover:bg-amber-400/10 border border-white/5 transition-all">
+            {isPillarsExpanded ? (
+              <ChevronUp className="w-4 h-4 transition-transform duration-350" />
+            ) : (
+              <ChevronDown className="w-4 h-4 transition-transform duration-350" />
+            )}
+          </div>
+        </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PILLARS.map((pillar, idx) => {
-            const IconComponent = pillar.icon;
-            return (
-              <div 
-                key={idx}
-                className="p-5 rounded-2xl border border-white/5 bg-[#07080c]/80 backdrop-blur-md hover:border-amber-500/10 transition-all flex flex-col justify-between space-y-4"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="p-2 rounded-lg bg-white/5 text-slate-300">
-                      <IconComponent className="w-4 h-4" />
+        <AnimatePresence initial={false}>
+          {isPillarsExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0, marginTop: 0 }}
+              animate={{ height: "auto", opacity: 1, marginTop: 24 }}
+              exit={{ height: 0, opacity: 0, marginTop: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                {PILLARS.map((pillar, idx) => {
+                  const IconComponent = pillar.icon;
+                  return (
+                    <div 
+                      key={idx}
+                      className="p-5 rounded-2xl border border-white/5 bg-[#07080c]/80 backdrop-blur-md hover:border-amber-500/10 transition-all flex flex-col justify-between space-y-4"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="p-2 rounded-lg bg-white/5 text-slate-300">
+                            <IconComponent className="w-4 h-4" />
+                          </div>
+                          <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded bg-white/[0.02] border border-white/5 ${pillar.color}`}>
+                            {pillar.metric}
+                          </span>
+                        </div>
+                        
+                        <h4 className="text-sm font-bold text-white font-display">
+                          {pillar.name}
+                        </h4>
+                        
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                          {pillar.desc}
+                        </p>
+                      </div>
                     </div>
-                    <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded bg-white/[0.02] border border-white/5 ${pillar.color}`}>
-                      {pillar.metric}
-                    </span>
-                  </div>
-                  
-                  <h4 className="text-sm font-bold text-white font-display">
-                    {pillar.name}
-                  </h4>
-                  
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    {pillar.desc}
-                  </p>
-                </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       {/* EASY-TO-UNDERSTAND FAQ SECTION */}
