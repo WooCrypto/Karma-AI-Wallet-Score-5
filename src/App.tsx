@@ -1608,6 +1608,35 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#040508] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full max-w-full relative">
+      {/* SWARM NFT ONGOING MINTING BANNER AT THE VERY TOP */}
+      <div className="w-full bg-[#07080c]/80 border-b border-amber-500/10 backdrop-blur-md relative z-50 py-1.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="flex h-1.5 w-1.5 relative shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
+            </span>
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-[8px] font-mono font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded shrink-0">
+                MINT LIVE
+              </span>
+              <p className="text-[11px] text-slate-300 truncate font-sans">
+                <strong className="text-white font-medium">Swarm NFT Ongoing Mint!</strong> <span className="hidden md:inline">Secure your exclusive 12.5x APY staker multiplier pass.</span>
+              </p>
+            </div>
+          </div>
+          <a
+            href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-400 hover:text-amber-300 font-mono text-[10px] font-black uppercase tracking-wider transition-colors shrink-0 flex items-center gap-1 select-none cursor-pointer hover:underline"
+          >
+            <Trophy className="w-3 h-3 shrink-0" />
+            Mint Now →
+          </a>
+        </div>
+      </div>
+
       {/* Floating Modern Header / Navigation Bar */}
       <div className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         {/* Subtle, uncrowded Top-Left Test Phase Banner */}
@@ -3485,7 +3514,7 @@ export default function App() {
                         </p>
                       </div>
                       <a
-                        href="https://gravemint.io/mint/tri00m"
+                        href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full sm:w-auto px-5 py-3 rounded-lg font-mono text-xs font-black text-black bg-amber-400 hover:bg-amber-300 transition-all hover:shadow-[0_0_15px_rgba(234,179,8,0.4)] cursor-pointer flex items-center justify-center gap-2 shrink-0 active:scale-95 text-center"
@@ -5714,7 +5743,7 @@ export default function App() {
                 {/* Mint action */}
                 <div className="space-y-3">
                   <a
-                    href="https://gravemint.io/mint/tri00m"
+                    href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full py-4 text-black font-mono font-black text-sm tracking-wider uppercase rounded-xl transition-all cursor-pointer bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 shadow-[0_0_20px_rgba(234,179,8,0.35)] flex items-center justify-center gap-2 active:scale-95 text-center"
@@ -6393,7 +6422,7 @@ export default function App() {
                 </p>
                 <div className="pt-1">
                   <a
-                    href="https://uglyducksociety.tech"
+                    href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 hover:from-cyan-500/20 hover:to-blue-500/20 text-cyan-300 hover:text-cyan-200 border border-cyan-500/20 hover:border-cyan-400/40 text-[10px] font-mono font-bold uppercase tracking-wider transition-all shadow-[0_4px_12px_rgba(6,182,212,0.05)] cursor-pointer"
