@@ -1608,35 +1608,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#040508] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full max-w-full relative">
-      {/* SWARM NFT ONGOING MINTING BANNER AT THE VERY TOP */}
-      <div className="w-full bg-[#07080c]/80 border-b border-amber-500/10 backdrop-blur-md relative z-50 py-1.5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="flex h-1.5 w-1.5 relative shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
-            </span>
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="text-[8px] font-mono font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded shrink-0">
-                MINT LIVE
-              </span>
-              <p className="text-[11px] text-slate-300 truncate font-sans">
-                <strong className="text-white font-medium">Swarm NFT Ongoing Mint!</strong> <span className="hidden md:inline">Secure your exclusive 12.5x APY staker multiplier pass.</span>
-              </p>
-            </div>
-          </div>
-          <a
-            href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-amber-400 hover:text-amber-300 font-mono text-[10px] font-black uppercase tracking-wider transition-colors shrink-0 flex items-center gap-1 select-none cursor-pointer hover:underline"
-          >
-            <Trophy className="w-3 h-3 shrink-0" />
-            Mint Now →
-          </a>
-        </div>
-      </div>
-
       {/* Floating Modern Header / Navigation Bar */}
       <div className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         {/* Subtle, uncrowded Top-Left Test Phase Banner */}
@@ -1954,6 +1925,37 @@ export default function App() {
           </div>
 
           <div className="space-y-4 relative z-10">
+            {/* Highly Polished Swarm NFT Ongoing Mint Card & Button */}
+            <div className="block max-w-sm mx-auto relative z-20 mb-4">
+              <a
+                href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-4 p-3 rounded-2xl bg-[#07080c]/85 hover:bg-[#0b0c14]/90 border border-amber-500/20 hover:border-amber-500/40 backdrop-blur-md transition-all shadow-[0_4px_25px_rgba(245,158,11,0.03),0_0_15px_rgba(245,158,11,0.02)] hover:shadow-[0_4px_35px_rgba(245,158,11,0.08),0_0_25px_rgba(245,158,11,0.05)] cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="relative flex h-2 w-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                  </div>
+                  <div className="text-left">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[8px] font-mono font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/25 px-1.5 py-0.5 rounded shrink-0">
+                        MINT LIVE
+                      </span>
+                      <span className="text-[9px] text-slate-500 font-bold">•</span>
+                      <span className="text-[10px] text-slate-400 group-hover:text-slate-200 font-mono font-bold">SWARM NFT</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 font-sans leading-tight mt-1">Swarm NFT Ongoing Mint!</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-mono text-[9px] font-black uppercase tracking-wider transition-all shadow-[0_0_10px_rgba(245,158,11,0.2)] hover:brightness-110 active:scale-95">
+                  <Trophy className="w-3 h-3 shrink-0" />
+                  Mint Now
+                </div>
+              </a>
+            </div>
+
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -2111,6 +2113,102 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* SLICK GOTHIC GLOWING TOKEN LAUNCH NOTE (SHADOW & LIGHT) */}
+        <div className="max-w-4xl mx-auto px-4 py-2 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              boxShadow: [
+                "0 0 20px rgba(0,0,0,0.9), 0 0 0px rgba(245,158,11,0)",
+                "0 0 35px rgba(0,0,0,0.95), 0 0 15px rgba(245,158,11,0.06)",
+                "0 0 20px rgba(0,0,0,0.9), 0 0 0px rgba(245,158,11,0)"
+              ],
+              borderColor: [
+                "rgba(63,63,70,0.2)",  // zinc-700
+                "rgba(245,158,11,0.25)", // amber-500
+                "rgba(63,63,70,0.2)"
+              ]
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="relative overflow-hidden rounded-2xl border bg-gradient-to-b from-[#060609] via-[#030305] to-[#010102] p-6 text-center select-none"
+          >
+            {/* Ambient Shadow & Light Backdrops */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+              {/* Slow-breathing central light beacon */}
+              <motion.div
+                animate={{
+                  opacity: [0.15, 0.35, 0.15],
+                  scale: [0.8, 1.1, 0.8]
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-40 bg-radial from-amber-500/10 via-amber-500/[0.01] to-transparent blur-3xl"
+              />
+              {/* Vertical light split (light & shadow theme) */}
+              <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-amber-500/15 to-transparent" />
+            </div>
+
+            {/* Gothic Ornament & Text */}
+            <div className="relative z-10 space-y-3">
+              <div className="flex items-center justify-center gap-3">
+                <div className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent to-amber-500/30" />
+                <span className="text-amber-500/40 text-[10px] sm:text-xs">✦</span>
+                <span className="text-amber-500/80 text-xs tracking-[0.4em] font-mono font-bold uppercase">
+                  MEMENTO RITUS
+                </span>
+                <span className="text-amber-500/40 text-[10px] sm:text-xs">✦</span>
+                <div className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent to-amber-500/30" />
+              </div>
+
+              <div className="py-2.5">
+                <motion.h3
+                  animate={{
+                    textShadow: [
+                      "0 0 10px rgba(0,0,0,0.9), 0 0 2px rgba(245,158,11,0.1)",
+                      "0 0 20px rgba(0,0,0,0.5), 0 0 8px rgba(245,158,11,0.45)",
+                      "0 0 10px rgba(0,0,0,0.9), 0 0 2px rgba(245,158,11,0.1)"
+                    ],
+                    color: [
+                      "#94a3b8", // slate-400
+                      "#ffffff", // white
+                      "#94a3b8"
+                    ]
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="text-base sm:text-xl font-bold font-display uppercase tracking-[0.16em] leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                >
+                  Token Launch Coming Soon
+                </motion.h3>
+                <div className="mt-1 flex items-center justify-center gap-1.5 flex-wrap">
+                  <span className="text-slate-400 text-xs sm:text-sm tracking-widest font-mono uppercase">on</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 font-black tracking-[0.2em] text-xs sm:text-sm uppercase font-mono shadow-sm">
+                    Solana Pump.fun
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-center gap-2 text-[9px] font-mono text-slate-500 tracking-widest uppercase">
+                <span className="w-1 h-1 rounded-full bg-slate-800" />
+                <span>DECENTRALIZED KARMA REPUTATION ENGINE</span>
+                <span className="w-1 h-1 rounded-full bg-slate-800" />
+              </div>
+            </div>
+          </motion.div>
+        </div>
 
         {/* PREMIUM STORYTELLING & BRANDING MANIFESTO */}
         {!report && (
