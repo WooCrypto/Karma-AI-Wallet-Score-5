@@ -1610,6 +1610,19 @@ export default function App() {
     <div className="min-h-screen bg-[#040508] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full max-w-full relative">
       {/* Floating Modern Header / Navigation Bar */}
       <div className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        {/* Subtle, uncrowded Top-Left Test Phase Banner */}
+        <div className="flex justify-start mb-2 pl-1">
+          <a
+            href="mailto:matt24kgold@gmail.com?subject=Karma%20Score%20AI%20Feedback"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/5 hover:bg-yellow-500/10 border border-yellow-500/25 hover:border-yellow-500/40 text-yellow-400 text-[10px] font-mono shadow-[0_4px_12px_rgba(245,158,11,0.05)] backdrop-blur-md transition-all group cursor-pointer"
+            title="Click to send us your feedback"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+            <span className="font-bold uppercase tracking-wider text-[9px]">Test Phase</span>
+            <span className="w-1 h-1 rounded-full bg-slate-700" />
+            <span className="text-slate-400 group-hover:text-slate-300">Welcome to test & give us feedback!</span>
+          </a>
+        </div>
         <AnimatePresence mode="wait">
           {!shouldCollapse ? (
             <motion.header
@@ -3774,10 +3787,10 @@ export default function App() {
                       🛡️ PROTOCOL TOKENS & REVENUE DESIGN
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-white uppercase">
-                      Sustainable Value Cycle & Yield Share
+                      Sustainable Value Cycle & Instant Revenue Share
                     </h2>
                     <p className="text-xs text-slate-400 max-w-2xl leading-normal">
-                      Zero inflation, zero speculative hype. We build high-utility software that collects stablecoin query fees and redistributes value directly to our stakers and NFT validators.
+                      Zero inflation, zero speculative hype. Karma Score features real-time on-chain revenue loopbacks, instantly distributing protocol proceeds to stakers and buyback-and-burn operations.
                     </p>
                   </div>
                   <button
@@ -3794,28 +3807,28 @@ export default function App() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 rounded-xl bg-white/[0.01] border border-white/5 space-y-1.5 hover:bg-white/[0.02] transition-colors">
                     <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5 font-mono">
-                      <Coins className="w-4 h-4" /> 1. REPUTATION-AS-A-SERVICE (RaaS)
+                      <Coins className="w-4 h-4" /> 1. INSTANT 50% REVENUE LOOP
                     </span>
                     <p className="text-xs text-slate-300 leading-relaxed">
-                      Third-party launchpads, DEXs, and DAO voting portals pay nominal stablecoin fees (e.g., 0.05 USDC per query) to check wallet verification tiers before allowing high-value actions.
+                      Every priced action—including identity bonding (0.05 SOL) and deep-scan premium investigations (0.08 SOL)—triggers an automated real-time 50% fee split instantly routed to community revenue share pools, driving continuous trading volume and organic market velocity.
                     </p>
                   </div>
 
                   <div className="p-4 rounded-xl bg-white/[0.01] border border-white/5 space-y-1.5 hover:bg-white/[0.02] transition-colors">
                     <span className="text-xs font-bold text-yellow-500 flex items-center gap-1.5 font-mono">
-                      🛡️ 2. SBT SOULBOUND BADGING
+                      🔥 2. BUY-BACK, BURN & AIRDROPS
                     </span>
                     <p className="text-xs text-slate-300 leading-relaxed">
-                      Users who write their reputation score permanently into verified Soulbound Badges pay minor processing fees that bolster the shared protocol yield treasury.
+                      Ecosystem revenues are split into strict cryptographic pools: 15% goes to instant token buyback-and-burn for continuous deflation, and 35% funds token buybacks distributed as instant yield/airdrops directly to SWARM NFT holders and key stakers.
                     </p>
                   </div>
 
                   <div className="p-4 rounded-xl bg-white/[0.01] border border-white/5 space-y-1.5 hover:bg-white/[0.02] transition-colors">
                     <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
-                      🤝 3. REVENUE LOOPBACK
+                      🤝 3. 50% COMPANY ALLOCATION
                     </span>
                     <p className="text-xs text-slate-300 leading-relaxed">
-                      All query & badging revenues are automatically accumulated and distributed directly: Active Stakers receive continuous dividends based on staked Karma Power weight.
+                      Stabilized by Vilora Labs, 50% of the corporate equity and governance weight is delegated to the community to manage with care. These parameters remain active indefinitely but can be structurally reclaimed by core development if mismanaged.
                     </p>
                   </div>
                 </div>
@@ -3829,14 +3842,14 @@ export default function App() {
                           <Coins className="w-3.5 h-3.5" />
                         </span>
                         <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest block">
-                          NFT Stakeholder Yield Model
+                          NFT & Staker Yield Model
                         </span>
                       </div>
                       <h3 className="text-base font-bold text-white uppercase font-display tracking-tight">
-                        Business Model & Revenue Share Projections
+                        Ecosystem Rev Share & Buyback Projections
                       </h3>
                       <p className="text-xs text-slate-400 leading-relaxed">
-                        Read how the protocol structures sustainable query fee distributions and calculates clear projections for NFT holders and stakers.
+                        Explore how the 50% instant revenue split automatically fuels buybacks, deflationary burns, and holder rewards to align long-term incentives.
                       </p>
                     </div>
                     <button
@@ -4203,6 +4216,19 @@ export default function App() {
                   <path d="M12 .587c-6.29 0-11.387 5.097-11.387 11.387s5.097 11.387 11.387 11.387 11.387-5.097 11.387-11.387-5.097-11.387-11.387-11.387zm5.244 8.47l-1.854 8.736c-.139.613-.502.763-1.016.475l-2.825-2.083-1.362 1.31c-.15.15-.276.276-.566.276l.202-2.871 5.223-4.717c.227-.202-.05-.314-.353-.111l-6.455 4.062-2.782-.87c-.604-.189-.617-.604.126-.895l10.865-4.187c.503-.189.943.111.796.895z" />
                 </svg>
               </a>
+              <button
+                onClick={() => showToast("Token Gated: You must hold a SWARM NFT to enter the private alpha lounge.", "error")}
+                className="p-2 rounded-xl bg-white/5 text-slate-400 hover:text-yellow-400 hover:bg-yellow-400/10 transition-all cursor-pointer flex items-center justify-center relative group"
+                title="Locked Premium Discord Lounge"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" />
+                </svg>
+                {/* Tiny lock icon overlay */}
+                <span className="absolute -top-1.5 -right-1.5 bg-yellow-500 text-slate-950 text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold border-2 border-[#040508] shadow-sm">
+                  <Lock className="w-1.5 h-1.5" />
+                </span>
+              </button>
             </div>
           </div>
 
@@ -6204,35 +6230,54 @@ export default function App() {
                 </div>
 
                 {/* NFT Stakeholder Projections */}
-                <div className="space-y-3 pt-2">
+                <div className="space-y-4 pt-2">
                   <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-1.5">
-                    <Award className="w-4 h-4 text-amber-400" /> NFT Stakeholder Distribution Model
+                    <Award className="w-4 h-4 text-amber-400" /> Decentralized Revenue Share & Buyback Protocol
                   </h4>
-                  <p className="text-slate-400 text-xs leading-normal">
-                    Revenues compiled in our secure Protocol Treasury are dynamically shared back with the ecosystem. Holders of the exclusive **SWARM NFT Collection** and **Active Stakers** receive direct utility distributions calculated proportionally based on their validation weight and locked Karma Power (KP).
+                  <p className="text-slate-300 text-xs leading-relaxed">
+                    Our utility business model utilizes an <strong>instant on-chain revenue share (rev share) loopback</strong>. Payouts are executed in real time: whenever any user utilizes the Karma AI Wallet Score platform for identity bonding (0.05 SOL), premium forensic deep-scans (0.08 SOL), or any other priced transaction, a full <strong>50% share</strong> of all fees is instantly routed to the community rev share protocol, creating continuous daily trading volume and holding incentives.
                   </p>
+
+                  <div className="p-3.5 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 space-y-2">
+                    <span className="text-[10px] font-mono font-black text-amber-400 uppercase tracking-widest block">⚡ Instant Value Distribution Strategy</span>
+                    <p className="text-slate-400 text-xs leading-normal">
+                      The 50% community allocation is programmatically split to fuel two core pillars:
+                    </p>
+                    <ul className="list-disc list-inside text-xs text-slate-300 space-y-1 pl-1">
+                      <li><strong className="text-yellow-400">15% Instant Buyback & Burn:</strong> Transferred straight to a null address for permanent deflationary supply contraction of the native token.</li>
+                      <li><strong className="text-yellow-400">35% Buybacks & Airdrops:</strong> Used to buy back liquidity and distribute direct on-chain token airdrops to SWARM NFT holders and reciprocal community stakers.</li>
+                    </ul>
+                    <p className="text-[11px] text-slate-500 italic pt-1 leading-normal">
+                      *Note: While core developers reserve the structural right to adapt these parameters during technical upgrades to ensure protocol safety, these terms are currently stabilized by Vilora Labs. Vilora Labs has officially committed 50% of the entire ecosystem and corporate equity weight directly to the community to manage with care—with the strict provision that governance rights can be reclaimed if mistreated or governed unproductively.
+                    </p>
+                  </div>
                   
                   {/* Revenue Distribution Breakdown */}
                   <div className="border border-white/5 rounded-xl overflow-hidden text-xs bg-slate-950/40">
                     <div className="grid grid-cols-3 bg-white/[0.03] p-3 font-mono font-bold border-b border-white/5 text-slate-400 text-[10px] tracking-wider uppercase">
                       <div>Revenue Channel</div>
                       <div className="text-center">Allocation %</div>
-                      <div className="text-right">Primary Recipient</div>
+                      <div className="text-right">Primary Recipient / Action</div>
                     </div>
                     <div className="grid grid-cols-3 p-3 border-b border-white/5">
-                      <div className="font-bold text-amber-300">Staking Dividend Pool</div>
-                      <div className="text-center font-mono">60%</div>
-                      <div className="text-right text-slate-400">Locked Karma Power Stakers & NFT Validators</div>
+                      <div className="font-bold text-amber-300">Instant Buyback & Burn</div>
+                      <div className="text-center font-mono">15%</div>
+                      <div className="text-right text-slate-400">Permanent Deflationary Contract Burn</div>
                     </div>
                     <div className="grid grid-cols-3 p-3 border-b border-white/5">
-                      <div className="font-bold text-blue-300">Ecosystem Development</div>
-                      <div className="text-center font-mono">30%</div>
-                      <div className="text-right text-slate-400">Indexer Optimization & Gas Subsidies</div>
+                      <div className="font-bold text-yellow-400">NFT & Community Airdrops</div>
+                      <div className="text-center font-mono">35%</div>
+                      <div className="text-right text-slate-400">Direct Buyback distributed to NFT holders & stakers</div>
+                    </div>
+                    <div className="grid grid-cols-3 p-3 border-b border-white/5">
+                      <div className="font-bold text-blue-300">Ecosystem & Infrastructure</div>
+                      <div className="text-center font-mono">35%</div>
+                      <div className="text-right text-slate-400">Vilora Labs Node Scaling & Indexer optimization</div>
                     </div>
                     <div className="grid grid-cols-3 p-3">
-                      <div className="font-bold text-slate-300">Core Maintenance</div>
-                      <div className="text-center font-mono">10%</div>
-                      <div className="text-right text-slate-400">Software Infrastructure & Node Support</div>
+                      <div className="font-bold text-slate-300">Core Maintenance & Auditing</div>
+                      <div className="text-center font-mono">15%</div>
+                      <div className="text-right text-slate-400">Forensics Security Team & Operational Overhead</div>
                     </div>
                   </div>
                 </div>
@@ -6246,26 +6291,30 @@ export default function App() {
                     We maintain a strict anti-inflation and utility-focused stance. We do not provide unrealistic, speculative, or guaranteed yield rates. The table below represents straightforward scenarios based purely on active query and badging volumes:
                   </p>
 
-                  <div className="border border-white/5 rounded-xl overflow-hidden text-xs bg-slate-950/60 font-mono">
-                    <div className="grid grid-cols-3 bg-white/[0.03] p-3 font-bold border-b border-white/5 text-slate-400 text-[10px] tracking-wider uppercase">
-                      <div>Daily Query Volume</div>
-                      <div className="text-center">Estimated Annual Fees</div>
-                      <div className="text-right">NFT Stakeholder Yield Share</div>
+                  <div className="border border-white/5 rounded-xl overflow-hidden text-[11px] bg-slate-950/60 font-mono">
+                    <div className="grid grid-cols-4 bg-white/[0.03] p-3 font-bold border-b border-white/5 text-slate-400 text-[10px] tracking-wider uppercase">
+                      <div>Annual Fees</div>
+                      <div className="text-center text-yellow-500">15% Token Burn</div>
+                      <div className="text-center text-amber-400">35% NFT Share</div>
+                      <div className="text-right text-emerald-400">Total Community (50%)</div>
                     </div>
-                    <div className="grid grid-cols-3 p-3 border-b border-white/5 text-slate-300">
-                      <div>10,000 queries</div>
-                      <div className="text-center">$182,500 USDC</div>
-                      <div className="text-right text-amber-400">$109,500 USDC</div>
+                    <div className="grid grid-cols-4 p-3 border-b border-white/5 text-slate-300">
+                      <div>$182,500 USDC</div>
+                      <div className="text-center text-yellow-500/80">$27,375</div>
+                      <div className="text-center text-amber-400/80">$63,875</div>
+                      <div className="text-right text-emerald-400 font-bold">$91,250</div>
                     </div>
-                    <div className="grid grid-cols-3 p-3 border-b border-white/5 text-slate-300">
-                      <div>50,000 queries</div>
-                      <div className="text-center">$912,500 USDC</div>
-                      <div className="text-right text-amber-400">$547,500 USDC</div>
+                    <div className="grid grid-cols-4 p-3 border-b border-white/5 text-slate-300">
+                      <div>$912,500 USDC</div>
+                      <div className="text-center text-yellow-500/80">$136,875</div>
+                      <div className="text-center text-amber-400/80">$319,375</div>
+                      <div className="text-right text-emerald-400 font-bold">$456,250</div>
                     </div>
-                    <div className="grid grid-cols-3 p-3 text-slate-300">
-                      <div>250,000 queries</div>
-                      <div className="text-center">$4,562,500 USDC</div>
-                      <div className="text-right text-amber-400">$2,737,500 USDC</div>
+                    <div className="grid grid-cols-4 p-3 text-slate-300">
+                      <div>$4,562,500 USDC</div>
+                      <div className="text-center text-yellow-500/80">$684,375</div>
+                      <div className="text-center text-amber-400/80">$1,596,875</div>
+                      <div className="text-right text-emerald-400 font-bold">$2,281,250</div>
                     </div>
                   </div>
                   
@@ -6427,7 +6476,7 @@ export default function App() {
                           <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider">Vilora Labs Incubated</span>
                         </div>
                         <p className="text-[11px] text-slate-400 leading-relaxed">
-                          Karma Score is a product proudly incubated and built by <a href="https://ViloraLabs.xyz" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline font-semibold">ViloraLabs.xyz</a>. We are proud member holders of the <a href="https://uglyducksociety.tech" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 underline font-semibold">Ugly Duck Society</a> and public members at the Foster community. Check out our builds to see what we are shaping next in decentralized reputation.
+                          Karma Score is a product proudly incubated and built by <a href="https://ViloraLabs.xyz" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline font-semibold">ViloraLabs.xyz</a>. We are proud member holders of the <a href="https://uglyducksociety.tech" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 underline font-semibold">Ugly Duck Society</a> and public verified member on X & CT Space. Check out our builds to see what we are shaping next in decentralized reputation.
                         </p>
                         <div className="flex items-center gap-2 pt-1 flex-wrap">
                           <a
@@ -6449,7 +6498,7 @@ export default function App() {
                             Ugly Duck Society
                           </a>
                           <span className="text-[9px] text-slate-500 font-mono">
-                            ✍️ Foster Community
+                            ✍️ X & CT Space
                           </span>
                         </div>
                       </div>

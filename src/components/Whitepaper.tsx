@@ -62,7 +62,7 @@ Stay active. Earn rewards. Grow with KARMA. One community. Endless opportunities
 - Phase 2: SWARM — NFT Launch: SWARM PFP collection mint. PFP frame builder goes live on karmascore.xyz. Community members upload and deploy their customized frames across the ecosystem. First artist-illustrated PFP evolution wave delivered to holders.
 - Phase 3: Score — Reputation Engine: Karma Score dashboard launches. On-chain indexer activates across connected wallets. Score card sharing and leaderboard registry go live. Multiplier passes enabled for KARMA holders through conviction streak tracking.
 - Phase 4: Credit — DeFi Integration: Reputation-backed liquidity vaults open. Zero-knowledge DeFi credit audits deploy. KAST card integration unlocks real-world spending as a score boost. Rate tiers activated based on Karma Score thresholds.
-- Phase 5: Equilibrium — Full Ecosystem: Cross-chain validator incentives. DAO-staked reputation grants. Institutional underwriter vault integrations. KARMA becomes the standard reputation primitive across partner protocols in the Solana DeFi landscape. Karma Score is a product proudly incubated and built by ViloraLabs.xyz, a member holder of the Ugly Duck Society (uglyducksociety.tech) and public member at the Foster community.
+- Phase 5: Equilibrium — Full Ecosystem: Cross-chain validator incentives. DAO-staked reputation grants. Institutional underwriter vault integrations. KARMA becomes the standard reputation primitive across partner protocols in the Solana DeFi landscape. Karma Score is a product proudly incubated and built by ViloraLabs.xyz, a member holder of the Ugly Duck Society (uglyducksociety.tech) and public verified member on X & CT Space.
 
 ## § 06 — Tokenomics
 ### THE $KARMA TOKEN
@@ -1012,7 +1012,7 @@ $KARMA is the utility backbone of the entire reputation ecosystem. Holding KARMA
                   ⚡ Incubation & Team Affiliation
                 </span>
                 <p style={{ fontSize: '12px', color: 'var(--chrome)', lineHeight: '1.6', margin: 0 }}>
-                  Karma Score is a product from <a href="https://ViloraLabs.xyz" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'underline', fontWeight: 'bold' }}>ViloraLabs.xyz</a>. We are proud member holders of the <a href="https://uglyducksociety.tech" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'underline', fontWeight: 'bold' }}>Ugly Duck Society</a> and public members at the Foster community. Check out our builds to see how we are shaping decentralized reputation.
+                  Karma Score is a product from <a href="https://ViloraLabs.xyz" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'underline', fontWeight: 'bold' }}>ViloraLabs.xyz</a>. We are proud member holders of the <a href="https://uglyducksociety.tech" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'underline', fontWeight: 'bold' }}>Ugly Duck Society</a> and public verified member on X & CT Space. Check out our builds to see how we are shaping decentralized reputation.
                 </p>
               </div>
             </div>
@@ -1082,6 +1082,31 @@ $KARMA is the utility backbone of the entire reputation ecosystem. Holding KARMA
             <p>Stake KARMA to participate in protocol decisions, grant allocations, and reputation system parameter changes.</p>
           </div>
         </div>
+
+        <h3 style={{ color: 'var(--gold)', fontFamily: 'Space Grotesk, sans-serif', marginTop: '32px', textTransform: 'uppercase', fontSize: '14px', letterSpacing: '1px' }}>
+          Platform Yield & Value Redistribution Architecture
+        </h3>
+        <p>
+          The $KARMA ecosystem is powered by a decentralized, high-velocity on-chain feedback loop. Payouts are triggered instantly upon any paid activity on the platform: whenever any wallet interacts with the Karma AI Wallet Score system for on-chain identity bonding (priced at 0.05 SOL), premium forensic deep-scans (priced at 0.08 SOL), or any other rated transaction, a full <strong>50% fee split</strong> is programmatically routed straight to the Community Revenue Share protocol. This creates consistent, organic daily trading volume and provides powerful holding and staking incentives.
+        </p>
+        <p>
+          The 50% community allocation is divided into two strict cryptographic pools:
+        </p>
+        <div className="wp-cards" style={{ marginTop: '16px' }}>
+          <div className="wp-card" style={{ border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+            <div className="wp-card-icon" style={{ color: '#EF4444' }}>🔥</div>
+            <div className="wp-card-title">15% Instant Buyback & Burn</div>
+            <p>15% of all business revenues are instantly swapped to native $KARMA and burned on-chain to create continuous deflationary supply dynamics.</p>
+          </div>
+          <div className="wp-card" style={{ border: '1px solid rgba(245, 175, 25, 0.2)' }}>
+            <div className="wp-card-icon" style={{ color: 'var(--gold)' }}>🎁</div>
+            <div className="wp-card-title">35% Buybacks & Airdrops</div>
+            <p>35% of all proceeds fund immediate $KARMA token buybacks which are distributed directly as custom airdrops to SWARM NFT holders and community stakers.</p>
+          </div>
+        </div>
+        <p style={{ fontSize: '11px', color: 'var(--chrome)', fontStyle: 'italic', background: 'rgba(212, 160, 23, 0.03)', padding: '12px', borderRadius: '6px', border: '1px solid rgba(212, 160, 23, 0.1)', marginTop: '16px' }}>
+          *Co-Ownership Caveat: While the core developer team retains structural authority to optimize these variables during software updates, this mechanism is stabilized by Vilora Labs. Under current conditions, Vilora Labs has granted 50% of corporate equity and governance weight to the community to handle with care. If the decentralized governance is mistreated or used destructively, these terms may be unilaterally reclaimed to protect the integrity of the platform.
+        </p>
 
         <div className="wp-pq">
           <p>"Holding KARMA isn't about hoping the universe delivers. It's about building proof that you deserve what comes next."</p>
