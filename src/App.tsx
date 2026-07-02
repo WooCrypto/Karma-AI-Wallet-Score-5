@@ -1609,7 +1609,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#040508] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full max-w-full relative">
       {/* Floating Modern Header / Navigation Bar */}
-      <div className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+      <div className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
         {/* Subtle, uncrowded Top-Left Test Phase Banner */}
         <div className="flex justify-start mb-2 pl-1">
           <a
@@ -1633,7 +1633,7 @@ export default function App() {
               transition={{ duration: 0.2 }}
               className="rounded-2xl border border-white/10 bg-[#07080c]/85 backdrop-blur-xl text-slate-200 shadow-[0_12px_40px_rgba(0,0,0,0.85),_inset_0_1px_1px_rgba(255,255,255,0.1)] transition-all"
             >
-              <div className="px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="px-4 sm:px-6 py-3 flex flex-col lg:flex-row items-center justify-between gap-4">
                 {/* Logo and Name */}
                 <div 
                   onClick={() => {
@@ -1647,7 +1647,7 @@ export default function App() {
                 >
                   <KarmaLogo className="w-9 h-9" />
                   <div>
-                    <span className="text-xs sm:text-sm font-bold tracking-[0.22em] font-gothic text-white uppercase block">
+                    <span className="text-xs sm:text-sm font-black tracking-[0.16em] font-display text-white uppercase block">
                       Karma Score AI
                     </span>
                     <span className="text-[8px] font-mono tracking-widest text-amber-500 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded uppercase block">
@@ -1707,7 +1707,7 @@ export default function App() {
                 </nav>
 
                 {/* Action Buttons Row */}
-                <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 shrink-0 w-full lg:w-auto">
                   {/* Nav Behavior Controller */}
                   <div className="flex items-center gap-1 border border-white/5 bg-white/[0.02] p-1 rounded-xl h-8 mr-1">
                     {/* Manual Minimize Toggle */}
@@ -1925,37 +1925,6 @@ export default function App() {
           </div>
 
           <div className="space-y-4 relative z-10">
-            {/* Highly Polished Swarm NFT Ongoing Mint Card & Button */}
-            <div className="block max-w-sm mx-auto relative z-20 mb-4">
-              <a
-                href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-between gap-4 p-3 rounded-2xl bg-[#07080c]/85 hover:bg-[#0b0c14]/90 border border-amber-500/20 hover:border-amber-500/40 backdrop-blur-md transition-all shadow-[0_4px_25px_rgba(245,158,11,0.03),0_0_15px_rgba(245,158,11,0.02)] hover:shadow-[0_4px_35px_rgba(245,158,11,0.08),0_0_25px_rgba(245,158,11,0.05)] cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="relative flex h-2 w-2 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                  </div>
-                  <div className="text-left">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[8px] font-mono font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/25 px-1.5 py-0.5 rounded shrink-0">
-                        MINT LIVE
-                      </span>
-                      <span className="text-[9px] text-slate-500 font-bold">•</span>
-                      <span className="text-[10px] text-slate-400 group-hover:text-slate-200 font-mono font-bold">SWARM NFT</span>
-                    </div>
-                    <p className="text-[11px] text-slate-300 font-sans leading-tight mt-1">Swarm NFT Ongoing Mint!</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-mono text-[9px] font-black uppercase tracking-wider transition-all shadow-[0_0_10px_rgba(245,158,11,0.2)] hover:brightness-110 active:scale-95">
-                  <Trophy className="w-3 h-3 shrink-0" />
-                  Mint Now
-                </div>
-              </a>
-            </div>
-
             {/* CELESTIAL BACKGROUND ACCENTS (SHADOW & LIGHT) */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[450px] pointer-events-none z-0">
               {/* Subtle gothic cross-light beam */}
@@ -1979,8 +1948,13 @@ export default function App() {
               SOLANA & EVM IDENTITY DECODER
             </motion.div>
             
-            <h1 className="text-5xl sm:text-7xl font-semibold font-gothic tracking-[0.2em] text-white drop-shadow-[0_4px_24px_rgba(255,255,255,0.05)] leading-none uppercase mt-6 mb-4">
-              KARMA SCORE AI
+            <h1 className="text-5xl sm:text-7xl md:text-8xl font-black font-display tracking-tight uppercase mt-6 mb-4 select-none">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400 drop-shadow-[0_2px_10px_rgba(255,255,255,0.1)]">
+                KARMA SCORE
+              </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500 drop-shadow-[0_2px_15px_rgba(245,158,11,0.2)] ml-2 sm:ml-3 font-black">
+                AI
+              </span>
             </h1>
             <div className="text-base sm:text-xl text-slate-200 font-normal leading-relaxed max-w-2xl mx-auto space-y-4">
               <p className="font-extrabold text-white text-xl sm:text-3xl tracking-tight uppercase bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
@@ -4257,6 +4231,37 @@ export default function App() {
           </motion.div>
         )}
 
+        {/* Highly Polished Swarm NFT Ongoing Mint Card & Button */}
+        <div className="max-w-md mx-auto relative z-20 my-10 px-4">
+          <a
+            href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center justify-between gap-4 p-3.5 rounded-2xl bg-[#07080c]/85 hover:bg-[#0b0c14]/90 border border-amber-500/20 hover:border-amber-500/40 backdrop-blur-md transition-all shadow-[0_4px_25px_rgba(245,158,11,0.03),0_0_15px_rgba(245,158,11,0.02)] hover:shadow-[0_4px_35px_rgba(245,158,11,0.08),0_0_25px_rgba(245,158,11,0.05)] cursor-pointer"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              </div>
+              <div className="text-left">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[8px] font-mono font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/25 px-1.5 py-0.5 rounded shrink-0">
+                    MINT LIVE
+                  </span>
+                  <span className="text-[9px] text-slate-500 font-bold">•</span>
+                  <span className="text-[10px] text-slate-400 group-hover:text-slate-200 font-mono font-bold">SWARM NFT</span>
+                </div>
+                <p className="text-[11px] text-slate-300 font-sans leading-tight mt-1">Swarm NFT Ongoing Mint!</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-mono text-[9px] font-black uppercase tracking-wider transition-all shadow-[0_0_10px_rgba(245,158,11,0.2)] hover:brightness-110 active:scale-95 shrink-0">
+              <Trophy className="w-3.5 h-3.5 shrink-0" />
+              Mint Now
+            </div>
+          </a>
+        </div>
+
         {/* GLOBAL HIGH-FIDELITY FOOTER & DECENTRALIZED PARTNERS */}
         <footer className="border-t border-white/5 pt-10 pb-8 mt-16 space-y-8 text-center max-w-5xl mx-auto px-4">
           {/* Partners section */}
@@ -4286,7 +4291,7 @@ export default function App() {
             <div className="flex items-center gap-3">
               <KarmaLogo className="w-6 h-6 text-slate-400" />
               <div className="text-left">
-                <span className="text-xs font-bold font-gothic text-white block uppercase tracking-[0.2em]">Karma Score AI</span>
+                <span className="text-xs font-black font-display text-white block uppercase tracking-[0.16em]">Karma Score AI</span>
                 <span className="text-[9px] font-mono text-slate-500 block">Sovereign On-Chain AI Reputation Pipeline</span>
               </div>
             </div>
