@@ -10,6 +10,7 @@ import {
   Coins,
   Sparkles,
   Clock,
+  Download,
   Activity,
   TrendingUp,
   Compass,
@@ -70,6 +71,7 @@ import degodsNftImg from "./assets/images/degods_nft_1782834978756.jpg";
 import boredApesNftImg from "./assets/images/bored_apes_nft_1782834993522.jpg";
 import pudgyPenguinsNftImg from "./assets/images/pudgy_penguins_nft_1782835008251.jpg";
 import Whitepaper from "./components/Whitepaper";
+import { downloadWhitepaper, downloadRoadmap, downloadBusinessModel } from "./lib/downloads";
 import { generateSeededReport, PRESETS, getDeterministicEVMAddress, getDeterministicSolanaAddress } from "./utils";
 
 const POPULAR_EXAMPLES = [
@@ -261,19 +263,24 @@ export default function App() {
   const [isBusinessModelView, setIsBusinessModelView] = useState(false);
   const [isRoadmapView, setIsRoadmapView] = useState(false);
 
-  // Synchronize Whitepaper view state with URL hash/query string for deep-linking
+  // Synchronize Whitepaper, Roadmap, and Business Model views with URL hash/query string for deep-linking
   useEffect(() => {
     const handleLocationChange = () => {
       const hash = window.location.hash.toLowerCase();
       const params = new URLSearchParams(window.location.search);
+      
       const isWhitepaperHash = hash === "#whitepaper" || hash === "#/whitepaper" || hash === "#white-paper";
       const isWhitepaperQuery = params.get("view") === "whitepaper" || params.get("tab") === "whitepaper";
       
-      if (isWhitepaperHash || isWhitepaperQuery) {
-        setIsWhitepaperView(true);
-      } else {
-        setIsWhitepaperView(false);
-      }
+      const isRoadmapHash = hash === "#roadmap" || hash === "#/roadmap";
+      const isRoadmapQuery = params.get("view") === "roadmap" || params.get("tab") === "roadmap";
+      
+      const isBusinessModelHash = hash === "#businessmodel" || hash === "#/businessmodel" || hash === "#revshare" || hash === "#/revshare" || hash === "#revenue-share";
+      const isBusinessModelQuery = params.get("view") === "businessmodel" || params.get("view") === "revshare" || params.get("tab") === "businessmodel" || params.get("tab") === "revshare";
+
+      setIsWhitepaperView(isWhitepaperHash || isWhitepaperQuery);
+      setIsRoadmapView(isRoadmapHash || isRoadmapQuery);
+      setIsBusinessModelView(isBusinessModelHash || isBusinessModelQuery);
     };
 
     handleLocationChange();
@@ -285,17 +292,27 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const currentHash = window.location.hash.toLowerCase();
     if (isWhitepaperView) {
-      if (window.location.hash !== "#whitepaper") {
+      if (currentHash !== "#whitepaper") {
         window.history.pushState(null, "", "#whitepaper");
       }
+    } else if (isRoadmapView) {
+      if (currentHash !== "#roadmap") {
+        window.history.pushState(null, "", "#roadmap");
+      }
+    } else if (isBusinessModelView) {
+      if (currentHash !== "#revshare" && currentHash !== "#businessmodel") {
+        window.history.pushState(null, "", "#revshare");
+      }
     } else {
-      const hash = window.location.hash.toLowerCase();
-      if (hash === "#whitepaper" || hash === "#/whitepaper" || hash === "#white-paper") {
+      // Clear hash if it matches any of our views and we closed them
+      const isAnyHash = ["#whitepaper", "#/whitepaper", "#white-paper", "#roadmap", "#/roadmap", "#businessmodel", "#/businessmodel", "#revshare", "#/revshare", "#revenue-share"].includes(currentHash);
+      if (isAnyHash) {
         window.history.pushState(null, "", window.location.pathname + window.location.search);
       }
     }
-  }, [isWhitepaperView]);
+  }, [isWhitepaperView, isRoadmapView, isBusinessModelView]);
 
   const [addressInput, setAddressInput] = useState("");
   const [report, setReportInternal] = useState<WalletReport | null>(null);
@@ -1292,7 +1309,7 @@ export default function App() {
         }
       } catch (fallbackErr: any) {
         console.error(fallbackErr);
-        setError(fallbackErr.message || "Failed to decode wallet reputation. Check format and try again.");
+        setError(fallbackErr.message || "Failed to check wallet reputation. Check format and try again.");
       }
     } finally {
       setLoading(false);
@@ -1706,7 +1723,7 @@ export default function App() {
                         : "text-slate-400 hover:text-slate-200 border border-transparent"
                     }`}
                   >
-                    Decoder
+                    Check Wallet
                   </button>
                   
                   <button
@@ -1858,7 +1875,7 @@ export default function App() {
 
               {/* Active Tab Indicator Badge */}
               <div className="text-[9px] font-mono font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">
-                {activeMainTab === "dashboard" && "Decoder"}
+                {activeMainTab === "dashboard" && "Check Wallet"}
                 {activeMainTab === "staking" && "Rewards"}
                 {activeMainTab === "premium" && "Perks"}
                 {activeMainTab === "nfc-card" && "NFC Card"}
@@ -1985,7 +2002,7 @@ export default function App() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
               </span>
-              SOLANA & EVM IDENTITY DECODER
+              SOLANA & EVM IDENTITY CHECKER
             </motion.div>
             
             <h1 className="text-5xl sm:text-7xl md:text-8xl font-black font-display tracking-tight uppercase mt-6 mb-4 select-none">
@@ -2064,12 +2081,12 @@ export default function App() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-black" />
-                    Decoding...
+                    Checking...
                   </>
                 ) : (
                   <>
                     <Cpu className="w-4 h-4" />
-                    Decode Wallet
+                    Check Wallet
                   </>
                 )}
               </button>
@@ -2815,7 +2832,7 @@ export default function App() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
                   <h2 className="text-xl font-bold font-display text-white">
-                    Reputation Analytics & Decoded Passport
+                    Reputation Analytics & Checked Passport
                   </h2>
                   <p className="text-xs text-slate-400 mt-0.5">
                     Live verification feed for {report.address}
@@ -2827,7 +2844,7 @@ export default function App() {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                   </span>
                   <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest font-bold">
-                    Live On-Chain Decoded
+                    Live On-Chain Checked
                   </span>
                 </div>
               </div>
@@ -3999,13 +4016,23 @@ export default function App() {
                         Explore how the 50% instant revenue split automatically fuels buybacks, deflationary burns, and holder rewards to align long-term incentives.
                       </p>
                     </div>
-                    <button
-                      onClick={() => setIsBusinessModelView(true)}
-                      className="w-full sm:w-auto self-start px-4 py-2.5 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 hover:from-amber-500/25 hover:to-yellow-500/25 text-amber-300 border border-amber-500/30 hover:border-amber-500/50 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
-                    >
-                      <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-                      <span>Explore Business Model & Revenue Share (Rev Share)</span>
-                    </button>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <a
+                        href="#revshare"
+                        className="flex-1 px-4 py-2.5 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 hover:from-amber-500/25 hover:to-yellow-500/25 text-amber-300 border border-amber-500/30 hover:border-amber-500/50 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
+                      >
+                        <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Open Business Model URL</span>
+                      </a>
+                      <button
+                        onClick={downloadBusinessModel}
+                        className="px-4 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                        title="Download Business Model as Markdown"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download (.md)</span>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="p-5 rounded-xl bg-gradient-to-br from-blue-500/[0.03] to-cyan-500/[0.01] border border-blue-500/10 hover:border-blue-500/20 transition-all flex flex-col justify-between space-y-4">
@@ -4025,13 +4052,23 @@ export default function App() {
                         We are currently in a live beta testing phase. Learn about our direct milestones since launching the Swarm NFT membership collection.
                       </p>
                     </div>
-                    <button
-                      onClick={() => setIsRoadmapView(true)}
-                      className="w-full sm:w-auto self-start px-4 py-2.5 bg-gradient-to-r from-blue-500/15 to-cyan-500/15 hover:from-blue-500/25 hover:to-cyan-500/25 text-blue-300 border border-blue-500/30 hover:border-blue-500/50 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
-                    >
-                      <Layers2 className="w-3.5 h-3.5 text-blue-400" />
-                      <span>View Straightforward Roadmap</span>
-                    </button>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <a
+                        href="#roadmap"
+                        className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-500/15 to-cyan-500/15 hover:from-blue-500/25 hover:to-cyan-500/25 text-blue-300 border border-blue-500/30 hover:border-blue-500/50 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
+                      >
+                        <Layers2 className="w-3.5 h-3.5 text-blue-400" />
+                        <span>Open Roadmap URL</span>
+                      </a>
+                      <button
+                        onClick={downloadRoadmap}
+                        className="px-4 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                        title="Download Roadmap as Markdown"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download (.md)</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4326,49 +4363,83 @@ export default function App() {
               </div>
             </div>
 
-            {/* Middle: Links & Whitepaper button with Business Model & Roadmap under them */}
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex items-center gap-4 flex-wrap justify-center">
-                <button
-                  onClick={() => {
-                    setIsWhitepaperView(true);
-                  }}
-                  className="px-4 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-lg text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-                >
-                  📄 Official Whitepaper
-                </button>
-                
-                <button
-                  onClick={() => {
-                    setIsWhitepaperView(true);
-                  }}
-                  className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg text-[10px] font-mono font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-                >
-                  📥 Download Whitepaper (.md)
-                </button>
-              </div>
+            {/* Middle: Grid of Documentation with View and Download Actions */}
+            <div className="flex flex-col items-center gap-4 w-full max-w-2xl mx-auto">
+              <span className="text-[10px] font-mono font-bold tracking-widest text-slate-500 uppercase block">
+                Ecosystem Documentation & Materials
+              </span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+                {/* Card 1: Whitepaper */}
+                <div className="p-3.5 rounded-xl bg-white/[0.01] border border-white/5 hover:border-amber-500/10 hover:bg-white/[0.02] transition-all flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[9px] font-mono font-bold text-amber-400 uppercase tracking-wider block">Official Paper</span>
+                    <h4 className="text-xs font-bold text-slate-200 mt-1">Consensus Whitepaper</h4>
+                    <p className="text-[10px] text-slate-400 mt-1 leading-normal">Deep dive into our equilibrium design & reputation engine specifications.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <a
+                      href="#whitepaper"
+                      className="flex-1 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-lg text-[9px] font-mono font-black uppercase tracking-wider text-center cursor-pointer transition-all flex items-center justify-center"
+                    >
+                      Open URL
+                    </a>
+                    <button
+                      onClick={downloadWhitepaper}
+                      className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg text-[9px] font-mono font-bold uppercase transition-all cursor-pointer flex items-center justify-center"
+                      title="Download as Markdown"
+                    >
+                      <Download className="w-3.5 h-3.5 text-slate-400 hover:text-white" />
+                    </button>
+                  </div>
+                </div>
 
-              {/* Sub-buttons for Business Model and Roadmap */}
-              <div className="flex items-center gap-3 flex-wrap justify-center">
-                <button
-                  onClick={() => {
-                    setIsBusinessModelView(true);
-                  }}
-                  className="px-3.5 py-1.5 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 hover:from-amber-500/20 hover:to-yellow-500/20 text-amber-300 border border-amber-500/20 hover:border-amber-500/40 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-                >
-                  <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-                  Explore Business Model & Revenue Share (Rev Share)
-                </button>
+                {/* Card 2: Business Model */}
+                <div className="p-3.5 rounded-xl bg-white/[0.01] border border-white/5 hover:border-amber-500/10 hover:bg-white/[0.02] transition-all flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[9px] font-mono font-bold text-yellow-500 uppercase tracking-wider block">Economics</span>
+                    <h4 className="text-xs font-bold text-slate-200 mt-1">Business & Rev Share</h4>
+                    <p className="text-[10px] text-slate-400 mt-1 leading-normal">Explore our platform value architecture & instant fee loopback loops.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <a
+                      href="#revshare"
+                      className="flex-1 py-1.5 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 hover:from-amber-500/25 hover:to-yellow-500/25 text-amber-300 border border-amber-500/25 rounded-lg text-[9px] font-mono font-black uppercase tracking-wider text-center cursor-pointer transition-all flex items-center justify-center"
+                    >
+                      Open URL
+                    </a>
+                    <button
+                      onClick={downloadBusinessModel}
+                      className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg text-[9px] font-mono font-bold uppercase transition-all cursor-pointer flex items-center justify-center"
+                      title="Download as Markdown"
+                    >
+                      <Download className="w-3.5 h-3.5 text-slate-400 hover:text-white" />
+                    </button>
+                  </div>
+                </div>
 
-                <button
-                  onClick={() => {
-                    setIsRoadmapView(true);
-                  }}
-                  className="px-3.5 py-1.5 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 hover:from-blue-500/20 hover:to-cyan-500/20 text-blue-300 border border-blue-500/20 hover:border-blue-500/40 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
-                >
-                  <Layers2 className="w-3.5 h-3.5 text-blue-400" />
-                  Roadmap / Milestones
-                </button>
+                {/* Card 3: Roadmap */}
+                <div className="p-3.5 rounded-xl bg-white/[0.01] border border-white/5 hover:border-amber-500/10 hover:bg-white/[0.02] transition-all flex flex-col justify-between gap-3 text-left">
+                  <div>
+                    <span className="text-[9px] font-mono font-bold text-cyan-400 uppercase tracking-wider block">Milestones</span>
+                    <h4 className="text-xs font-bold text-slate-200 mt-1">Roadmap & Beta</h4>
+                    <p className="text-[10px] text-slate-400 mt-1 leading-normal">Track our straightforward milestones and future NFC integration.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <a
+                      href="#roadmap"
+                      className="flex-1 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/20 rounded-lg text-[9px] font-mono font-black uppercase tracking-wider text-center cursor-pointer transition-all flex items-center justify-center"
+                    >
+                      Open URL
+                    </a>
+                    <button
+                      onClick={downloadRoadmap}
+                      className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg text-[9px] font-mono font-bold uppercase transition-all cursor-pointer flex items-center justify-center"
+                      title="Download as Markdown"
+                    >
+                      <Download className="w-3.5 h-3.5 text-slate-400 hover:text-white" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -5577,7 +5648,7 @@ export default function App() {
                   <div className="space-y-1">
                     <h4 className="font-bold font-mono text-xs uppercase text-amber-400">Yield Multiplier Active</h4>
                     <p className="text-xs text-slate-300">
-                      Your staking yields are directly amplified by your active decoded wallet's <strong className="text-amber-200">Karma Wallet Score</strong>. Scanned address: <strong className="text-amber-200">{report ? report.address.slice(0, 8) + "..." + report.address.slice(-8) : "None (Using base weight of 100)"}</strong>.
+                      Your staking yields are directly amplified by your active checked wallet's <strong className="text-amber-200">Karma Wallet Score</strong>. Scanned address: <strong className="text-amber-200">{report ? report.address.slice(0, 8) + "..." + report.address.slice(-8) : "None (Using base weight of 100)"}</strong>.
                     </p>
                   </div>
                 </div>
@@ -5962,7 +6033,7 @@ export default function App() {
                     Verified Crowds & Sandboxes
                   </h3>
                   <p className="text-[10px] font-mono text-slate-500">
-                    Search and instantly decode pre-verified blockchain accounts
+                    Search and instantly check pre-verified blockchain accounts
                   </p>
                 </div>
                 <button
@@ -6040,7 +6111,7 @@ export default function App() {
               {/* Modal Footer */}
               <div className="pt-2 text-center border-t border-slate-900">
                 <span className="text-[9px] font-mono text-slate-500">
-                  Select any user above to instantly load and decode on-chain audit streams.
+                  Select any user above to instantly load and check on-chain audit streams.
                 </span>
               </div>
             </motion.div>
@@ -6095,7 +6166,7 @@ export default function App() {
                 <Info className="w-4 h-4 shrink-0 text-yellow-400 mt-0.5" />
                 <div>
                   <span className="font-bold text-white block mb-0.5">Passport Identity Bonding</span>
-                  To permanently bind your decoded Reputation Passport card, you must execute a soulbound transaction. Bonding requires a network-level treasury fee of <strong className="text-white">0.05 SOL</strong> for Solana, or <strong className="text-white">$5 EVM equivalent</strong>.
+                  To permanently bind your checked Reputation Passport card, you must execute a soulbound transaction. Bonding requires a network-level treasury fee of <strong className="text-white">0.05 SOL</strong> for Solana, or <strong className="text-white">$5 EVM equivalent</strong>.
                 </div>
               </div>
 
@@ -6380,12 +6451,22 @@ export default function App() {
                     Business Model & Revenue Share (Rev Share)
                   </h3>
                 </div>
-                <button
-                  onClick={() => setIsBusinessModelView(false)}
-                  className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
-                >
-                  ✕
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={downloadBusinessModel}
+                    className="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/20 hover:border-amber-500/40 text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
+                    title="Download Business Model as Markdown file"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Download (.md)</span>
+                  </button>
+                  <button
+                    onClick={() => setIsBusinessModelView(false)}
+                    className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
 
               {/* Business Model Overview */}
@@ -6554,12 +6635,22 @@ export default function App() {
                     Project Roadmap & Beta Phase
                   </h3>
                 </div>
-                <button
-                  onClick={() => setIsRoadmapView(false)}
-                  className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
-                >
-                  ✕
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={downloadRoadmap}
+                    className="px-3 py-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/20 hover:border-blue-500/40 text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
+                    title="Download Roadmap as Markdown file"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Download (.md)</span>
+                  </button>
+                  <button
+                    onClick={() => setIsRoadmapView(false)}
+                    className="w-8 h-8 rounded-full border border-white/5 bg-white/[0.02] hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
 
               {/* Status Alert */}

@@ -132,7 +132,7 @@ function generateSeededReport(address: string, chain: "EVM" | "Solana"): WalletR
   // Narrative summary generator
   let aiSummary = "";
   if (tier === "Elite" || tier === "Trusted") {
-    aiSummary = `This ${chain} address displays exceptional on-chain metrics, with an active history spanning over ${years} years. Our decoders identified consistent governance participation across major protocols, robust liquidity provisioning, and zero interactions with high-risk smart contracts. The wallet is classified as 'Smart Money' due to historical accuracy in long-term token holding and verified community contributions. Overall, it stands out as an exemplary and highly trustworthy actor on-chain.`;
+    aiSummary = `This ${chain} address displays exceptional on-chain metrics, with an active history spanning over ${years} years. Our checking systems identified consistent governance participation across major protocols, robust liquidity provisioning, and zero interactions with high-risk smart contracts. The wallet is classified as 'Smart Money' due to historical accuracy in long-term token holding and verified community contributions. Overall, it stands out as an exemplary and highly trustworthy actor on-chain.`;
   } else if (tier === "Good") {
     aiSummary = `A healthy and productive ${chain} wallet. It features moderate trading activity with sustained interactions on major decentralized exchanges. It maintains a steady portfolio value with moderate allocations to blue-chip tokens and verified NFT collections. There is minimal contract exposure risk and some involvement in community governance. It demonstrates consistent, authentic user behavior with low Sybil/bot probability.`;
   } else if (tier === "Neutral") {
