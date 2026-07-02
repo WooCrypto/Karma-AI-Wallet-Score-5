@@ -261,6 +261,42 @@ export default function App() {
   const [isBusinessModelView, setIsBusinessModelView] = useState(false);
   const [isRoadmapView, setIsRoadmapView] = useState(false);
 
+  // Synchronize Whitepaper view state with URL hash/query string for deep-linking
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const hash = window.location.hash.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      const isWhitepaperHash = hash === "#whitepaper" || hash === "#/whitepaper" || hash === "#white-paper";
+      const isWhitepaperQuery = params.get("view") === "whitepaper" || params.get("tab") === "whitepaper";
+      
+      if (isWhitepaperHash || isWhitepaperQuery) {
+        setIsWhitepaperView(true);
+      } else {
+        setIsWhitepaperView(false);
+      }
+    };
+
+    handleLocationChange();
+
+    window.addEventListener("hashchange", handleLocationChange);
+    return () => {
+      window.removeEventListener("hashchange", handleLocationChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isWhitepaperView) {
+      if (window.location.hash !== "#whitepaper") {
+        window.history.pushState(null, "", "#whitepaper");
+      }
+    } else {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === "#whitepaper" || hash === "#/whitepaper" || hash === "#white-paper") {
+        window.history.pushState(null, "", window.location.pathname + window.location.search);
+      }
+    }
+  }, [isWhitepaperView]);
+
   const [addressInput, setAddressInput] = useState("");
   const [report, setReportInternal] = useState<WalletReport | null>(null);
 
