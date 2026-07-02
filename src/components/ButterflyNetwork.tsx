@@ -340,19 +340,22 @@ export function ButterflyNetwork({
                         href="https://www.karmagamez.xyz/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white font-mono font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all border border-slate-700 shadow flex items-center justify-center gap-1.5 active:scale-95 text-center"
+                        className="flex-1 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white font-mono font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all border border-slate-700 shadow flex items-center justify-center gap-1.5 active:scale-95 text-center px-4"
                       >
                         <Gamepad2 className="w-4 h-4 text-purple-400" />
-                        Stake Free on KarmaGamez
+                        Earn Without Initial Capital on KarmaGamez
                         <ExternalLink className="w-3.5 h-3.5 opacity-60" />
                       </a>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[11px] text-slate-400 bg-white/[0.01] px-4 py-2.5 rounded-lg border border-white/5">
-                      <Info className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      <span>
-                        Karma game stakers can connect their minted NFT directly to double game score parameters and unlock secondary token yields instantly on the main lobby.
-                      </span>
+                    <div className="flex flex-col gap-1.5 text-[11px] text-slate-400 bg-white/[0.01] px-4 py-2.5 rounded-lg border border-white/5 text-left">
+                      <div className="flex items-center gap-1.5 font-mono font-bold text-amber-400">
+                        <Info className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        <span>No-Cost Staking</span>
+                      </div>
+                      <p className="text-slate-300 leading-normal">
+                        Earn rewards without upfront capital. Karma game stakers can connect their minted NFT directly to double game score parameters and unlock secondary token yields instantly on the main lobby.
+                      </p>
                     </div>
                   </div>
 

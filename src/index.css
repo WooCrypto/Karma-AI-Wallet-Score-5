@@ -82,3 +82,48 @@ html, body, #root {
   -webkit-overflow-scrolling: touch;
 }
 
+/* 2026 High-Fidelity Cyber Grid Texture & Aurora Glow Effects */
+.cyber-grid-overlay {
+  background-image: 
+    linear-gradient(rgba(245, 158, 11, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 158, 11, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center top;
+}
+
+.aurora-glow-left {
+  background: radial-gradient(circle at 20% 35%, rgba(245, 158, 11, 0.08) 0%, rgba(139, 92, 246, 0.05) 25%, rgba(0, 0, 0, 0) 50%);
+}
+
+.aurora-glow-right {
+  background: radial-gradient(circle at 80% 65%, rgba(32, 195, 255, 0.08) 0%, rgba(59, 130, 246, 0.04) 30%, rgba(0, 0, 0, 0) 55%);
+}
+
+.neon-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(250, 204, 21, 0.1) 50%,
+    transparent 55%
+  );
+  transform: rotate(45deg);
+  animation: shimmer-flow 12s infinite linear;
+}
+
+@keyframes shimmer-flow {
+  0% { transform: translate(-30%, -30%) rotate(45deg); }
+  100% { transform: translate(30%, 30%) rotate(45deg); }
+}
+
+

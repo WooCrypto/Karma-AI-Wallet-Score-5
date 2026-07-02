@@ -1643,7 +1643,11 @@ export default function App() {
   const shouldCollapse = isNavMinimized || (autoMinimizeOnScroll && isScrolled && scrollDirection === "down");
 
   return (
-    <div className="min-h-screen bg-[#040508] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full max-w-full relative">
+    <div className="min-h-screen bg-[#030407] text-slate-100 font-sans selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full max-w-full relative cyber-grid-overlay">
+      {/* 2026 Cosmic Aurora Glow Orbs for High-End Depth */}
+      <div className="absolute top-0 left-0 w-full h-[800px] pointer-events-none z-0 aurora-glow-left" />
+      <div className="absolute top-[400px] right-0 w-full h-[900px] pointer-events-none z-0 aurora-glow-right" />
+
       {/* Floating Modern Header / Navigation Bar */}
       <div className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
         {/* Subtle, uncrowded Top-Left Test Phase Banner */}
@@ -1996,21 +2000,14 @@ export default function App() {
               <p className="font-extrabold text-white text-xl sm:text-3xl tracking-tight uppercase bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
                 Know every wallet before every interaction.
               </p>
-              <p className="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="text-slate-300/90 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light tracking-wide antialiased">
                 Paste any Solana or EVM wallet to instantly reveal a living trust profile powered by onchain activity, reputation signals, and community intelligence.
               </p>
-              <div className="flex items-center justify-center gap-4 py-2">
-                <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-amber-500/20" />
-                <p className="text-amber-400 font-mono text-xs sm:text-sm tracking-[0.25em] font-black uppercase">
-                  Trade smarter. Build safer. Trust with confidence.
-                </p>
-                <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-amber-500/20" />
-              </div>
             </div>
           </div>
 
           <div className="max-w-2xl mx-auto relative z-10">
-            <div className="relative p-1.5 bg-[#06060a]/90 backdrop-blur border border-yellow-500/15 hover:border-yellow-500/30 rounded-2xl focus-within:border-yellow-500/50 focus-within:ring-4 focus-within:ring-yellow-500/[0.05] transition-all shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col sm:flex-row items-stretch gap-2">
+            <div className="relative p-1.5 bg-[#06060a]/95 backdrop-blur-xl border border-yellow-500/20 hover:border-yellow-500/40 rounded-2xl focus-within:border-amber-500/50 focus-within:ring-4 focus-within:ring-amber-500/[0.08] transition-all duration-300 shadow-[0_0_60px_rgba(245,158,11,0.06),0_30px_100px_rgba(0,0,0,0.95)] flex flex-col sm:flex-row items-stretch gap-2 neon-shimmer">
               <div className="relative flex-1 flex items-center pl-3">
                 <Search className="w-5 h-5 text-slate-500 absolute left-3.5" />
                 <input
@@ -2143,7 +2140,14 @@ export default function App() {
         </section>
 
         {/* SLICK GOTHIC GLOWING TOKEN LAUNCH NOTE (SHADOW & LIGHT) */}
-        <div className="max-w-4xl mx-auto px-4 py-2 relative z-10">
+        <div className="max-w-4xl mx-auto px-4 py-2 relative z-10 mt-8">
+          {/* Tagline above token launch card */}
+          <div className="text-center mb-5">
+            <p className="text-amber-400 font-mono text-xs sm:text-sm tracking-[0.25em] font-black uppercase">
+              TRADE SMARTER. BUILD SAFER. TRUST WITH CONFIDENCE.
+            </p>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{
@@ -2186,18 +2190,8 @@ export default function App() {
               <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-amber-500/15 to-transparent" />
             </div>
 
-            {/* Gothic Ornament & Text */}
-            <div className="relative z-10 space-y-3">
-              <div className="flex items-center justify-center gap-3">
-                <div className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent to-amber-500/30" />
-                <span className="text-amber-500/40 text-[10px] sm:text-xs">✦</span>
-                <span className="text-amber-500/80 text-xs tracking-[0.4em] font-mono font-bold uppercase">
-                  MEMENTO RITUS
-                </span>
-                <span className="text-amber-500/40 text-[10px] sm:text-xs">✦</span>
-                <div className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent to-amber-500/30" />
-              </div>
-
+            {/* Content Container */}
+            <div className="relative z-10 space-y-3 py-4">
               <div className="py-2.5">
                 <motion.h3
                   animate={{
@@ -3716,21 +3710,21 @@ export default function App() {
                     href="https://www.karmagamez.xyz/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 py-4 text-black font-mono font-black text-xs tracking-wider uppercase rounded-xl transition-all cursor-pointer bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 shadow-[0_0_20px_rgba(234,179,8,0.35)] flex items-center justify-center gap-1.5 active:scale-95 text-center"
+                    className="flex-1 py-4 text-black font-mono font-black text-xs tracking-wider uppercase rounded-xl transition-all cursor-pointer bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 shadow-[0_0_20px_rgba(234,179,8,0.35)] flex items-center justify-center gap-1.5 active:scale-95 text-center px-4"
                   >
                     <Gamepad2 className="w-4 h-4" />
-                    Stake Free on KarmaGamez
+                    Earn Without Initial Capital on KarmaGamez
                   </a>
                 </div>
 
                 {/* Helpful explanatory flow banner */}
-                <div className="w-full p-4 rounded-xl border border-blue-500/10 bg-blue-950/10 text-left space-y-1">
-                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-blue-400">
-                    <Info className="w-4 h-4 text-blue-400 shrink-0" />
-                    <span>STAKING REVOLUTION & MULTIPLIED EARNINGS</span>
+                <div className="w-full p-4 rounded-xl border border-amber-500/15 bg-[#07080c]/60 text-left space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-400">
+                    <Info className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>NO-COST STAKING & MULTIPLIED EARNINGS</span>
                   </div>
                   <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                    Get started today! Start staking, claim your exclusive Swarm NFT multiplier, and navigate over to <a href="https://www.karmagamez.xyz/" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline inline-flex items-center gap-0.5 font-bold">KarmaGamez.xyz <ExternalLink className="w-3 h-3" /></a> to stake for completely free. Swarm NFT stakers enjoy massive multiplied reward payouts!
+                    <strong>No-Cost Staking: Earn rewards without upfront capital.</strong> Get started today! Start staking, claim your exclusive Swarm NFT multiplier, and navigate over to <a href="https://www.karmagamez.xyz/" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:underline inline-flex items-center gap-0.5 font-bold">KarmaGamez.xyz <ExternalLink className="w-3 h-3" /></a> to engage in No-Cost Staking. Swarm NFT stakers enjoy massive multiplied reward payouts!
                   </p>
                 </div>
 
@@ -4060,7 +4054,7 @@ export default function App() {
                   className="px-4 py-2 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-black font-mono font-black text-[11px] tracking-wider uppercase rounded-lg transition-all shadow-lg cursor-pointer shrink-0 inline-flex items-center gap-1.5 active:scale-95 text-center justify-center"
                 >
                   <Gamepad2 className="w-3.5 h-3.5" />
-                  Stake Free on KarmaGamez
+                  Earn Without Initial Capital on KarmaGamez
                 </a>
               </div>
             </div>
