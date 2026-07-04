@@ -105,7 +105,7 @@ function generateSeededReport(address: string, chain: "EVM" | "Solana"): WalletR
   } else if (score >= 450) {
     tier = "Neutral";
     risk = "Medium";
-  } else if (score >= 150) {
+  } else if (score >= 280) {
     tier = "Caution";
     risk = "High";
   } else {

@@ -78,7 +78,7 @@ export function generateSeededReport(address: string, chain: "EVM" | "Solana"): 
   } else if (score >= 450) {
     tier = "Neutral";
     riskRating = "Medium";
-  } else if (score >= 150) {
+  } else if (score >= 280) {
     tier = "Caution";
     riskRating = "High";
   } else {

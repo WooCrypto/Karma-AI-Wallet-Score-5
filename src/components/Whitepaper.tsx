@@ -727,7 +727,7 @@ $KARMA is the utility backbone of the entire reputation ecosystem. Holding KARMA
           </div>
           <div className="wp-meta-block">
             <div className="wp-meta-label">Twitter</div>
-            <div className="wp-meta-val">@karmascore_xyz</div>
+            <div className="wp-meta-val">@karmascoreai</div>
           </div>
         </div>
       </section>
@@ -1121,7 +1121,7 @@ $KARMA is the utility backbone of the entire reputation ecosystem. Holding KARMA
         <div className="wp-footer-sub">The Law of Equilibrium — On-Chain Reputation on Solana</div>
         <p className="text-slate-500 text-xs">Official White Paper v1.0 — Solana Ecosystem — 2025</p>
         <div className="wp-footer-links mt-4 flex items-center justify-center gap-6">
-          <a href="https://x.com/karmascore_xyz" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+          <a href="https://x.com/karmascoreai" target="_blank" rel="noopener noreferrer">X / Twitter</a>
           <a href="https://t.me/KarmaScore" target="_blank" rel="noopener noreferrer">Telegram</a>
           <a href="https://solana.com" target="_blank" rel="noopener noreferrer">Solana Network</a>
         </div>

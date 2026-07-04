@@ -1382,7 +1382,7 @@ export default function App() {
 
   // Color functions based on levels and scores
   const getTierLevelText = (tier: string, score?: number) => {
-    if (score !== undefined && score < 150) {
+    if (score !== undefined && score < 280) {
       return "DANGER • Tier 1 of 5";
     }
     switch (tier) {
@@ -1406,6 +1406,13 @@ export default function App() {
       case "High Risk": return "text-rose-500 border-rose-600 bg-rose-950/20";
       default: return "text-slate-400 border-slate-500 bg-slate-950/20";
     }
+  };
+
+  const getScoreColorClass = (score: number) => {
+    if (score <= 280) return "text-red-500 animate-pulse";
+    if (score <= 588) return "text-yellow-400";
+    if (score <= 888) return "text-emerald-400";
+    return "text-white";
   };
 
   const getRiskColor = (risk: string) => {
@@ -1633,7 +1640,7 @@ export default function App() {
 
           {/* Absolute Score Output */}
           <div className="absolute flex flex-col items-center justify-center text-center">
-            <span className="text-4xl font-extrabold font-display tracking-tight text-white">
+            <span className={`text-4xl font-extrabold font-display tracking-tight ${getScoreColorClass(displayScore)}`}>
               {displayScore}
             </span>
             <span className="text-slate-500 text-xs font-mono tracking-widest uppercase mt-0.5">
@@ -2116,7 +2123,7 @@ export default function App() {
           <div className="pt-10 max-w-3xl mx-auto relative z-10">
             <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
               <span className="block text-[10px] font-mono text-slate-500 uppercase tracking-widest">
-                Verified users
+                Bonded Users
               </span>
               <button
                 onClick={() => {
@@ -2124,10 +2131,10 @@ export default function App() {
                   setShowVerifiedCrowdsModal(true);
                 }}
                 className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-purple-500/30 hover:border-purple-400 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-mono text-[10px] uppercase font-bold transition-all active:scale-95 cursor-pointer"
-                title="Search Verified Crowds"
+                title="Search Bonded Users"
               >
                 <Search className="w-3 h-3 text-purple-400" />
-                Search Crowds
+                Search Users
               </button>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -2888,7 +2895,7 @@ export default function App() {
                       animate={isSoulbound ? { scale: [1, 1.02, 1], rotate: [0, 1, -1, 0] } : {}}
                       transition={{ duration: 0.6 }}
                       className={`relative overflow-hidden rounded-3xl p-8 flex flex-col items-center justify-between text-center select-none shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.05)] border transition-all duration-700 ${
-                        report.score < 150
+                        report.score < 280
                           ? "border-red-500/30 bg-[#0c0505]"
                           : isSoulbound
                           ? "border-yellow-400/50 bg-[#0c0b05] shadow-[0_0_40px_rgba(245,175,25,0.15)]"
@@ -2933,12 +2940,12 @@ export default function App() {
                       {/* Passport Header */}
                       <div className="space-y-0.5 z-10 w-full mb-6">
                         <div className={`text-[11px] font-black tracking-[0.3em] font-mono uppercase ${
-                          report.score < 150 ? "text-red-400 animate-pulse" : isSoulbound ? "text-yellow-400 font-extrabold" : "text-yellow-500/70"
+                          report.score < 280 ? "text-red-400 animate-pulse" : isSoulbound ? "text-yellow-400 font-extrabold" : "text-yellow-500/70"
                         }`}>
-                          {report.score < 150 ? "SECURITY BLACKLIST" : isSoulbound ? "★ VERIFIED SOULBOUND ★" : "DRAFT KARMA AI"}
+                          {report.score < 280 ? "SECURITY BLACKLIST" : isSoulbound ? "★ VERIFIED SOULBOUND ★" : "DRAFT KARMA AI"}
                         </div>
                         <div className="text-[9px] font-extrabold tracking-[0.18em] text-slate-400 uppercase font-sans">
-                          {report.score < 150 ? "CRITICAL HAZARD DETECTED" : "Wallet Reputation Passport"}
+                          {report.score < 280 ? "CRITICAL HAZARD DETECTED" : "Wallet Reputation Passport"}
                         </div>
                       </div>
 
@@ -2946,13 +2953,13 @@ export default function App() {
                       <div className="relative flex items-center justify-center w-52 h-52 mx-auto z-10">
                         {/* Glass Inner Circle with Backdrop Blur */}
                         <div className={`absolute inset-5 rounded-full backdrop-blur-md border shadow-[inner_0_4px_12px_rgba(0,0,0,0.5)] z-0 ${
-                          report.score < 150 ? "bg-red-950/45 border-red-500/20" : "bg-slate-950/65 border-white/5"
+                          report.score < 280 ? "bg-red-950/45 border-red-500/20" : "bg-slate-950/65 border-white/5"
                         }`} />
 
                         <svg className="w-full h-full transform -rotate-90 z-10 pointer-events-none">
                           <defs>
                             <linearGradient id="passportGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                              {report.score < 150 ? (
+                              {report.score < 280 ? (
                                 <>
                                   <stop offset="0%" stopColor="#FF6B6B" />
                                   <stop offset="60%" stopColor="#FF4949" />
@@ -2977,7 +2984,7 @@ export default function App() {
                             cx="104"
                             cy="104"
                             r="66"
-                            stroke={report.score < 150 ? "#B71C1C" : "rgba(245, 175, 25, 0.08)"}
+                            stroke={report.score < 280 ? "#B71C1C" : "rgba(245, 175, 25, 0.08)"}
                             strokeWidth="8"
                             fill="transparent"
                           />
@@ -2993,7 +3000,7 @@ export default function App() {
                             fill="transparent"
                             className="transition-all duration-1000 ease-out"
                             style={{
-                              filter: report.score < 150
+                              filter: report.score < 280
                                 ? "drop-shadow(0 0 10px #FF4949)"
                                 : isSoulbound
                                 ? "drop-shadow(0 0 12px rgba(245,175,25,0.7))"
@@ -3006,11 +3013,11 @@ export default function App() {
 
                         {/* Centered Score */}
                         <div className="absolute flex flex-col items-center justify-center text-center z-20 pointer-events-none">
-                          <span className="text-4xl font-extrabold tracking-tight font-display text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                          <span className={`text-4xl font-extrabold tracking-tight font-display drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] ${getScoreColorClass(animatedScore)}`}>
                             {animatedScore}
                           </span>
                           <span className="text-slate-400 text-[9px] font-extrabold tracking-[0.25em] font-sans mt-1 uppercase">
-                            {report.score < 150 ? "ALERT LEVEL" : "KARMA SCORE"}
+                            {report.score < 280 ? "ALERT LEVEL" : "KARMA SCORE"}
                           </span>
                         </div>
                       </div>
@@ -3019,11 +3026,11 @@ export default function App() {
                       <div className="mt-5 space-y-1.5 z-10 w-full flex flex-col items-center">
                         <div className="flex items-center justify-center gap-2 max-w-full">
                           <h2 className={`text-xl font-black font-display tracking-wide drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)] text-center truncate ${
-                            report.score < 150 ? "text-red-400 animate-pulse" : isSoulbound ? "text-yellow-400" : "text-yellow-500/90"
+                            report.score < 280 ? "text-red-400 animate-pulse" : isSoulbound ? "text-yellow-400" : "text-yellow-500/90"
                           }`} title={report.experienceLevel}>
-                            {report.score < 150 ? "FLAGGED SECURITY HAZARD" : (report.experienceLevel ? report.experienceLevel.toUpperCase() : "CHAIN WANDERER")}
+                            {report.score < 280 ? "FLAGGED SECURITY HAZARD" : (report.experienceLevel ? report.experienceLevel.toUpperCase() : "CHAIN WANDERER")}
                           </h2>
-                          {report.score >= 150 && (
+                          {report.score >= 280 && (
                             <button
                               id="change-identity-name-btn"
                               onClick={() => {
@@ -3040,7 +3047,7 @@ export default function App() {
                           )}
                         </div>
                         
-                        {report.score >= 150 && (
+                        {report.score >= 280 && (
                           <button
                             id="change-identity-name-link"
                             onClick={() => {
@@ -3054,7 +3061,7 @@ export default function App() {
                         )}
 
                         <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold ${
-                          report.score < 150
+                          report.score < 280
                             ? "bg-red-950/50 border border-red-500/30 text-red-400 animate-pulse"
                             : "bg-yellow-500/10 border border-yellow-500/20 text-yellow-400"
                         }`}>
@@ -3066,7 +3073,7 @@ export default function App() {
                       {/* Wallet address label */}
                       <div className="mt-4 space-y-1.5 z-10 w-full">
                         <div className={`text-xs font-mono text-black font-bold px-3 py-1 rounded-md inline-block shadow-sm ${
-                          report.score < 150 ? "bg-red-950/60 border border-red-500/30 text-red-400" : "bg-yellow-500 text-black"
+                          report.score < 280 ? "bg-red-950/60 border border-red-500/30 text-red-400" : "bg-yellow-500 text-black"
                         }`}>
                           {report.address.slice(0, 10)}...{report.address.slice(-8)}
                         </div>
@@ -3074,7 +3081,7 @@ export default function App() {
 
                       {/* Bottom status text / action button */}
                       <div className="mt-6 z-10 w-full space-y-3">
-                        {report.score < 150 ? (
+                        {report.score < 280 ? (
                           <div className="text-[10px] font-mono text-red-400 animate-pulse font-bold tracking-[0.2em] uppercase">
                             ⚠️ HAZARD • HIGH RISK BLACKLIST
                           </div>
@@ -4343,7 +4350,7 @@ export default function App() {
                 { name: "Phantom", desc: "Secure Link" },
                 { name: "Tensorians", desc: "Metadata" },
                 { name: "Backpack Wallet", desc: "xNFT Standard" },
-                { name: "GraveMint.io", desc: "Verified Users" }
+                { name: "GraveMint.io", desc: "Bonded Users" }
               ].map((p, idx) => (
                 <div key={idx} className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/[0.01] border border-white/[0.03]">
                   <span className="font-semibold text-slate-300">{p.name}</span>
@@ -4446,7 +4453,7 @@ export default function App() {
             {/* Right: Social Links */}
             <div className="flex items-center gap-3">
               <a
-                href="https://x.com/karmascore_xyz"
+                href="https://x.com/karmascoreai"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-xl bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
@@ -4797,8 +4804,8 @@ export default function App() {
               {/* Scrollable Report Body */}
               <div className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 scrollbar-thin">
                 
-                {/* DYNAMIC RISK WARNING BAR FOR DANGER STATES (<150 SCORE) */}
-                {report.score < 150 && (
+                {/* DYNAMIC RISK WARNING BAR FOR DANGER STATES (<280 SCORE) */}
+                {report.score < 280 && (
                   <div className="p-4 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 animate-pulse flex items-start gap-3">
                     <ShieldAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
                     <div>
@@ -5093,7 +5100,7 @@ export default function App() {
                     {/* Wallet address label copy row */}
                     <div className="mt-6 p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="space-y-0.5">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase block">Decoded Address Target</span>
+                        <span className="text-[10px] font-mono text-slate-500 uppercase block">Check Wallet Address Target</span>
                         <span className="text-xs font-mono text-yellow-300 break-all select-all font-semibold">
                           {report.address}
                         </span>
@@ -6030,10 +6037,10 @@ export default function App() {
                 <div className="space-y-0.5 text-left">
                   <h3 className="text-sm font-bold text-white tracking-wide flex items-center gap-2">
                     <Search className="w-4 h-4 text-purple-400" />
-                    Verified Crowds & Sandboxes
+                    Bonded Users & Sandboxes
                   </h3>
                   <p className="text-[10px] font-mono text-slate-500">
-                    Search and instantly check pre-verified blockchain accounts
+                    Search and instantly check pre-bonded blockchain accounts
                   </p>
                 </div>
                 <button
@@ -6068,7 +6075,7 @@ export default function App() {
                   );
                 }).length === 0 ? (
                   <div className="text-center py-8 text-xs text-slate-500 font-mono">
-                    No verified crowds match "{verifiedSearchQuery}"
+                    No bonded users match "{verifiedSearchQuery}"
                   </div>
                 ) : (
                   VERIFIED_CROWDS.filter((ex) => {
