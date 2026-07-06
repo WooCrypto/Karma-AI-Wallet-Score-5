@@ -1005,7 +1005,7 @@ app.post("/api/share-x-proof", (req, res) => {
     const randomStatusId1 = Math.floor(1800000000000000000 + Math.random() * 100000000000000000).toString();
     const randomStatusId2 = Math.floor(1800000000000000000 + Math.random() * 100000000000000000).toString();
 
-    const userTweetText = `I just proved ownership of my elite ${selectedAsset} completely off-chain! My wallet stays offline and secure from attackers, verified instantly by @Karma_AI. 🛡️🔐\n\nVerify yours at: ${process.env.APP_URL || "https://karma-ai.io"}`;
+    const userTweetText = `I just proved ownership of my elite ${selectedAsset} completely off-chain! My wallet stays offline and secure from attackers, verified instantly by @karmascoreai. 🛡️🔐\n\nVerify yours at: ${process.env.APP_URL || "https://karma-ai.io"}`;
     const officialTweetText = `PUBLIC PROOF: Verified @${cleanHandle}'s authentic ownership of ${selectedAsset} via Zero-Knowledge Cryptographic Passport #${proofId}. No wallet addresses were exposed. 🌐✅\n\nProtect your Web3 footprint with Karma AI: ${process.env.APP_URL || "https://karma-ai.io"}`;
 
     const newShare = {
@@ -1016,7 +1016,7 @@ app.post("/api/share-x-proof", (req, res) => {
       userTweetText,
       officialTweetText,
       userPostUrl: `https://x.com/${cleanHandle}/status/${randomStatusId1}`,
-      officialPostUrl: `https://x.com/Karma_AI/status/${randomStatusId2}`,
+      officialPostUrl: `https://x.com/karmascoreai/status/${randomStatusId2}`,
       timestamp
     };
 

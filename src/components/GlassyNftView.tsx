@@ -135,7 +135,7 @@ export function GlassyNftView({
       `Resolving official X handle @${showcaseTwitterHandle}...`,
       "Signing cryptographic Zero-Knowledge signature...",
       `Publishing proof directly to @${showcaseTwitterHandle} connected feed...`,
-      "Anchoring verification mirror post to the official @Karma_AI public database..."
+      "Anchoring verification mirror post to the official @karmascoreai public database..."
     ];
 
     try {
@@ -391,7 +391,7 @@ export function GlassyNftView({
       `Resolving verified X identity @${nftTwitterHandle.trim().replace(/^@/, "")}...`,
       `Signing ownership cryptographic credentials for "${selectedNft?.name}"...`,
       "Synthesizing proof payload into decentralized post format...",
-      `Broadcasting verification proof to X & anchoring @Karma_AI public archive...`
+      `Broadcasting verification proof to X & anchoring @karmascoreai public archive...`
     ];
 
     try {

@@ -506,7 +506,7 @@ export default function App() {
       `Resolving official X handle @${demoTwitterHandle}...`,
       "Signing cryptographic Zero-Knowledge signature...",
       `Publishing proof directly to @${demoTwitterHandle} connected feed...`,
-      "Anchoring verification mirror post to the official @Karma_AI public database..."
+      "Anchoring verification mirror post to the official @karmascoreai public database..."
     ];
 
     try {
@@ -2120,45 +2120,142 @@ export default function App() {
           )}
 
           {/* Quick Sandbox Selector / Examples */}
-          <div className="pt-10 max-w-3xl mx-auto relative z-10">
-            <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
-              <span className="block text-[10px] font-mono text-slate-500 uppercase tracking-widest">
-                Bonded Users
-              </span>
-              <button
-                onClick={() => {
-                  setVerifiedSearchQuery("");
-                  setShowVerifiedCrowdsModal(true);
-                }}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-purple-500/30 hover:border-purple-400 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-mono text-[10px] uppercase font-bold transition-all active:scale-95 cursor-pointer"
-                title="Search Bonded Users"
-              >
-                <Search className="w-3 h-3 text-purple-400" />
-                Search Users
-              </button>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {POPULAR_EXAMPLES.map((ex) => (
+          <div className="pt-12 max-w-4xl mx-auto relative z-10">
+            <div className="p-6 md:p-8 rounded-3xl bg-slate-950/70 border border-slate-800/60 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+              {/* Decorative premium radial gradients inside sandbox */}
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/5 relative z-10">
+                <div className="space-y-1">
+                  <span className="block text-[10px] font-mono text-blue-400 font-black tracking-[0.25em] uppercase">
+                    Institutional Index
+                  </span>
+                  <h3 className="text-lg font-extrabold tracking-tight font-display text-white flex items-center gap-2">
+                    <Users className="w-5 h-5 text-blue-500" />
+                    Reputation Directory Sandbox
+                  </h3>
+                </div>
                 <button
-                  id={`example-btn-${ex.score}`}
-                  key={ex.address}
-                  onClick={() => handleDecode(ex.address)}
-                  className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
-                    report?.address === ex.address
-                      ? "bg-yellow-950/20 border-yellow-500/50 shadow-lg shadow-yellow-500/5"
-                      : "bg-[#06060a]/60 border-slate-900 hover:border-yellow-500/15 hover:bg-slate-900/20"
-                  }`}
+                  onClick={() => {
+                    setVerifiedSearchQuery("");
+                    setShowVerifiedCrowdsModal(true);
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl border border-purple-500/30 hover:border-purple-400 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-mono text-xs uppercase font-bold transition-all active:scale-95 cursor-pointer shadow-lg shadow-purple-500/5 group"
+                  title="Search Bonded Users"
                 >
-                  <div className="flex justify-between items-start mb-1">
-                    <span className="text-[10px] font-mono tracking-wider text-yellow-500">{ex.chain}</span>
-                    <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${getTierColor(ex.tier)}`}>
-                      {ex.score}
-                    </span>
-                  </div>
-                  <div className="text-[11px] font-semibold text-white truncate">{ex.name}</div>
-                  <div className="text-[9px] font-mono text-slate-500 truncate mt-0.5">{ex.address}</div>
+                  <Search className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <span>Search Full Directory</span>
                 </button>
-              ))}
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
+                {/* Trusted Bond Wallets Group */}
+                <div className="space-y-4 p-4 rounded-2xl bg-slate-900/30 border border-emerald-500/10 hover:border-emerald-500/20 transition-all shadow-xl shadow-black/10 group">
+                  <div className="flex items-center justify-between pb-3 border-b border-white/5">
+                    <div className="flex items-center gap-2.5">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <span className="text-xs font-mono font-black text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <ShieldCheck className="w-4 h-4" />
+                        Trusted Bond Wallets
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-500 font-medium px-2 py-0.5 rounded-full bg-slate-950/50">Score 589 - 1000</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {POPULAR_EXAMPLES.filter(ex => ex.score >= 589).map((ex) => (
+                      <button
+                        id={`example-btn-${ex.score}`}
+                        key={ex.address}
+                        onClick={() => handleDecode(ex.address)}
+                        className={`p-3.5 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
+                          report?.address === ex.address
+                            ? "bg-emerald-950/20 border-emerald-500/60 shadow-lg shadow-emerald-500/10"
+                            : "bg-[#06060a]/80 border-slate-900/90 hover:border-emerald-500/30 hover:bg-slate-900/40 hover:-translate-y-0.5"
+                        }`}
+                      >
+                        {/* Selected accent line */}
+                        {report?.address === ex.address && (
+                          <div className="absolute top-0 left-0 right-0 h-[2px] bg-emerald-400" />
+                        )}
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-[9px] font-mono tracking-widest text-amber-500 font-extrabold uppercase">{ex.chain}</span>
+                          <span className={`text-[9px] font-mono font-black px-2 py-0.5 rounded-full ${getTierColor(ex.tier)} shadow-sm`}>
+                            {ex.score}
+                          </span>
+                        </div>
+                        <div className="text-xs font-bold text-white truncate flex items-center gap-1">
+                          {ex.name}
+                          {report?.address === ex.address && (
+                            <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                          )}
+                        </div>
+                        <div className="text-[9px] font-mono text-slate-500 truncate mt-1.5 flex items-center justify-between">
+                          <span>{ex.address}</span>
+                          <span className="text-[8px] text-emerald-400 opacity-0 group-hover/btn:opacity-100 transition-opacity">Select →</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bad Wallets Group */}
+                <div className="space-y-4 p-4 rounded-2xl bg-slate-900/30 border border-rose-500/10 hover:border-rose-500/20 transition-all shadow-xl shadow-black/10 group">
+                  <div className="flex items-center justify-between pb-3 border-b border-white/5">
+                    <div className="flex items-center gap-2.5">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                      </span>
+                      <span className="text-xs font-mono font-black text-rose-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <ShieldAlert className="w-4 h-4" />
+                        Bad Wallets / Risks
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-500 font-medium px-2 py-0.5 rounded-full bg-slate-950/50">Score 0 - 588</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {POPULAR_EXAMPLES.filter(ex => ex.score < 589).map((ex) => (
+                      <button
+                        id={`example-btn-${ex.score}`}
+                        key={ex.address}
+                        onClick={() => handleDecode(ex.address)}
+                        className={`p-3.5 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
+                          report?.address === ex.address
+                            ? "bg-rose-950/20 border-rose-500/60 shadow-lg shadow-rose-500/10"
+                            : "bg-[#06060a]/80 border-slate-900/90 hover:border-rose-500/30 hover:bg-slate-900/40 hover:-translate-y-0.5"
+                        }`}
+                      >
+                        {/* Selected accent line */}
+                        {report?.address === ex.address && (
+                          <div className="absolute top-0 left-0 right-0 h-[2px] bg-rose-500" />
+                        )}
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-[9px] font-mono tracking-widest text-amber-500 font-extrabold uppercase">{ex.chain}</span>
+                          <span className={`text-[9px] font-mono font-black px-2 py-0.5 rounded-full ${getTierColor(ex.tier)} shadow-sm`}>
+                            {ex.score}
+                          </span>
+                        </div>
+                        <div className="text-xs font-bold text-white truncate flex items-center gap-1">
+                          {ex.name}
+                          {report?.address === ex.address && (
+                            <ShieldAlert className="w-3 h-3 text-rose-400 shrink-0" />
+                          )}
+                        </div>
+                        <div className="text-[9px] font-mono text-slate-500 truncate mt-1.5 flex items-center justify-between">
+                          <span>{ex.address}</span>
+                          <span className="text-[8px] text-rose-400 opacity-0 group-hover/btn:opacity-100 transition-opacity">Select →</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -2712,7 +2809,7 @@ export default function App() {
                                         <div className="flex items-center justify-between">
                                           <span className="text-[9px] font-mono text-slate-400 font-bold flex items-center gap-1">
                                             <Twitter className="w-2.5 h-2.5 text-[#1d9bf0]" />
-                                            @Karma_AI Archive
+                                            @karmascoreai Archive
                                           </span>
                                           <span className="text-[8px] font-mono text-yellow-500 font-black">● MIRRORED</span>
                                         </div>
