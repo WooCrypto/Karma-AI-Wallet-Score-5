@@ -138,7 +138,7 @@ Our utility business model utilizes an **instant on-chain revenue share (rev sha
 ### Instant Value Distribution Strategy
 The 50% community allocation is programmatically split to fuel two core pillars:
 * **15% Instant Buyback & Burn:** Transferred straight to a null address for permanent deflationary supply contraction of the native token.
-* **35% Buybacks & Airdrops:** Used to buy back liquidity and distribute direct on-chain token airdrops to SWARM NFT holders and reciprocal community stakers.
+* **20% Buybacks & Airdrops:** Used to buy back liquidity and distribute direct on-chain token airdrops to SWARM NFT holders and reciprocal community stakers.
 
 *Note: While core developers reserve the structural right to adapt these parameters during technical upgrades to ensure protocol safety, these terms are currently stabilized by Vilora Labs. Vilora Labs has officially committed 50% of the entire ecosystem and corporate equity weight directly to the community to manage with care.*
 
@@ -149,8 +149,8 @@ The 50% community allocation is programmatically split to fuel two core pillars:
 | Revenue Channel | Allocation % | Primary Recipient / Action |
 | :--- | :---: | :--- |
 | Instant Buyback & Burn | 15% | Permanent Deflationary Contract Burn |
-| NFT & Community Airdrops | 35% | Direct Buyback distributed to NFT holders & stakers |
-| Ecosystem & Infrastructure | 35% | Vilora Labs Node Scaling & Indexer optimization |
+| NFT & Community Airdrops | 20% | Direct Buyback distributed to NFT holders & stakers |
+| Ecosystem & Infrastructure | 50% | Vilora Labs Node Scaling & Indexer optimization |
 | Core Maintenance & Auditing | 15% | Forensics Security Team & Operational Overhead |
 
 ---
@@ -160,18 +160,18 @@ We maintain a strict anti-inflation and utility-focused stance. We do not provid
 
 * **Scenario A ($182,500 USDC Annual Fees)**
   * 15% Token Burn: $27,375
-  * 35% NFT Share: $63,875
-  * Total Community (50%): $91,250
+  * 20% NFT Share: $36,500
+  * Total Community (35%): $63,875
 
 * **Scenario B ($912,500 USDC Annual Fees)**
   * 15% Token Burn: $136,875
-  * 35% NFT Share: $319,375
-  * Total Community (50%): $456,250
+  * 20% NFT Share: $182,500
+  * Total Community (35%): $319,375
 
 * **Scenario C ($4,562,500 USDC Annual Fees)**
   * 15% Token Burn: $684,375
-  * 35% NFT Share: $1,596,875
-  * Total Community (50%): $2,281,250
+  * 20% NFT Share: $912,500
+  * Total Community (35%): $1,596,875
 
 *Disclaimer: Projections are mathematical models based on potential product adoption levels and do not represent a guarantee of earnings. Realized returns fluctuate depending on live RaaS integration, active dApp volume, and Solana/EVM network transaction velocity. Always evaluate blockchain technologies with a clear focus on core software utility.*
 `;

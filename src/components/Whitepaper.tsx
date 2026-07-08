@@ -1100,8 +1100,8 @@ $KARMA is the utility backbone of the entire reputation ecosystem. Holding KARMA
           </div>
           <div className="wp-card" style={{ border: '1px solid rgba(245, 175, 25, 0.2)' }}>
             <div className="wp-card-icon" style={{ color: 'var(--gold)' }}>🎁</div>
-            <div className="wp-card-title">35% Buybacks & Airdrops</div>
-            <p>35% of all proceeds fund immediate $KARMA token buybacks which are distributed directly as custom airdrops to SWARM NFT holders and community stakers.</p>
+            <div className="wp-card-title">20% Buybacks & Airdrops</div>
+            <p>20% of all proceeds fund immediate $KARMA token buybacks which are distributed directly as custom airdrops to SWARM NFT holders and community stakers.</p>
           </div>
         </div>
         <p style={{ fontSize: '11px', color: 'var(--chrome)', fontStyle: 'italic', background: 'rgba(212, 160, 23, 0.03)', padding: '12px', borderRadius: '6px', border: '1px solid rgba(212, 160, 23, 0.1)', marginTop: '16px' }}>

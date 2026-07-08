@@ -148,6 +148,20 @@ const VERIFIED_CROWDS = [
     tier: "High Risk",
     score: 210,
     chain: "EVM"
+  },
+  {
+    name: "Flash-Loan Arbitrage Bot (Slippage Exploit)",
+    address: "karmasolexploiter6666666666666666666",
+    tier: "High Risk",
+    score: 185,
+    chain: "Solana"
+  },
+  {
+    name: "Coordinated Airdrop Sybil Cluster",
+    address: "0xairdropsybil4444444444444444444444",
+    tier: "Caution",
+    score: 310,
+    chain: "EVM"
   }
 ];
 
@@ -622,7 +636,7 @@ export default function App() {
       return false;
     }
   });
-  const [showMintSwarmNftModal, setShowMintSwarmNftModal] = useState(false);
+  const [showMintSwarmNftModal, setShowMintSwarmNftModal] = useState(true);
   const [isMintingSwarmNft, setIsMintingSwarmNft] = useState(false);
   const [swarmNftMintStep, setSwarmNftMintStep] = useState("");
 
@@ -1721,12 +1735,12 @@ export default function App() {
                 </div>
 
                 {/* HIGH-FIDELITY CENTER NAV LINKS (TABBED NAVIGATION) */}
-                <nav className="flex items-center p-1 bg-white/[0.02] border border-white/5 rounded-xl self-center">
+                <nav className="flex items-center p-1.5 bg-white/[0.02] border border-white/5 rounded-2xl self-center">
                   <button
                     onClick={() => setActiveMainTab("dashboard")}
-                    className={`px-4 py-2 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-5 py-2.5 text-xs sm:text-sm font-mono font-bold tracking-wider uppercase rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
                       activeMainTab === "dashboard"
-                        ? "bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/30 text-amber-400 font-black shadow-inner"
+                        ? "bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/40 text-amber-300 font-black shadow-inner"
                         : "text-slate-400 hover:text-slate-200 border border-transparent"
                     }`}
                   >
@@ -1735,37 +1749,37 @@ export default function App() {
                   
                   <button
                     onClick={() => setActiveMainTab("staking")}
-                    className={`px-4 py-2 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-5 py-2.5 text-xs sm:text-sm font-mono font-bold tracking-wider uppercase rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
                       activeMainTab === "staking"
-                        ? "bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/30 text-amber-400 font-black shadow-inner"
+                        ? "bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/40 text-amber-300 font-black shadow-inner"
                         : "text-slate-400 hover:text-slate-200 border border-transparent"
                     }`}
                   >
-                    <Coins className="w-3.5 h-3.5" />
+                    <Coins className="w-4 h-4" />
                     Rewards
                   </button>
 
                   <button
                     onClick={() => setActiveMainTab("premium")}
-                    className={`px-4 py-2 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-5 py-2.5 text-xs sm:text-sm font-mono font-bold tracking-wider uppercase rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
                       activeMainTab === "premium"
-                        ? "bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/30 text-amber-400 font-black shadow-inner"
+                        ? "bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/40 text-amber-300 font-black shadow-inner"
                         : "text-slate-400 hover:text-slate-200 border border-transparent"
                     }`}
                   >
-                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <ShieldAlert className="w-4 h-4" />
                     Perks
                   </button>
 
                   <button
                     onClick={() => setActiveMainTab("nfc-card")}
-                    className={`px-4 py-2 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-5 py-2.5 text-xs sm:text-sm font-mono font-bold tracking-wider uppercase rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
                       activeMainTab === "nfc-card"
-                        ? "bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/30 text-amber-400 font-black shadow-inner"
+                        ? "bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/40 text-amber-300 font-black shadow-inner"
                         : "text-slate-400 hover:text-slate-200 border border-transparent"
                     }`}
                   >
-                    <CreditCard className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                    <CreditCard className="w-4 h-4 text-amber-400 animate-pulse" />
                     NFC Card
                   </button>
                 </nav>
@@ -2003,16 +2017,16 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-zinc-800 bg-[#06060a] text-amber-400 text-[11px] font-mono uppercase tracking-[0.2em] font-bold shadow-[0_0_20px_rgba(0,0,0,0.8),_0_0_10px_rgba(245,158,11,0.05)]"
+              className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-zinc-800 bg-[#06060a] text-amber-400 text-xs sm:text-sm font-mono uppercase tracking-[0.2em] font-extrabold shadow-[0_0_20px_rgba(0,0,0,0.8),_0_0_10px_rgba(245,158,11,0.05)]"
             >
-              <span className="flex h-1.5 w-1.5 relative shrink-0">
+              <span className="flex h-2 w-2 relative shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
               </span>
               SOLANA & EVM IDENTITY CHECKER
             </motion.div>
             
-            <h1 className="text-5xl sm:text-7xl md:text-8xl font-black font-display tracking-tight uppercase mt-6 mb-4 select-none">
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black font-display tracking-tight uppercase mt-6 mb-4 select-none leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400 drop-shadow-[0_2px_10px_rgba(255,255,255,0.1)]">
                 KARMA SCORE
               </span>
@@ -2020,37 +2034,37 @@ export default function App() {
                 AI
               </span>
             </h1>
-            <div className="text-base sm:text-xl text-slate-200 font-normal leading-relaxed max-w-2xl mx-auto space-y-4">
-              <p className="font-extrabold text-white text-xl sm:text-3xl tracking-tight uppercase bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
+            <div className="text-xl sm:text-3xl text-slate-200 font-normal leading-relaxed max-w-4xl mx-auto space-y-6">
+              <p className="font-black text-white text-3xl sm:text-5xl tracking-tight uppercase bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
                 Know every wallet before every interaction.
               </p>
-              <p className="text-slate-300/90 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light tracking-wide antialiased">
+              <p className="text-slate-200 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-normal tracking-wide antialiased opacity-95">
                 Paste any Solana or EVM wallet to instantly reveal a living trust profile powered by onchain activity, reputation signals, and community intelligence.
               </p>
             </div>
           </div>
 
-          <div className="max-w-2xl mx-auto relative z-10">
-            <div className="relative p-1.5 bg-[#06060a]/95 backdrop-blur-xl border border-yellow-500/20 hover:border-yellow-500/40 rounded-2xl focus-within:border-amber-500/50 focus-within:ring-4 focus-within:ring-amber-500/[0.08] transition-all duration-300 shadow-[0_0_60px_rgba(245,158,11,0.06),0_30px_100px_rgba(0,0,0,0.95)] flex flex-col sm:flex-row items-stretch gap-2 neon-shimmer">
-              <div className="relative flex-1 flex items-center pl-3">
-                <Search className="w-5 h-5 text-slate-500 absolute left-3.5" />
+          <div className="max-w-3xl mx-auto relative z-10">
+            <div className="relative p-2.5 bg-[#06060a]/95 backdrop-blur-xl border-2 border-yellow-500/30 hover:border-yellow-500/50 rounded-2xl focus-within:border-amber-500/70 focus-within:ring-4 focus-within:ring-amber-500/[0.1] transition-all duration-300 shadow-[0_0_60px_rgba(245,158,11,0.08),0_30px_100px_rgba(0,0,0,0.95)] flex flex-col sm:flex-row items-stretch gap-3 neon-shimmer">
+              <div className="relative flex-1 flex items-center pl-4">
+                <Search className="w-6 h-6 text-slate-400 absolute left-4" />
                 <input
                   id="wallet-search-input"
                   type="text"
                   value={addressInput}
                   onChange={(e) => setAddressInput(e.target.value)}
-                  placeholder="Paste any Solana or EVM address (0x... or base58)..."
-                  className="w-full bg-transparent pl-7 pr-20 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none font-mono"
+                  placeholder="Paste any Solana or EVM address..."
+                  className="w-full bg-transparent pl-11 pr-24 py-5 text-lg sm:text-xl md:text-2xl text-white placeholder-slate-500 focus:outline-none font-mono"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleDecode(addressInput);
                   }}
                 />
-                <div className="absolute right-2 flex items-center gap-1">
+                <div className="absolute right-3 flex items-center gap-1.5">
                   {addressInput && (
                     <button
                       type="button"
                       onClick={() => setAddressInput("")}
-                      className="p-1 hover:text-white text-slate-500 transition-colors text-xs font-mono"
+                      className="p-1.5 hover:text-white text-slate-500 transition-colors text-sm font-mono"
                       title="Clear"
                     >
                       ✕
@@ -2071,11 +2085,11 @@ export default function App() {
                         setTimeout(() => setError(null), 6000);
                       }
                     }}
-                    className="p-1.5 bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-yellow-400 rounded-lg border border-slate-800 text-[10px] font-mono transition-all flex items-center gap-1 shrink-0 active:scale-95"
+                    className="p-2 bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-yellow-400 rounded-xl border border-slate-800 text-xs font-mono transition-all flex items-center gap-1.5 shrink-0 active:scale-95"
                     title="Paste from Clipboard"
                   >
-                    <Clipboard className="w-3.5 h-3.5" />
-                    <span className="hidden xs:inline">Paste</span>
+                    <Clipboard className="w-4 h-4" />
+                    <span className="hidden xs:inline font-bold">Paste</span>
                   </button>
                 </div>
               </div>
@@ -2083,16 +2097,16 @@ export default function App() {
                 id="decode-submit-btn"
                 onClick={() => handleDecode(addressInput)}
                 disabled={loading}
-                className="px-6 py-3.5 bg-gradient-to-r from-[#20c3ff] to-[#015aff] hover:from-[#35cbff] hover:to-[#1a6bff] text-white shadow-[0_0_20px_rgba(32,195,255,0.45)] disabled:opacity-50 font-mono text-sm tracking-wider font-extrabold rounded-xl transition-all flex items-center justify-center gap-2 shrink-0 active:scale-[0.98] cursor-pointer"
+                className="px-10 py-5 bg-gradient-to-r from-[#20c3ff] to-[#015aff] hover:from-[#35cbff] hover:to-[#1a6bff] text-white shadow-[0_0_35px_rgba(32,195,255,0.65)] hover:shadow-[0_0_50px_rgba(32,195,255,0.85)] disabled:opacity-50 font-mono text-lg sm:text-xl tracking-wider font-black rounded-2xl transition-all flex items-center justify-center gap-3 shrink-0 active:scale-[0.98] cursor-pointer hover:scale-[1.01]"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin text-black" />
+                    <Loader2 className="w-6 h-6 animate-spin text-white" />
                     Checking...
                   </>
                 ) : (
                   <>
-                    <Cpu className="w-4 h-4" />
+                    <Cpu className="w-6 h-6" />
                     Check Wallet
                   </>
                 )}
@@ -2104,36 +2118,36 @@ export default function App() {
             <motion.div 
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-xs font-mono flex items-center justify-center mt-6 relative z-10"
+              className="text-sm font-mono flex items-center justify-center mt-8 relative z-10"
             >
               <button
                 onClick={() => {
                   setIsBondingFlowAfterConnect(false);
                   setShowConnectWalletModal(true);
                 }}
-                className="px-5 py-2.5 rounded-xl bg-yellow-500/[0.04] hover:bg-yellow-500/[0.08] border border-yellow-500/15 hover:border-yellow-500/30 text-yellow-400 hover:text-yellow-300 font-bold tracking-tight transition-all cursor-pointer flex items-center gap-2 shadow-[0_0_30px_rgba(234,179,8,0.03)] active:scale-[0.98]"
+                className="px-6 py-3 rounded-2xl bg-yellow-500/[0.05] hover:bg-yellow-500/[0.1] border-2 border-yellow-500/20 hover:border-yellow-500/40 text-yellow-400 hover:text-yellow-300 font-extrabold tracking-tight transition-all cursor-pointer flex items-center gap-2.5 shadow-[0_0_30px_rgba(234,179,8,0.05)] active:scale-[0.98]"
               >
                 <span>Bond your X. Bind your wallet. Become verified.</span>
-                <span className="text-amber-500 animate-pulse">⚡</span>
+                <span className="text-amber-500 animate-pulse text-base">⚡</span>
               </button>
             </motion.div>
           )}
 
           {/* Quick Sandbox Selector / Examples */}
           <div className="pt-12 max-w-4xl mx-auto relative z-10">
-            <div className="p-6 md:p-8 rounded-3xl bg-slate-950/70 border border-slate-800/60 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-              {/* Decorative premium radial gradients inside sandbox */}
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-b from-[#0a0a0f]/95 to-black/95 border-2 border-amber-500/30 shadow-[0_0_60px_rgba(245,158,11,0.07)] backdrop-blur-xl relative overflow-hidden">
+              {/* Decorative premium gold radial gradients inside sandbox */}
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/[0.04] rounded-full blur-3xl pointer-events-none animate-pulse" />
+              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/[0.03] rounded-full blur-3xl pointer-events-none" />
               
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/5 relative z-10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-5 border-b border-white/10 relative z-10">
                 <div className="space-y-1">
-                  <span className="block text-[10px] font-mono text-blue-400 font-black tracking-[0.25em] uppercase">
-                    Institutional Index
+                  <span className="block text-[10px] font-mono text-amber-400 font-extrabold tracking-[0.3em] uppercase">
+                    Institutional Index & Forensic Registry
                   </span>
-                  <h3 className="text-lg font-extrabold tracking-tight font-display text-white flex items-center gap-2">
-                    <Users className="w-5 h-5 text-blue-500" />
-                    Reputation Directory Sandbox
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight font-display text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-amber-300 flex items-center gap-2.5">
+                    <Users className="w-6 h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.4)]" />
+                    REPUTATION DIRECTORY SANDBOX
                   </h3>
                 </div>
                 <button
@@ -2141,41 +2155,41 @@ export default function App() {
                     setVerifiedSearchQuery("");
                     setShowVerifiedCrowdsModal(true);
                   }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl border border-purple-500/30 hover:border-purple-400 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-mono text-xs uppercase font-bold transition-all active:scale-95 cursor-pointer shadow-lg shadow-purple-500/5 group"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-amber-500/30 hover:border-amber-400 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-mono text-xs uppercase font-black tracking-wider transition-all active:scale-95 cursor-pointer shadow-lg shadow-amber-500/5 group"
                   title="Search Bonded Users"
                 >
-                  <Search className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <Search className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
                   <span>Search Full Directory</span>
                 </button>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
                 {/* Trusted Bond Wallets Group */}
-                <div className="space-y-4 p-4 rounded-2xl bg-slate-900/30 border border-emerald-500/10 hover:border-emerald-500/20 transition-all shadow-xl shadow-black/10 group">
+                <div className="space-y-4 p-5 rounded-2xl bg-gradient-to-b from-slate-900/40 to-slate-950/40 border border-emerald-500/20 hover:border-emerald-500/40 transition-all shadow-xl shadow-black/35 group">
                   <div className="flex items-center justify-between pb-3 border-b border-white/5">
                     <div className="flex items-center gap-2.5">
                       <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <span className="text-xs font-mono font-black text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <ShieldCheck className="w-4 h-4" />
+                      <span className="text-xs font-mono font-black text-emerald-400 uppercase tracking-[0.15em] flex items-center gap-1.5">
+                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
                         Trusted Bond Wallets
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-slate-500 font-medium px-2 py-0.5 rounded-full bg-slate-950/50">Score 589 - 1000</span>
+                    <span className="text-[10px] font-mono text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-950/30 border border-emerald-500/20">Score 589 - 1000</span>
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {POPULAR_EXAMPLES.filter(ex => ex.score >= 589).map((ex) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {VERIFIED_CROWDS.filter(ex => ex.score >= 589).map((ex) => (
                       <button
                         id={`example-btn-${ex.score}`}
                         key={ex.address}
                         onClick={() => handleDecode(ex.address)}
-                        className={`p-3.5 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
+                        className={`p-4 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
                           report?.address === ex.address
                             ? "bg-emerald-950/20 border-emerald-500/60 shadow-lg shadow-emerald-500/10"
-                            : "bg-[#06060a]/80 border-slate-900/90 hover:border-emerald-500/30 hover:bg-slate-900/40 hover:-translate-y-0.5"
+                            : "bg-[#06060a]/90 border-zinc-900 hover:border-emerald-500/30 hover:bg-slate-900/30 hover:-translate-y-0.5"
                         }`}
                       >
                         {/* Selected accent line */}
@@ -2188,15 +2202,15 @@ export default function App() {
                             {ex.score}
                           </span>
                         </div>
-                        <div className="text-xs font-bold text-white truncate flex items-center gap-1">
+                        <div className="text-xs font-black text-white truncate flex items-center gap-1">
                           {ex.name}
                           {report?.address === ex.address && (
-                            <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                           )}
                         </div>
                         <div className="text-[9px] font-mono text-slate-500 truncate mt-1.5 flex items-center justify-between">
-                          <span>{ex.address}</span>
-                          <span className="text-[8px] text-emerald-400 opacity-0 group-hover/btn:opacity-100 transition-opacity">Select →</span>
+                          <span>{ex.address.slice(0, 11)}...{ex.address.slice(-6)}</span>
+                          <span className="text-[8px] text-emerald-400 opacity-0 group-hover/btn:opacity-100 transition-opacity font-extrabold">Select →</span>
                         </div>
                       </button>
                     ))}
@@ -2204,31 +2218,31 @@ export default function App() {
                 </div>
 
                 {/* Bad Wallets Group */}
-                <div className="space-y-4 p-4 rounded-2xl bg-slate-900/30 border border-rose-500/10 hover:border-rose-500/20 transition-all shadow-xl shadow-black/10 group">
+                <div className="space-y-4 p-5 rounded-2xl bg-gradient-to-b from-slate-900/40 to-slate-950/40 border border-rose-500/20 hover:border-rose-500/40 transition-all shadow-xl shadow-black/35 group">
                   <div className="flex items-center justify-between pb-3 border-b border-white/5">
                     <div className="flex items-center gap-2.5">
                       <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                       </span>
-                      <span className="text-xs font-mono font-black text-rose-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <ShieldAlert className="w-4 h-4" />
+                      <span className="text-xs font-mono font-black text-rose-400 uppercase tracking-[0.15em] flex items-center gap-1.5">
+                        <ShieldAlert className="w-4 h-4 text-rose-400" />
                         Bad Wallets / Risks
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-slate-500 font-medium px-2 py-0.5 rounded-full bg-slate-950/50">Score 0 - 588</span>
+                    <span className="text-[10px] font-mono text-rose-400 font-bold px-2 py-0.5 rounded-full bg-rose-950/30 border border-rose-500/20">Score 0 - 588</span>
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {POPULAR_EXAMPLES.filter(ex => ex.score < 589).map((ex) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {VERIFIED_CROWDS.filter(ex => ex.score < 589).map((ex) => (
                       <button
                         id={`example-btn-${ex.score}`}
                         key={ex.address}
                         onClick={() => handleDecode(ex.address)}
-                        className={`p-3.5 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
+                        className={`p-4 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
                           report?.address === ex.address
                             ? "bg-rose-950/20 border-rose-500/60 shadow-lg shadow-rose-500/10"
-                            : "bg-[#06060a]/80 border-slate-900/90 hover:border-rose-500/30 hover:bg-slate-900/40 hover:-translate-y-0.5"
+                            : "bg-[#06060a]/90 border-zinc-900 hover:border-rose-500/30 hover:bg-slate-900/30 hover:-translate-y-0.5"
                         }`}
                       >
                         {/* Selected accent line */}
@@ -2241,15 +2255,15 @@ export default function App() {
                             {ex.score}
                           </span>
                         </div>
-                        <div className="text-xs font-bold text-white truncate flex items-center gap-1">
+                        <div className="text-xs font-black text-white truncate flex items-center gap-1">
                           {ex.name}
                           {report?.address === ex.address && (
-                            <ShieldAlert className="w-3 h-3 text-rose-400 shrink-0" />
+                            <ShieldAlert className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                           )}
                         </div>
                         <div className="text-[9px] font-mono text-slate-500 truncate mt-1.5 flex items-center justify-between">
-                          <span>{ex.address}</span>
-                          <span className="text-[8px] text-rose-400 opacity-0 group-hover/btn:opacity-100 transition-opacity">Select →</span>
+                          <span>{ex.address.slice(0, 11)}...{ex.address.slice(-6)}</span>
+                          <span className="text-[8px] text-rose-400 opacity-0 group-hover/btn:opacity-100 transition-opacity font-extrabold">Select →</span>
                         </div>
                       </button>
                     ))}
@@ -2935,10 +2949,10 @@ export default function App() {
             <motion.div variants={dashboardItemVariants} className="border-t border-slate-900 pt-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                  <h2 className="text-xl font-bold font-display text-white">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white tracking-tight">
                     Reputation Analytics & Checked Passport
                   </h2>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-sm sm:text-base text-slate-300 mt-1.5 font-medium">
                     Live verification feed for {report.address}
                   </p>
                 </div>
@@ -2958,7 +2972,7 @@ export default function App() {
                 
                 {/* COLUMN 1: WALLET REPUTATION PASSPORT NFT (5 cols) */}
                 <motion.div variants={dashboardItemVariants} className="lg:col-span-5 flex flex-col items-center">
-                  <div className="w-full max-w-md relative">
+                  <div className="w-full max-w-lg lg:scale-[1.05] lg:my-6 transition-all duration-300 relative">
                     {/* CONFETTI SPARKS ANIMATION OVERLAY */}
                     {showConfetti && (
                       <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden rounded-3xl">
@@ -2991,12 +3005,12 @@ export default function App() {
                     <motion.div
                       animate={isSoulbound ? { scale: [1, 1.02, 1], rotate: [0, 1, -1, 0] } : {}}
                       transition={{ duration: 0.6 }}
-                      className={`relative overflow-hidden rounded-3xl p-8 flex flex-col items-center justify-between text-center select-none shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.05)] border transition-all duration-700 ${
+                      className={`relative overflow-hidden rounded-3xl p-10 flex flex-col items-center justify-between text-center select-none shadow-[0_30px_70px_-10px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.05)] border transition-all duration-700 ${
                         report.score < 280
-                          ? "border-red-500/30 bg-[#0c0505]"
+                          ? "border-red-500/40 bg-[#0d0505] shadow-[0_0_40px_rgba(239,68,68,0.15)]"
                           : isSoulbound
-                          ? "border-yellow-400/50 bg-[#0c0b05] shadow-[0_0_40px_rgba(245,175,25,0.15)]"
-                          : "border-yellow-500/20 bg-[#090a0f]"
+                          ? "border-yellow-400/70 bg-[#0d0c05] shadow-[0_0_60px_rgba(245,175,25,0.3)]"
+                          : "border-yellow-500/35 bg-[#090a12] shadow-[0_0_50px_rgba(245,158,11,0.12)]"
                       }`}
                     >
                       {/* Aura glowing effect behind soulbound card */}
@@ -3177,64 +3191,64 @@ export default function App() {
                       </div>
 
                       {/* Bottom status text / action button */}
-                      <div className="mt-6 z-10 w-full space-y-3">
+                      <div className="mt-6 z-10 w-full space-y-3.5">
                         {report.score < 280 ? (
-                          <div className="text-[10px] font-mono text-red-400 animate-pulse font-bold tracking-[0.2em] uppercase">
+                          <div className="text-xs font-mono text-red-400 animate-pulse font-black tracking-[0.2em] uppercase text-center bg-red-950/40 border border-red-500/30 py-3 rounded-2xl">
                             ⚠️ HAZARD • HIGH RISK BLACKLIST
                           </div>
                         ) : isSoulbound ? (
-                          <div className="flex flex-col gap-2">
-                            <div className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-yellow-400 font-extrabold tracking-[0.25em] uppercase bg-yellow-500/10 border border-yellow-500/30 py-2.5 rounded-xl">
-                              <Check className="w-4 h-4 text-yellow-400" /> SOULBOUND • SECURELY BOUND
+                          <div className="flex flex-col gap-2.5">
+                            <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-mono text-yellow-400 font-extrabold tracking-[0.25em] uppercase bg-yellow-500/10 border-2 border-yellow-500/40 py-3 rounded-2xl">
+                              <Check className="w-5 h-5 text-yellow-400" /> SOULBOUND • SECURELY BOUND
                             </div>
-                            <div className="text-[9px] font-mono text-slate-500 text-center uppercase tracking-wider">
+                            <div className="text-xs font-mono text-slate-400 text-center uppercase tracking-wider font-semibold">
                               Record anchored on-chain with {userWalletChain} signature
                             </div>
                           </div>
                         ) : !userWalletAddress ? (
-                          <div className="space-y-2">
+                          <div className="space-y-3">
                             <button
                               onClick={() => {
                                 setIsBondingFlowAfterConnect(true);
                                 setShowConnectWalletModal(true);
                               }}
-                              className="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-mono text-xs tracking-wider font-black rounded-xl transition-all cursor-pointer shadow-lg hover:shadow-yellow-500/10 flex items-center justify-center gap-1.5 active:scale-[0.98]"
+                              className="w-full py-4.5 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-mono text-sm tracking-wider font-black rounded-2xl transition-all cursor-pointer shadow-[0_0_35px_rgba(245,158,11,0.35)] hover:shadow-[0_0_50px_rgba(245,158,11,0.55)] flex items-center justify-center gap-2 active:scale-[0.98]"
                             >
-                              <svg className="w-4 h-4 text-black animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                              <svg className="w-5 h-5 text-black animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                               </svg>
                               CONNECT WALLET TO BIND
                             </button>
-                            <div className="text-[9px] font-mono text-slate-400 tracking-wider text-center uppercase">
-                              Bonding cost: <span className="text-yellow-400 font-bold">0.05 SOL</span> or <span className="text-yellow-400 font-bold">$5 EVM</span>
+                            <div className="text-xs font-mono text-slate-300 tracking-wider text-center uppercase font-bold">
+                              Bonding cost: <span className="text-yellow-400 font-black text-sm">0.05 SOL</span> or <span className="text-yellow-400 font-black text-sm">$5 EVM</span>
                             </div>
                           </div>
                         ) : (
-                          <div className="space-y-2">
+                          <div className="space-y-3">
                             <button
                               onClick={handleBondAndMint}
                               disabled={isMinting}
-                              className="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-mono text-xs tracking-wider font-black rounded-xl transition-all cursor-pointer shadow-lg hover:shadow-yellow-500/10 flex flex-col items-center justify-center gap-0.5 active:scale-[0.98] disabled:opacity-90"
+                              className="w-full py-4.5 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-mono text-xs sm:text-sm tracking-wider font-black rounded-2xl transition-all cursor-pointer shadow-[0_0_35px_rgba(245,158,11,0.35)] hover:shadow-[0_0_50px_rgba(245,158,11,0.55)] flex flex-col items-center justify-center gap-1.5 active:scale-[0.98] disabled:opacity-90"
                             >
                               {isMinting ? (
                                 <div className="flex items-center gap-2">
-                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                  <Loader2 className="w-4 h-4 animate-spin" />
                                   <span>PROCESSING BONDING...</span>
                                 </div>
                               ) : (
-                                <div className="flex items-center gap-1.5">
-                                  <Sparkles className="w-3.5 h-3.5 text-black animate-pulse" />
+                                <div className="flex items-center gap-2">
+                                  <Sparkles className="w-4 h-4 text-black animate-pulse" />
                                   <span>BOND & MINT PASSPORT</span>
                                 </div>
                               )}
                             </button>
                             {isMinting ? (
-                              <div className="text-[9px] font-mono text-yellow-400 text-center tracking-wide uppercase animate-pulse">
+                              <div className="text-xs font-mono text-yellow-400 text-center tracking-wide uppercase animate-pulse font-bold">
                                 {mintStep}
                               </div>
                             ) : (
-                              <div className="text-[9px] font-mono text-slate-400 tracking-wider text-center uppercase">
-                                Treasury Fee: <span className="text-yellow-400 font-bold">{userWalletChain === "Solana" ? "0.05 SOL" : "$5 (0.002 ETH equivalent)"}</span>
+                              <div className="text-xs font-mono text-slate-300 tracking-wider text-center uppercase font-bold">
+                                Treasury Fee: <span className="text-yellow-400 font-black text-sm">{userWalletChain === "Solana" ? "0.05 SOL" : "$5 (0.002 ETH equivalent)"}</span>
                               </div>
                             )}
                           </div>
@@ -3243,16 +3257,16 @@ export default function App() {
                         <button
                           onClick={handleSimulateTransactionsAndUpdateScore}
                           disabled={isUpdatingScore}
-                          className="w-full py-2.5 bg-yellow-500/10 hover:bg-yellow-500/25 text-yellow-400 hover:text-yellow-300 border border-yellow-500/20 hover:border-yellow-500/40 rounded-xl font-mono text-[10px] tracking-wider uppercase transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                          className="w-full py-4 bg-amber-500/10 hover:bg-amber-500/25 text-amber-300 hover:text-amber-200 border-2 border-amber-500/50 hover:border-amber-400 rounded-2xl font-mono text-xs tracking-wider uppercase font-black transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:scale-[1.01]"
                         >
                           {isUpdatingScore ? (
                             <>
-                              <Loader2 className="w-3.5 h-3.5 animate-spin text-yellow-400" />
+                              <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
                               <span>Simulating New Tx Block Check...</span>
                             </>
                           ) : (
                             <>
-                              <Zap className="w-3.5 h-3.5 text-yellow-400 animate-pulse" />
+                              <Zap className="w-4 h-4 text-amber-400 animate-pulse" />
                               <span>Simulate Live Tx & Update Score</span>
                             </>
                           )}
@@ -3260,9 +3274,9 @@ export default function App() {
 
                         <button
                           onClick={() => setShowReportModal(true)}
-                          className="w-full py-2.5 bg-[#121318]/90 hover:bg-black text-slate-400 hover:text-white border border-slate-800/80 hover:border-slate-700/80 rounded-xl font-mono text-[10px] tracking-wider uppercase transition-all flex items-center justify-center gap-1 cursor-pointer"
+                          className="w-full py-4 bg-slate-900/90 hover:bg-slate-950 text-slate-200 hover:text-white border-2 border-slate-700 hover:border-slate-500 rounded-2xl font-mono text-xs tracking-wider uppercase font-black transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
                         >
-                          <Fingerprint className="w-3.5 h-3.5" />
+                          <Fingerprint className="w-4 h-4" />
                           View Detailed Dossier Details
                         </button>
                       </div>
@@ -3273,27 +3287,27 @@ export default function App() {
                 {/* COLUMN 2: TABBED ANALYSIS & PORTFOLIO (7 cols) */}
                 <motion.div variants={dashboardItemVariants} className="lg:col-span-7 space-y-6">
                   {/* GLASSY NAVIGATION TABS */}
-                  <div className="flex p-1 bg-white/[0.02] backdrop-blur-md border border-white/5 rounded-xl">
+                  <div className="flex p-1.5 bg-white/[0.02] backdrop-blur-md border border-white/5 rounded-2xl">
                     <button
                       onClick={() => setColumnTwoTab("social")}
-                      className={`flex-1 py-2.5 text-xs font-mono font-black tracking-wider uppercase rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      className={`flex-1 py-3 px-2 text-xs sm:text-sm font-mono font-black tracking-wider uppercase rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
                         columnTwoTab === "social"
-                          ? "bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/30 text-yellow-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200 border border-transparent"
+                          ? "bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border-2 border-yellow-500/50 text-yellow-400 font-bold"
+                          : "text-slate-400 hover:text-slate-200 border-2 border-transparent"
                       }`}
                     >
-                      <Twitter className="w-3.5 h-3.5" />
+                      <Twitter className="w-4 h-4" />
                       Social & Bot Diagnostics
                     </button>
                     <button
                       onClick={() => setColumnTwoTab("nfts")}
-                      className={`flex-1 py-2.5 text-xs font-mono font-black tracking-wider uppercase rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      className={`flex-1 py-3 px-2 text-xs sm:text-sm font-mono font-black tracking-wider uppercase rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
                         columnTwoTab === "nfts"
-                          ? "bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/30 text-yellow-400 font-bold"
-                          : "text-slate-400 hover:text-slate-200 border border-transparent"
+                          ? "bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border-2 border-yellow-500/50 text-yellow-400 font-bold"
+                          : "text-slate-400 hover:text-slate-200 border-2 border-transparent"
                       }`}
                     >
-                      <Layers className="w-3.5 h-3.5" />
+                      <Layers className="w-4 h-4" />
                       Connected NFT Portfolio
                     </button>
                   </div>
@@ -3303,12 +3317,12 @@ export default function App() {
                       if (!userTwitterConnected) {
                         return (
                           <div className="rounded-2xl border border-dashed border-slate-800 bg-[#08090d]/60 p-8 flex flex-col items-center justify-center text-center space-y-4 shadow-xl min-h-[380px]">
-                            <div className="w-12 h-12 rounded-2xl bg-[#1d9bf0]/10 border border-[#1d9bf0]/25 flex items-center justify-center text-[#1d9bf0]">
-                              <Twitter className="w-6 h-6 animate-pulse" />
+                            <div className="w-14 h-14 rounded-2xl bg-[#1d9bf0]/10 border border-[#1d9bf0]/25 flex items-center justify-center text-[#1d9bf0]">
+                              <Twitter className="w-7 h-7 animate-pulse" />
                             </div>
-                            <div className="space-y-1.5 max-w-sm">
-                              <h3 className="text-base font-bold text-white">X / Twitter Connection Required</h3>
-                              <p className="text-xs text-slate-400 leading-relaxed font-normal">
+                            <div className="space-y-2.5 max-w-md">
+                              <h3 className="text-lg sm:text-xl font-bold text-white">X / Twitter Connection Required</h3>
+                              <p className="text-sm text-slate-300 leading-relaxed font-normal">
                                 Connect your X / Twitter account to unlock detailed Social & Bot Diagnostics, calculate bot follower indexes, and inspect verification trust factors across the network.
                               </p>
                             </div>
@@ -3316,9 +3330,9 @@ export default function App() {
                               onClick={() => {
                                 setShowLinkXModal(true);
                               }}
-                              className="px-5 py-2.5 bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-mono text-xs tracking-wider font-bold rounded-xl transition-all shadow-md hover:shadow-blue-500/15 flex items-center gap-1.5 active:scale-[0.98] cursor-pointer"
+                              className="px-6 py-3 bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-mono text-sm tracking-wider font-extrabold rounded-xl transition-all shadow-md hover:shadow-blue-500/15 flex items-center gap-2 active:scale-[0.98] cursor-pointer"
                             >
-                              <Twitter className="w-4 h-4 text-white" />
+                              <Twitter className="w-5 h-5 text-white" />
                               Connect Your X Profile
                             </button>
                           </div>
@@ -4087,7 +4101,7 @@ export default function App() {
                       🔥 2. BUY-BACK, BURN & AIRDROPS
                     </span>
                     <p className="text-xs text-slate-300 leading-relaxed">
-                      Ecosystem revenues are split into strict cryptographic pools: 15% goes to instant token buyback-and-burn for continuous deflation, and 35% funds token buybacks distributed as instant yield/airdrops directly to SWARM NFT holders and key stakers.
+                      Ecosystem revenues are split into strict cryptographic pools: 15% goes to instant token buyback-and-burn for continuous deflation, and 20% funds token buybacks distributed as instant yield/airdrops directly to SWARM NFT holders and key stakers.
                     </p>
                   </div>
 
@@ -4403,32 +4417,41 @@ export default function App() {
         )}
 
         {/* Highly Polished Swarm NFT Ongoing Mint Card & Button */}
-        <div className="max-w-md mx-auto relative z-20 my-10 px-4">
+        <div className="max-w-xl mx-auto relative z-20 my-12 px-4">
           <a
             href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center justify-between gap-4 p-3.5 rounded-2xl bg-[#07080c]/85 hover:bg-[#0b0c14]/90 border border-amber-500/20 hover:border-amber-500/40 backdrop-blur-md transition-all shadow-[0_4px_25px_rgba(245,158,11,0.03),0_0_15px_rgba(245,158,11,0.02)] hover:shadow-[0_4px_35px_rgba(245,158,11,0.08),0_0_25px_rgba(245,158,11,0.05)] cursor-pointer"
+            className="group flex flex-col sm:flex-row items-center justify-between gap-5 p-5 sm:p-6 rounded-3xl bg-[#080911]/95 hover:bg-[#0f1020]/95 border-2 border-amber-500/40 hover:border-amber-500/80 backdrop-blur-md transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.12)] hover:shadow-[0_0_45px_rgba(245,158,11,0.22)] cursor-pointer relative overflow-hidden"
           >
-            <div className="flex items-center gap-2.5">
-              <div className="relative flex h-2 w-2 shrink-0">
+            {/* Ambient gold glow decoration behind card */}
+            <div className="absolute top-0 right-0 w-36 h-36 bg-amber-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-amber-500/15 transition-all duration-300" />
+            
+            <div className="flex items-center gap-4">
+              <div className="relative flex h-3 w-3 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
               </div>
               <div className="text-left">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[8px] font-mono font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/25 px-1.5 py-0.5 rounded shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] font-mono font-black text-slate-950 bg-gradient-to-r from-amber-400 to-yellow-500 border border-amber-400/30 px-2 py-0.5 rounded-md shrink-0 uppercase tracking-widest shadow-sm">
                     MINT LIVE
                   </span>
-                  <span className="text-[9px] text-slate-500 font-bold">•</span>
-                  <span className="text-[10px] text-slate-400 group-hover:text-slate-200 font-mono font-bold">SWARM NFT</span>
+                  <span className="text-xs text-slate-500 font-bold">•</span>
+                  <span className="text-xs text-amber-400 group-hover:text-amber-300 font-mono font-black tracking-wider uppercase">SWARM NFT</span>
                 </div>
-                <p className="text-[11px] text-slate-300 font-sans leading-tight mt-1">Swarm NFT Ongoing Mint!</p>
+                <p className="text-base sm:text-lg text-white font-extrabold tracking-tight font-display mt-1.5 group-hover:text-amber-200 transition-colors">
+                  Swarm NFT Ongoing Mint!
+                </p>
+                <p className="text-xs text-slate-400 font-medium mt-0.5 max-w-sm">
+                  Activate elite staker multipliers & boost daily Karma Power rewards instantly.
+                </p>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-mono text-[9px] font-black uppercase tracking-wider transition-all shadow-[0_0_10px_rgba(245,158,11,0.2)] hover:brightness-110 active:scale-95 shrink-0">
-              <Trophy className="w-3.5 h-3.5 shrink-0" />
-              Mint Now
+            <div className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-500 text-slate-950 font-mono text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.25)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.45)] group-hover:scale-[1.03] active:scale-95 shrink-0">
+              <Trophy className="w-4 h-4 sm:w-5 h-5 shrink-0" />
+              <span>Mint Now</span>
+              <span className="text-[10px] opacity-75 shrink-0 ml-1">→</span>
             </div>
           </a>
         </div>
@@ -5976,20 +5999,20 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="relative w-full max-w-lg bg-[#070709] border border-amber-500/20 rounded-2xl shadow-2xl overflow-hidden flex flex-col z-10 text-slate-100"
+              className="relative w-full max-w-lg bg-[#070709] border-2 border-amber-500/40 rounded-3xl shadow-[0_0_80px_rgba(245,158,11,0.25)] overflow-hidden flex flex-col z-10 text-slate-100"
             >
               {/* Sticky Top Header */}
-              <div className="flex items-center justify-between p-4 sm:p-5 border-b border-white/5 bg-[#09090c]/90 sticky top-0 z-20 backdrop-blur-md">
+              <div className="flex items-center justify-between p-4 sm:p-5 border-b border-white/10 bg-[#09090c]/95 sticky top-0 z-20 backdrop-blur-md">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-lg shadow-inner text-black">
-                    <Trophy className="w-5 h-5" />
+                  <div className="p-2.5 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-xl shadow-inner text-black">
+                    <Trophy className="w-5.5 h-5.5" />
                   </div>
                   <div className="text-left">
-                    <h2 className="text-xs sm:text-sm font-black font-mono tracking-widest uppercase text-amber-500 flex items-center gap-2">
-                      MINT SWARM NFT
+                    <h2 className="text-base sm:text-lg font-black font-mono tracking-wider uppercase text-amber-500 flex items-center gap-2">
+                      MINT SWARM NFT (888 ONLY)
                     </h2>
-                    <p className="text-[10px] font-mono text-slate-400">
-                      Unlock exclusive 12.5x high-yield staker multiplier
+                    <p className="text-xs font-mono text-emerald-400 font-extrabold animate-pulse">
+                      💎 Monthly Revenue/Profit Sharing Active
                     </p>
                   </div>
                 </div>
@@ -6008,9 +6031,12 @@ export default function App() {
                 {/* NFT Visual Art Card Mockup */}
                 <div className="relative group w-64 h-80 mx-auto rounded-xl overflow-hidden border border-amber-500/30 bg-[#0d0d12] shadow-[0_0_25px_rgba(234,179,8,0.15)] flex flex-col items-center justify-between p-4 text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-yellow-500/5 group-hover:opacity-80 transition-all duration-500" />
-                  <div className="absolute top-2 right-2 flex gap-1">
-                    <span className="text-[8px] font-mono font-black text-amber-400 bg-amber-950/40 border border-amber-500/30 px-1.5 py-0.5 rounded">
-                      STAKER PASS
+                  <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                    <span className="text-[8px] font-mono font-black text-amber-400 bg-amber-950/50 border border-amber-500/30 px-1.5 py-0.5 rounded uppercase tracking-wider">
+                      888 SUPPLY CAPPED
+                    </span>
+                    <span className="text-[8px] font-mono font-black text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 px-1.5 py-0.5 rounded uppercase tracking-wider animate-pulse">
+                      MONTHLY PROFIT SHARE
                     </span>
                   </div>
 
@@ -6030,53 +6056,47 @@ export default function App() {
                     <h3 className="text-sm font-bold font-display text-white tracking-tight">
                       Karma Swarm Staker NFT
                     </h3>
-                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-white/5 pt-1.5">
-                      <span>STAKER YIELD MULTIPLIER:</span>
-                      <span className="text-amber-400 font-bold">12.5x</span>
+                    <div className="space-y-1 border-t border-white/5 pt-1.5">
+                      <div className="flex items-center justify-between text-[9px] font-mono text-slate-400">
+                        <span>STAKER YIELD MULTIPLIER:</span>
+                        <span className="text-amber-400 font-bold">12.5x</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[9px] font-mono text-slate-400">
+                        <span>REVENUE REWARD SHARE:</span>
+                        <span className="text-emerald-400 font-bold">20% Monthly</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Benefits List */}
-                <div className="space-y-3 bg-white/[0.02] border border-white/5 p-4 rounded-xl text-left">
-                  <h4 className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
-                    SWARM NFT ADVANTAGES:
+                <div className="space-y-3.5 bg-gradient-to-b from-slate-900/40 to-slate-950/40 border-2 border-amber-500/30 p-5 rounded-xl text-left">
+                  <h4 className="text-xs font-mono font-black text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+                    SWARM NFT UTILITY & ADVANTAGES:
                   </h4>
-                  <ul className="text-xs text-slate-300 font-sans space-y-2 leading-relaxed">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <ul className="text-xs text-slate-200 font-sans space-y-2.5 leading-relaxed">
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                      <span><strong>Monthly Revenue/Profit Sharing:</strong> SWARM NFT holders receive direct revenue/profit sharing each month. 20% of all ecosystem revenues & fees are distributed as monthly yield/airdrops.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                      <span><strong>Strict Scarcity (Just 888 SWARM NFT):</strong> Strictly capped at exactly <strong>888 SWARM NFTs</strong>. No dilution or additional supply ever.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                       <span><strong>12.5x Yield Multiplier</strong> applied automatically to your staked Karma Power.</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                       <span><strong>Elite Status Badge</strong> displayed next to your handle on the Trillionaires Leaderboard.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>Exclusive access to future high-yield airdrops and beta protocol features.</span>
                     </li>
                   </ul>
                 </div>
 
-                {/* Minting Cost */}
-                <div className="flex items-center justify-between border-t border-white/5 pt-4 text-left">
-                  <div className="space-y-0.5">
-                    <span className="block text-[10px] text-slate-500 font-mono uppercase">Cost to Mint</span>
-                    <span className="text-lg font-bold font-mono text-white">
-                      {userWalletChain === "Solana" ? "0.02 SOL" : "0.005 ETH"}
-                    </span>
-                  </div>
-                  
-                  <div className="text-right">
-                    <span className="block text-[10px] text-slate-500 font-mono uppercase">Your Balance</span>
-                    <span className="text-xs font-mono text-slate-300">
-                      {userWalletChain === "Solana" ? `${solBalance.toFixed(3)} SOL` : `${ethBalance.toFixed(4)} ETH`}
-                    </span>
-                  </div>
-                </div>
-
                 {/* Mint action */}
-                <div className="space-y-3">
+                <div className="space-y-3 pt-4 border-t border-white/5">
                   <a
                     href="https://gravemint.io/mint/FXSVHzLvVFey57U8ETuhHzrzDRT3FhvqzbxWpyoAJA4c"
                     target="_blank"
@@ -6619,7 +6639,7 @@ export default function App() {
                     </p>
                     <ul className="list-disc list-inside text-xs text-slate-300 space-y-1 pl-1">
                       <li><strong className="text-yellow-400">15% Instant Buyback & Burn:</strong> Transferred straight to a null address for permanent deflationary supply contraction of the native token.</li>
-                      <li><strong className="text-yellow-400">35% Buybacks & Airdrops:</strong> Used to buy back liquidity and distribute direct on-chain token airdrops to SWARM NFT holders and reciprocal community stakers.</li>
+                      <li><strong className="text-yellow-400">20% Buybacks & Airdrops:</strong> Used to buy back liquidity and distribute direct on-chain token airdrops to SWARM NFT holders and reciprocal community stakers.</li>
                     </ul>
                     <p className="text-[11px] text-slate-500 italic pt-1 leading-normal">
                       *Note: While core developers reserve the structural right to adapt these parameters during technical upgrades to ensure protocol safety, these terms are currently stabilized by Vilora Labs. Vilora Labs has officially committed 50% of the entire ecosystem and corporate equity weight directly to the community to manage with care—with the strict provision that governance rights can be reclaimed if mistreated or governed unproductively.
@@ -6640,12 +6660,12 @@ export default function App() {
                     </div>
                     <div className="grid grid-cols-3 p-3 border-b border-white/5">
                       <div className="font-bold text-yellow-400">NFT & Community Airdrops</div>
-                      <div className="text-center font-mono">35%</div>
+                      <div className="text-center font-mono">20%</div>
                       <div className="text-right text-slate-400">Direct Buyback distributed to NFT holders & stakers</div>
                     </div>
                     <div className="grid grid-cols-3 p-3 border-b border-white/5">
                       <div className="font-bold text-blue-300">Ecosystem & Infrastructure</div>
-                      <div className="text-center font-mono">35%</div>
+                      <div className="text-center font-mono">50%</div>
                       <div className="text-right text-slate-400">Vilora Labs Node Scaling & Indexer optimization</div>
                     </div>
                     <div className="grid grid-cols-3 p-3">
@@ -6669,26 +6689,26 @@ export default function App() {
                     <div className="grid grid-cols-4 bg-white/[0.03] p-3 font-bold border-b border-white/5 text-slate-400 text-[10px] tracking-wider uppercase">
                       <div>Annual Fees</div>
                       <div className="text-center text-yellow-500">15% Token Burn</div>
-                      <div className="text-center text-amber-400">35% NFT Share</div>
-                      <div className="text-right text-emerald-400">Total Community (50%)</div>
+                      <div className="text-center text-amber-400">20% NFT Share</div>
+                      <div className="text-right text-emerald-400">Total Community (35%)</div>
                     </div>
                     <div className="grid grid-cols-4 p-3 border-b border-white/5 text-slate-300">
                       <div>$182,500 USDC</div>
                       <div className="text-center text-yellow-500/80">$27,375</div>
-                      <div className="text-center text-amber-400/80">$63,875</div>
-                      <div className="text-right text-emerald-400 font-bold">$91,250</div>
+                      <div className="text-center text-amber-400/80">$36,500</div>
+                      <div className="text-right text-emerald-400 font-bold">$63,875</div>
                     </div>
                     <div className="grid grid-cols-4 p-3 border-b border-white/5 text-slate-300">
                       <div>$912,500 USDC</div>
                       <div className="text-center text-yellow-500/80">$136,875</div>
-                      <div className="text-center text-amber-400/80">$319,375</div>
-                      <div className="text-right text-emerald-400 font-bold">$456,250</div>
+                      <div className="text-center text-amber-400/80">$182,500</div>
+                      <div className="text-right text-emerald-400 font-bold">$319,375</div>
                     </div>
                     <div className="grid grid-cols-4 p-3 text-slate-300">
                       <div>$4,562,500 USDC</div>
                       <div className="text-center text-yellow-500/80">$684,375</div>
-                      <div className="text-center text-amber-400/80">$1,596,875</div>
-                      <div className="text-right text-emerald-400 font-bold">$2,281,250</div>
+                      <div className="text-center text-amber-400/80">$912,500</div>
+                      <div className="text-right text-emerald-400 font-bold">$1,596,875</div>
                     </div>
                   </div>
                   
