@@ -402,6 +402,7 @@ export default function App() {
 
   // Soulbound minting states
   const [isSoulbound, setIsSoulbound] = useState(false);
+  const [bondStampedDate, setBondStampedDate] = useState<string | null>(null);
   const [isMinting, setIsMinting] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [mintStep, setMintStep] = useState<string>("");
@@ -901,19 +902,17 @@ export default function App() {
     }
   };
 
-  const handleSimulateTransactionsAndUpdateScore = async () => {
+  const handleUpdateScore = async () => {
     if (!report || isUpdatingScore) return;
     setIsUpdatingScore(true);
 
-    // Simulate standard transaction processing with a few state steps
+    // Scan the wallet & process transactions to recalculate score
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     // Calculate a new score. Let's make sure it changes!
-    // We can boost it or vary it.
     let scoreChange = Math.floor(Math.random() * 80) + 40; // change between +40 and +120
     let nextScore = report.score + scoreChange;
     if (nextScore > 1000) {
-      // If it would exceed 1000, let's wrap it back or set it to a different random value, e.g. 280-530
       nextScore = 280 + Math.floor(Math.random() * 250);
     }
 
@@ -947,6 +946,10 @@ export default function App() {
       reputationTier: nextTier,
       experienceLevel: nextLevel
     });
+
+    // Reset soulbound status so each new score update behaves like a new check & requires a new soulbound mint
+    setIsSoulbound(false);
+    setBondStampedDate(null);
 
     setIsUpdatingScore(false);
   };
@@ -1012,6 +1015,7 @@ export default function App() {
     }
     
     setIsSoulbound(true);
+    setBondStampedDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase());
     setBondingModalState("success");
     setShowConfetti(true);
     
@@ -1070,6 +1074,7 @@ export default function App() {
     setUserWalletAddress(null);
     setUserWalletChain(null);
     setIsSoulbound(false); // Reset soulbound when wallet changes
+    setBondStampedDate(null); // Reset stamped date
     setUserTwitterConnected(false);
     setUserTwitterHandle(null);
     setReport(null); // Clear report on disconnect to close passport card
@@ -1102,6 +1107,7 @@ export default function App() {
     setIsMinting(false);
     setMintStep("");
     setIsSoulbound(true);
+    setBondStampedDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase());
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 4000);
   };
@@ -1628,7 +1634,7 @@ export default function App() {
 
         <div className="relative flex items-center justify-center w-52 h-52">
           {/* SVG Score Gauge */}
-          <svg className="w-full h-full transform -rotate-90">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 208 208">
             <circle
               cx="104"
               cy="104"
@@ -1653,7 +1659,7 @@ export default function App() {
           </svg>
 
           {/* Absolute Score Output */}
-          <div className="absolute flex flex-col items-center justify-center text-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
             <span className={`text-4xl font-extrabold font-display tracking-tight ${getScoreColorClass(displayScore)}`}>
               {displayScore}
             </span>
@@ -2026,7 +2032,7 @@ export default function App() {
               SOLANA & EVM IDENTITY CHECKER
             </motion.div>
             
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black font-display tracking-tight uppercase mt-6 mb-4 select-none leading-none">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black font-display tracking-tight uppercase mt-6 mb-3 select-none leading-none">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400 drop-shadow-[0_2px_10px_rgba(255,255,255,0.1)]">
                 KARMA SCORE
               </span>
@@ -2034,19 +2040,39 @@ export default function App() {
                 AI
               </span>
             </h1>
-            <div className="text-xl sm:text-3xl text-slate-200 font-normal leading-relaxed max-w-4xl mx-auto space-y-6">
-              <p className="font-black text-white text-3xl sm:text-5xl tracking-tight uppercase bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
+            <div className="text-base sm:text-xl text-slate-200 font-normal leading-relaxed max-w-3xl mx-auto space-y-4">
+              <p className="font-black text-white text-xl sm:text-3xl md:text-4xl tracking-tight uppercase bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
                 Know every wallet before every interaction.
               </p>
-              <p className="text-slate-200 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-normal tracking-wide antialiased opacity-95">
+              <p className="text-slate-400 text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-normal tracking-wide antialiased opacity-90">
                 Paste any Solana or EVM wallet to instantly reveal a living trust profile powered by onchain activity, reputation signals, and community intelligence.
               </p>
             </div>
           </div>
 
           <div className="max-w-3xl mx-auto relative z-10">
-            <div className="relative p-2.5 bg-[#06060a]/95 backdrop-blur-xl border-2 border-yellow-500/30 hover:border-yellow-500/50 rounded-2xl focus-within:border-amber-500/70 focus-within:ring-4 focus-within:ring-amber-500/[0.1] transition-all duration-300 shadow-[0_0_60px_rgba(245,158,11,0.08),0_30px_100px_rgba(0,0,0,0.95)] flex flex-col sm:flex-row items-stretch gap-3 neon-shimmer">
-              <div className="relative flex-1 flex items-center pl-4">
+            <div 
+              className="relative p-2.5 bg-[#06060a]/95 backdrop-blur-xl border-2 border-yellow-500/30 hover:border-yellow-500/50 rounded-2xl focus-within:border-amber-500/70 focus-within:ring-4 focus-within:ring-amber-500/[0.1] transition-all duration-300 shadow-[0_0_60px_rgba(245,158,11,0.08),0_30px_100px_rgba(0,0,0,0.95)] flex flex-col sm:flex-row items-stretch gap-3 neon-shimmer cursor-text"
+              onClick={(e) => {
+                if (!(e.target as HTMLElement).closest('button') && !(e.target as HTMLElement).closest('input')) {
+                  const input = document.getElementById("wallet-search-input");
+                  if (input) {
+                    input.focus();
+                  }
+                }
+              }}
+            >
+              <div 
+                className="relative flex-1 flex items-center pl-4 cursor-text"
+                onClick={(e) => {
+                  if (!(e.target as HTMLElement).closest('button') && !(e.target as HTMLElement).closest('input')) {
+                    const input = document.getElementById("wallet-search-input");
+                    if (input) {
+                      input.focus();
+                    }
+                  }
+                }}
+              >
                 <Search className="w-6 h-6 text-slate-400 absolute left-4" />
                 <input
                   id="wallet-search-input"
@@ -2059,12 +2085,12 @@ export default function App() {
                     if (e.key === "Enter") handleDecode(addressInput);
                   }}
                 />
-                <div className="absolute right-3 flex items-center gap-1.5">
+                <div className="absolute right-3 flex items-center gap-1.5 pointer-events-none">
                   {addressInput && (
                     <button
                       type="button"
                       onClick={() => setAddressInput("")}
-                      className="p-1.5 hover:text-white text-slate-500 transition-colors text-sm font-mono"
+                      className="p-1.5 hover:text-white text-slate-500 transition-colors text-sm font-mono pointer-events-auto"
                       title="Clear"
                     >
                       ✕
@@ -2085,7 +2111,7 @@ export default function App() {
                         setTimeout(() => setError(null), 6000);
                       }
                     }}
-                    className="p-2 bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-yellow-400 rounded-xl border border-slate-800 text-xs font-mono transition-all flex items-center gap-1.5 shrink-0 active:scale-95"
+                    className="p-2 bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-yellow-400 rounded-xl border border-slate-800 text-xs font-mono transition-all flex items-center gap-1.5 shrink-0 active:scale-95 pointer-events-auto"
                     title="Paste from Clipboard"
                   >
                     <Clipboard className="w-4 h-4" />
@@ -2163,54 +2189,64 @@ export default function App() {
                 </button>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
                 {/* Trusted Bond Wallets Group */}
-                <div className="space-y-4 p-5 rounded-2xl bg-gradient-to-b from-slate-900/40 to-slate-950/40 border border-emerald-500/20 hover:border-emerald-500/40 transition-all shadow-xl shadow-black/35 group">
-                  <div className="flex items-center justify-between pb-3 border-b border-white/5">
-                    <div className="flex items-center gap-2.5">
-                      <span className="relative flex h-2 w-2">
+                <div className="space-y-3.5 p-4 rounded-2xl bg-[#09090e]/40 border border-emerald-500/15 hover:border-emerald-500/30 transition-all shadow-xl shadow-black/25 flex flex-col h-[340px]">
+                  <div className="flex items-center justify-between pb-2 border-b border-white/5 shrink-0">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-1.5 w-1.5">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                       </span>
-                      <span className="text-xs font-mono font-black text-emerald-400 uppercase tracking-[0.15em] flex items-center gap-1.5">
-                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                      <span className="text-xs font-mono font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                         Trusted Bond Wallets
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-950/30 border border-emerald-500/20">Score 589 - 1000</span>
+                    <span className="text-[9px] font-mono text-emerald-400 font-bold px-1.5 py-0.5 rounded-full bg-emerald-950/20 border border-emerald-500/10">Score 589+</span>
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex-1 overflow-y-auto pr-1 space-y-1.5 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent">
                     {VERIFIED_CROWDS.filter(ex => ex.score >= 589).map((ex) => (
                       <button
                         id={`example-btn-${ex.score}`}
                         key={ex.address}
                         onClick={() => handleDecode(ex.address)}
-                        className={`p-4 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
+                        className={`w-full p-2.5 rounded-xl border text-left transition-all duration-200 cursor-pointer relative overflow-hidden flex items-center justify-between gap-2.5 group/btn ${
                           report?.address === ex.address
-                            ? "bg-emerald-950/20 border-emerald-500/60 shadow-lg shadow-emerald-500/10"
-                            : "bg-[#06060a]/90 border-zinc-900 hover:border-emerald-500/30 hover:bg-slate-900/30 hover:-translate-y-0.5"
+                            ? "bg-emerald-950/20 border-emerald-500/50 shadow-md shadow-emerald-500/5"
+                            : "bg-[#06060a]/70 border-zinc-900 hover:border-emerald-500/30 hover:bg-slate-900/10"
                         }`}
                       >
-                        {/* Selected accent line */}
                         {report?.address === ex.address && (
-                          <div className="absolute top-0 left-0 right-0 h-[2px] bg-emerald-400" />
+                          <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-emerald-400" />
                         )}
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-[9px] font-mono tracking-widest text-amber-500 font-extrabold uppercase">{ex.chain}</span>
-                          <span className={`text-[9px] font-mono font-black px-2 py-0.5 rounded-full ${getTierColor(ex.tier)} shadow-sm`}>
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          {/* Chain */}
+                          <span className="text-[8px] font-mono tracking-wider text-amber-500/80 font-black uppercase bg-amber-500/[0.03] border border-amber-500/10 px-1.5 py-0.5 rounded shrink-0">
+                            {ex.chain}
+                          </span>
+                          
+                          {/* Name & Address */}
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-black text-white truncate flex items-center gap-1">
+                              {ex.name}
+                              {report?.address === ex.address && (
+                                <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0 animate-pulse" />
+                              )}
+                            </div>
+                            <div className="text-[9px] font-mono text-slate-500 truncate">
+                              {ex.address.slice(0, 10)}...{ex.address.slice(-6)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Score & Select */}
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`text-[10px] font-mono font-black px-1.5 py-0.5 rounded-md ${getTierColor(ex.tier)} shadow-sm`}>
                             {ex.score}
                           </span>
-                        </div>
-                        <div className="text-xs font-black text-white truncate flex items-center gap-1">
-                          {ex.name}
-                          {report?.address === ex.address && (
-                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                          )}
-                        </div>
-                        <div className="text-[9px] font-mono text-slate-500 truncate mt-1.5 flex items-center justify-between">
-                          <span>{ex.address.slice(0, 11)}...{ex.address.slice(-6)}</span>
-                          <span className="text-[8px] text-emerald-400 opacity-0 group-hover/btn:opacity-100 transition-opacity font-extrabold">Select →</span>
+                          <span className="text-[10px] text-slate-500 group-hover/btn:text-emerald-400 transition-colors font-black">→</span>
                         </div>
                       </button>
                     ))}
@@ -2218,52 +2254,62 @@ export default function App() {
                 </div>
 
                 {/* Bad Wallets Group */}
-                <div className="space-y-4 p-5 rounded-2xl bg-gradient-to-b from-slate-900/40 to-slate-950/40 border border-rose-500/20 hover:border-rose-500/40 transition-all shadow-xl shadow-black/35 group">
-                  <div className="flex items-center justify-between pb-3 border-b border-white/5">
-                    <div className="flex items-center gap-2.5">
-                      <span className="relative flex h-2 w-2">
+                <div className="space-y-3.5 p-4 rounded-2xl bg-[#09090e]/40 border border-rose-500/15 hover:border-rose-500/30 transition-all shadow-xl shadow-black/25 flex flex-col h-[340px]">
+                  <div className="flex items-center justify-between pb-2 border-b border-white/5 shrink-0">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-1.5 w-1.5">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500"></span>
                       </span>
-                      <span className="text-xs font-mono font-black text-rose-400 uppercase tracking-[0.15em] flex items-center gap-1.5">
-                        <ShieldAlert className="w-4 h-4 text-rose-400" />
+                      <span className="text-xs font-mono font-black text-rose-400 uppercase tracking-wider flex items-center gap-1">
+                        <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
                         Bad Wallets / Risks
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-rose-400 font-bold px-2 py-0.5 rounded-full bg-rose-950/30 border border-rose-500/20">Score 0 - 588</span>
+                    <span className="text-[9px] font-mono text-rose-400 font-bold px-1.5 py-0.5 rounded-full bg-rose-950/20 border border-rose-500/10">Score &lt; 589</span>
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex-1 overflow-y-auto pr-1 space-y-1.5 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent">
                     {VERIFIED_CROWDS.filter(ex => ex.score < 589).map((ex) => (
                       <button
                         id={`example-btn-${ex.score}`}
                         key={ex.address}
                         onClick={() => handleDecode(ex.address)}
-                        className={`p-4 rounded-xl border text-left transition-all duration-300 cursor-pointer relative overflow-hidden group/btn ${
+                        className={`w-full p-2.5 rounded-xl border text-left transition-all duration-200 cursor-pointer relative overflow-hidden flex items-center justify-between gap-2.5 group/btn ${
                           report?.address === ex.address
-                            ? "bg-rose-950/20 border-rose-500/60 shadow-lg shadow-rose-500/10"
-                            : "bg-[#06060a]/90 border-zinc-900 hover:border-rose-500/30 hover:bg-slate-900/30 hover:-translate-y-0.5"
+                            ? "bg-rose-950/20 border-rose-500/50 shadow-md shadow-rose-500/5"
+                            : "bg-[#06060a]/70 border-zinc-900 hover:border-rose-500/30 hover:bg-slate-900/10"
                         }`}
                       >
-                        {/* Selected accent line */}
                         {report?.address === ex.address && (
-                          <div className="absolute top-0 left-0 right-0 h-[2px] bg-rose-500" />
+                          <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-rose-500" />
                         )}
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-[9px] font-mono tracking-widest text-amber-500 font-extrabold uppercase">{ex.chain}</span>
-                          <span className={`text-[9px] font-mono font-black px-2 py-0.5 rounded-full ${getTierColor(ex.tier)} shadow-sm`}>
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          {/* Chain */}
+                          <span className="text-[8px] font-mono tracking-wider text-amber-500/80 font-black uppercase bg-amber-500/[0.03] border border-amber-500/10 px-1.5 py-0.5 rounded shrink-0">
+                            {ex.chain}
+                          </span>
+                          
+                          {/* Name & Address */}
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-black text-white truncate flex items-center gap-1">
+                              {ex.name}
+                              {report?.address === ex.address && (
+                                <ShieldAlert className="w-3 h-3 text-rose-400 shrink-0 animate-pulse" />
+                              )}
+                            </div>
+                            <div className="text-[9px] font-mono text-slate-500 truncate">
+                              {ex.address.slice(0, 10)}...{ex.address.slice(-6)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Score & Select */}
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`text-[10px] font-mono font-black px-1.5 py-0.5 rounded-md ${getTierColor(ex.tier)} shadow-sm`}>
                             {ex.score}
                           </span>
-                        </div>
-                        <div className="text-xs font-black text-white truncate flex items-center gap-1">
-                          {ex.name}
-                          {report?.address === ex.address && (
-                            <ShieldAlert className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                          )}
-                        </div>
-                        <div className="text-[9px] font-mono text-slate-500 truncate mt-1.5 flex items-center justify-between">
-                          <span>{ex.address.slice(0, 11)}...{ex.address.slice(-6)}</span>
-                          <span className="text-[8px] text-rose-400 opacity-0 group-hover/btn:opacity-100 transition-opacity font-extrabold">Select →</span>
+                          <span className="text-[10px] text-slate-500 group-hover/btn:text-rose-400 transition-colors font-black">→</span>
                         </div>
                       </button>
                     ))}
@@ -2949,10 +2995,10 @@ export default function App() {
             <motion.div variants={dashboardItemVariants} className="border-t border-slate-900 pt-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-extrabold font-display text-white tracking-tight">
                     Reputation Analytics & Checked Passport
                   </h2>
-                  <p className="text-sm sm:text-base text-slate-300 mt-1.5 font-medium">
+                  <p className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">
                     Live verification feed for {report.address}
                   </p>
                 </div>
@@ -3018,6 +3064,18 @@ export default function App() {
                         <div className="absolute inset-0 bg-radial from-yellow-500/5 to-transparent animate-pulse pointer-events-none" />
                       )}
 
+                      {/* Stamped Date on the NFT */}
+                      {isSoulbound && (
+                        <div className="absolute top-4 right-4 z-20 pointer-events-none transform rotate-[8deg] border border-yellow-400/50 bg-[#0d0c05]/95 px-2.5 py-1 rounded-md text-center shadow-[0_0_15px_rgba(245,158,11,0.25)]">
+                          <div className="text-[7px] font-mono text-yellow-500/80 font-black tracking-widest uppercase">
+                            STAMPED ON-CHAIN
+                          </div>
+                          <div className="text-[9px] font-mono text-yellow-400 font-black tracking-wider">
+                            {bondStampedDate || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase()}
+                          </div>
+                        </div>
+                      )}
+
                       {/* MODERN GLASSY RIPPLE ANIMATION WHEN WALLET CONNECTS */}
                       <AnimatePresence>
                         {glassWaveTrigger > 0 && (
@@ -3067,7 +3125,7 @@ export default function App() {
                           report.score < 280 ? "bg-red-950/45 border-red-500/20" : "bg-slate-950/65 border-white/5"
                         }`} />
 
-                        <svg className="w-full h-full transform -rotate-90 z-10 pointer-events-none">
+                        <svg className="w-full h-full transform -rotate-90 z-10 pointer-events-none" viewBox="0 0 208 208">
                           <defs>
                             <linearGradient id="passportGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                               {report.score < 280 ? (
@@ -3123,11 +3181,14 @@ export default function App() {
                         </svg>
 
                         {/* Centered Score */}
-                        <div className="absolute flex flex-col items-center justify-center text-center z-20 pointer-events-none">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-20 pointer-events-none">
                           <span className={`text-4xl font-extrabold tracking-tight font-display drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] ${getScoreColorClass(animatedScore)}`}>
                             {animatedScore}
                           </span>
-                          <span className="text-slate-400 text-[9px] font-extrabold tracking-[0.25em] font-sans mt-1 uppercase">
+                          <span 
+                            style={{ fontSize: '10px', letterSpacing: '0.12em' }}
+                            className="text-slate-400 font-extrabold font-sans mt-1 uppercase"
+                          >
                             {report.score < 280 ? "ALERT LEVEL" : "KARMA SCORE"}
                           </span>
                         </div>
@@ -3255,19 +3316,19 @@ export default function App() {
                         )}
 
                         <button
-                          onClick={handleSimulateTransactionsAndUpdateScore}
+                          onClick={handleUpdateScore}
                           disabled={isUpdatingScore}
                           className="w-full py-4 bg-amber-500/10 hover:bg-amber-500/25 text-amber-300 hover:text-amber-200 border-2 border-amber-500/50 hover:border-amber-400 rounded-2xl font-mono text-xs tracking-wider uppercase font-black transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:scale-[1.01]"
                         >
                           {isUpdatingScore ? (
                             <>
                               <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
-                              <span>Simulating New Tx Block Check...</span>
+                              <span>Scanning & Updating Score...</span>
                             </>
                           ) : (
                             <>
                               <Zap className="w-4 h-4 text-amber-400 animate-pulse" />
-                              <span>Simulate Live Tx & Update Score</span>
+                              <span>Update Score</span>
                             </>
                           )}
                         </button>
@@ -3590,7 +3651,7 @@ export default function App() {
                                 {/* Right: Radial SVG Progress Circle */}
                                 <div className="col-span-6 flex flex-col items-center justify-center">
                                   <div className="relative w-20 h-20">
-                                    <svg className="w-full h-full transform -rotate-90">
+                                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 80 80">
                                       <circle
                                         cx="40"
                                         cy="40"
@@ -3738,7 +3799,7 @@ export default function App() {
                 <Coins className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
                 KARMA POWER PROTOCOL
               </div>
-              <h1 className="text-3xl sm:text-5xl font-black font-display tracking-tight text-white leading-none">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-display tracking-tight text-white leading-none">
                 Reputation <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500">Staking Portal</span>
               </h1>
               <p className="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed max-w-xl mx-auto">
@@ -4246,7 +4307,7 @@ export default function App() {
                 <Shield className="w-3.5 h-3.5 text-yellow-400 animate-pulse" />
                 Advanced Cross-Chain Forensics & Auditing
               </div>
-              <h1 className="text-3xl sm:text-5xl font-black font-display tracking-tight text-white leading-none">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-display tracking-tight text-white leading-none">
                 Deep-Scan <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500">Premium Audit</span>
               </h1>
               <p className="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed max-w-xl mx-auto">
